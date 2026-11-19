@@ -110,6 +110,10 @@ export const DEF_SETTINGS = {
   coverDate: '',
   coverExamInfo: '',
   coverTotalQs: false,
+  coverQr: true,
+  coverQrUrl: 'https://t.me/medscope',
+  coverQrSize: 84,
+  coverQrLabel: 'Scan to join us',
 
   secPages: true,
   secPageLayout: 'band',

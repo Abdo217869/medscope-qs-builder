@@ -895,6 +895,19 @@ export const SETTINGS_SCHEMA = [
       { key: 'coverExamInfo', label: 'معلومات الامتحان / الكلية (اختياري)', type: 'text', default: '' },
       { key: 'by', label: 'سطر الإعداد / الفريق', type: 'text', default: 'By: Medscope team' },
       { key: 'joinText', label: 'نص الانضمام والتواصل', type: 'text', default: 'Join us' },
+      { key: 'coverQr', label: 'إدراج رمز QR Code تحت نص Join us', type: 'check', default: true },
+      { key: 'coverQrUrl', label: 'رابط أو نص الـ QR Code (تليجرام / فيسبوك / درايف)', type: 'text', default: 'https://t.me/medscope' },
+      {
+        key: 'coverQrSize',
+        label: 'حجم رمز الـ QR Code (px)',
+        type: 'range',
+        default: 84,
+        min: 50,
+        max: 160,
+        step: 4,
+        unit: 'px'
+      },
+      { key: 'coverQrLabel', label: 'نص توضيحي تحت الـ QR (اختياري)', type: 'text', default: 'Scan to join us' },
       { key: 'coverTotalQs', label: 'إظهار إجمالي عدد الأسئلة على الغلاف (بالإنجليزي: Total: 60 MCQs)', type: 'check', default: false },
       { key: 'secPages', label: 'إدراج صفحة فاصلة لكل مادة', type: 'check', default: true },
       {

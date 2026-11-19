@@ -3,6 +3,7 @@
 import { LET } from './parser.js';
 import { state, getViewData } from './state.js';
 import { paginate, MM } from './paginate.js';
+import { generateQrSvg } from './qrHelper.js';
 
 export function esc(s) {
   return String(s ?? '').replace(/[&<>"]/g, c => ({
@@ -242,6 +243,13 @@ export function buildItems(secs, isAns, S = state.settings) {
     const borderClass = (S.coverBorder && S.coverBorder !== 'none') ? `cover-border-${S.coverBorder}` : '';
     const alignClass = S.coverAlign ? `cover-align-${S.coverAlign}` : 'cover-align-center';
 
+    let qrHTML = '';
+    if (S.coverQr !== false && S.coverQrUrl) {
+      const qrSvg = generateQrSvg(S.coverQrUrl, S.coverQrSize || 84);
+      const qrLabel = S.coverQrLabel ? `<span class="cover-qr-label">${esc(S.coverQrLabel)}</span>` : '';
+      qrHTML = `<div class="cover-qr-wrap">${qrSvg}${qrLabel}</div>`;
+    }
+
     const coverHTML = `
       <div class="cover-content cover-layout-${coverLayout} ${borderClass} ${alignClass}">
         ${logoPos === 'top' ? logoHTML : ''}
@@ -255,6 +263,7 @@ export function buildItems(secs, isAns, S = state.settings) {
         ${logoPos === 'bottom' ? logoHTML : ''}
         <p class="cover-by">${esc(S.by)}</p>
         <p class="cover-join">${esc(S.joinText)}</p>
+        ${qrHTML}
       </div>
     `;
 

@@ -804,6 +804,30 @@
   margin: 4px 0 12px 0;
 }
 
+/* Cover QR Code */
+.cover-qr-wrap {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cover-qr-svg {
+  display: block;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.cover-qr-label {
+  font-size: 8.5pt;
+  color: var(--hdrc, #64748b);
+  margin-top: 5px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
 /* Section Cover Pages */
 .section-cover-page {
   width: 100%;
