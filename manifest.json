@@ -1,0 +1,25 @@
+{
+  "name": "Medscope Question Sheet Builder",
+  "short_name": "Medscope Sheets",
+  "description": "مولّد أوراق الأسئلة والامتحانات المطبوعة لطلاب كلية الطب - جامعة الإسكندرية",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1320",
+  "theme_color": "#0b1320",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "./medscope-eagle.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./medscope-watermark-default.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
