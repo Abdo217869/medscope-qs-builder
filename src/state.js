@@ -96,11 +96,30 @@ export const DEF_SETTINGS = {
   wmPos: 'center',
   wmRot: 0,
   wmCover: false,
+  wmTarget: 'all',
 
   coverLogo: true,
   coverLogoSize: 140,
+  coverLogoPos: 'top',
+  coverLogoShape: 'original',
   coverLayout: 'band',
+  coverBorder: 'none',
+  coverAlign: 'center',
+  coverTitleSize: 32,
+  coverSubtitleSize: 18,
+  coverDate: '',
+  coverExamInfo: '',
+  coverTotalQs: false,
+
+  secPages: true,
+  secPageLayout: 'band',
+  secPageLogo: true,
+  secPageLogoSize: 80,
+  secPageSub: 'Qs',
+  secTitleCount: false,
+
   headerLogo: false,
+  headerLogoSize: 18,
 
   shuffleQ: false,
   shuffleO: false,
@@ -213,6 +232,8 @@ try {
   if (state.settings.wmOp === 0.08 || state.settings.wmOp === 0.12) {
     state.settings.wmOp = 0.16;
   }
+  // Remove question count in Arabic from section headers
+  state.settings.secTitleCount = false;
 } catch (e) {
   console.warn('Error reading saved settings:', e);
 }

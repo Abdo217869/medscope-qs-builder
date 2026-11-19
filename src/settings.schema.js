@@ -726,7 +726,7 @@ export const SETTINGS_SCHEMA = [
         key: 'wmOp',
         label: 'شفافية العلامة المائية',
         type: 'range',
-        default: 0.12,
+        default: 0.16,
         min: 0.02,
         max: 0.5,
         step: 0.01,
@@ -736,8 +736,8 @@ export const SETTINGS_SCHEMA = [
         key: 'wmSize',
         label: 'حجم اللوجو (px)',
         type: 'range',
-        default: 320,
-        min: 120,
+        default: 340,
+        min: 100,
         max: 600,
         step: 10,
         unit: 'px'
@@ -769,6 +769,60 @@ export const SETTINGS_SCHEMA = [
         label: 'ظهور العلامة المائية على صفحة الغلاف أيضًا',
         type: 'check',
         default: false
+      },
+      {
+        key: 'wmTarget',
+        label: 'نطاق ظهور العلامة المائية',
+        type: 'select',
+        default: 'all',
+        options: [
+          { val: 'all', text: 'جميع الصفحات' },
+          { val: 'qs-only', text: 'صفحات الأسئلة فقط (بدون الغلاف والمفتاح)' }
+        ]
+      },
+      { key: 'coverLogo', label: 'ظهور اللوجو في صفحة الغلاف', type: 'check', default: true },
+      {
+        key: 'coverLogoSize',
+        label: 'حجم لوجو الغلاف (px)',
+        type: 'range',
+        default: 140,
+        min: 60,
+        max: 280,
+        step: 5,
+        unit: 'px'
+      },
+      {
+        key: 'coverLogoPos',
+        label: 'موضع لوجو الغلاف',
+        type: 'select',
+        default: 'top',
+        options: [
+          { val: 'top', text: 'أعلى العنوان الرئيسي' },
+          { val: 'middle', text: 'بين العنوان الرئيسي والعنوان الفرعي' },
+          { val: 'bottom', text: 'أسفل الغلاف فوق سطر الحقوق' }
+        ]
+      },
+      {
+        key: 'coverLogoShape',
+        label: 'شكل وبرواز لوجو الغلاف',
+        type: 'select',
+        default: 'original',
+        options: [
+          { val: 'original', text: 'طبيعي حر (Original)' },
+          { val: 'circle', text: 'دائري بإطار ناعم وخلفية بيضاء (Circular Badge)' },
+          { val: 'card', text: 'كارت أبيض ناعم مع ظل خفيف (Modern Card)' }
+        ]
+      },
+      { key: 'headerLogo', label: 'لوجو مصغر في الهيدر العلوي', type: 'check', default: false },
+      {
+        key: 'headerLogoSize',
+        label: 'حجم لوجو الهيدر (px)',
+        type: 'range',
+        default: 18,
+        min: 12,
+        max: 32,
+        step: 1,
+        unit: 'px'
       }
     ]
   },
@@ -780,32 +834,94 @@ export const SETTINGS_SCHEMA = [
       { key: 'cover', label: 'إدراج صفحة الغلاف', type: 'check', default: true },
       {
         key: 'coverLayout',
-        label: 'تنسيق صفحة الغلاف',
+        label: 'تنسيق تصميم الغلاف',
         type: 'select',
         default: 'band',
         options: [
-          { val: 'band', text: 'شريط عريض وشعار بارز (الافتراضي)' },
-          { val: 'center', text: 'تنسيق متناسق في المنتصف' },
-          { val: 'left', text: 'محاذاة لليسار أكاديمية' },
-          { val: 'minimal', text: 'غلاف بسيط ومختصر' }
+          { val: 'band', text: 'شريط ملون عريض وعصري (Band & Accent)' },
+          { val: 'center', text: 'توسيط كلاسيكي فخم (Centered Classic)' },
+          { val: 'frame', text: 'إطار محيطي مزدوج فاخر (Bordered Frame)' },
+          { val: 'card', text: 'كارت مركزي بأرضية ناعمة (Hero Card)' },
+          { val: 'editorial', text: 'طراز الكتب والمجلات الطبية (Editorial)' },
+          { val: 'minimal', text: 'غلاف بسيط ومختصر (Clean Minimal)' }
         ]
       },
-      { key: 'coverLogo', label: 'ظهور اللوجو في الغلاف (100% وضوح)', type: 'check', default: true },
       {
-        key: 'coverLogoSize',
-        label: 'حجم لوجو الغلاف (px)',
+        key: 'coverBorder',
+        label: 'إطار صفحة الغلاف',
+        type: 'select',
+        default: 'none',
+        options: [
+          { val: 'none', text: 'بدون إطار' },
+          { val: 'single', text: 'إطار خطي أنيق' },
+          { val: 'double', text: 'إطار مزدوج كلاسيكي' },
+          { val: 'elegant', text: 'إطار مزخرف بأركان فخمة' }
+        ]
+      },
+      {
+        key: 'coverAlign',
+        label: 'محاذاة نصوص الغلاف',
+        type: 'select',
+        default: 'center',
+        options: [
+          { val: 'center', text: 'توسيط (Center)' },
+          { val: 'left', text: 'محاذاة لليسار (Left)' },
+          { val: 'right', text: 'محاذاة لليمين (Right)' }
+        ]
+      },
+      {
+        key: 'coverTitleSize',
+        label: 'حجم العنوان الرئيسي (pt)',
         type: 'range',
-        default: 140,
-        min: 60,
-        max: 260,
-        step: 5,
-        unit: 'px'
+        default: 32,
+        min: 20,
+        max: 48,
+        step: 1,
+        unit: 'pt'
+      },
+      {
+        key: 'coverSubtitleSize',
+        label: 'حجم العنوان الفرعي (pt)',
+        type: 'range',
+        default: 18,
+        min: 14,
+        max: 28,
+        step: 1,
+        unit: 'pt'
       },
       { key: 'title', label: 'العنوان الرئيسي', type: 'text', default: 'Foundation' },
       { key: 'subtitle', label: 'العنوان الفرعي', type: 'text', default: 'End Exam Qs 30' },
+      { key: 'coverDate', label: 'التاريخ / الدفعة / الفصل الدراسي (اختياري)', type: 'text', default: '' },
+      { key: 'coverExamInfo', label: 'معلومات الامتحان / الكلية (اختياري)', type: 'text', default: '' },
       { key: 'by', label: 'سطر الإعداد / الفريق', type: 'text', default: 'By: Medscope team' },
       { key: 'joinText', label: 'نص الانضمام والتواصل', type: 'text', default: 'Join us' },
-      { key: 'secTitleCount', label: 'عرض عدد الأسئلة في عنوان المادة (مثلاً: 17 أسئلة)', type: 'check', default: true }
+      { key: 'coverTotalQs', label: 'إظهار إجمالي عدد الأسئلة على الغلاف (بالإنجليزي: Total: 60 MCQs)', type: 'check', default: false },
+      { key: 'secPages', label: 'إدراج صفحة فاصلة لكل مادة', type: 'check', default: true },
+      {
+        key: 'secPageLayout',
+        label: 'تنسيق صفحة فاصل المادة',
+        type: 'select',
+        default: 'band',
+        options: [
+          { val: 'band', text: 'شريط بارز مع لون الثيم' },
+          { val: 'center', text: 'توسيط كلاسيكي' },
+          { val: 'frame', text: 'إطار هندسي أنيق' },
+          { val: 'minimal', text: 'بسيط أبيض وأسود' }
+        ]
+      },
+      { key: 'secPageLogo', label: 'ظهور اللوجو في صفحات فواصل المواد', type: 'check', default: true },
+      {
+        key: 'secPageLogoSize',
+        label: 'حجم لوجو فاصل المادة (px)',
+        type: 'range',
+        default: 80,
+        min: 40,
+        max: 160,
+        step: 5,
+        unit: 'px'
+      },
+      { key: 'secPageSub', label: 'النص أسفل عنوان المادة (مثلاً: Qs أو MCQs)', type: 'text', default: 'Qs' },
+      { key: 'secTitleCount', label: 'إظهار عدد الأسئلة بجانب عنوان المادة (بالإنجليزي فقط: 17 Qs)', type: 'check', default: false }
     ]
   },
   {

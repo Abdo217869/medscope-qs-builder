@@ -634,7 +634,7 @@
   transform: rotate(-25deg);
 }
 
-/* Cover Page Layouts */
+/* Cover Page Layouts & Borders */
 .cover-content {
   width: 100%;
   height: 100%;
@@ -646,16 +646,54 @@
   box-sizing: border-box;
 }
 
-.cover-content.cover-layout-left {
-  align-items: flex-start;
-  text-align: left;
+/* Cover Alignments */
+.cover-content.cover-align-center {
+  text-align: center;
+  align-items: center;
+}
+.cover-content.cover-align-left {
+  align-items: flex-start !important;
+  text-align: left !important;
   padding: 40px;
 }
-
-.cover-content.cover-layout-left .cover-logo-wrap img {
+.cover-content.cover-align-left .cover-logo-wrap img {
   margin: 0 0 16px 0 !important;
 }
+.cover-content.cover-align-right {
+  align-items: flex-end !important;
+  text-align: right !important;
+  padding: 40px;
+}
+.cover-content.cover-align-right .cover-logo-wrap img {
+  margin: 0 0 16px auto !important;
+}
 
+/* Cover Borders */
+.cover-content.cover-border-single {
+  border: 1.5px solid var(--accent, #d4a343);
+  padding: 30px;
+  margin: 10px auto;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+}
+.cover-content.cover-border-double {
+  border: 4px double var(--qc, #122036);
+  padding: 32px;
+  margin: 10px auto;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+}
+.cover-content.cover-border-elegant {
+  border: 2px solid var(--accent, #d4a343);
+  outline: 1.5px solid var(--qc, #122036);
+  outline-offset: -8px;
+  padding: 36px;
+  margin: 10px auto;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+}
+
+/* Cover Layout Variants */
 .cover-content.cover-layout-minimal {
   justify-content: flex-start;
   padding-top: 80px;
@@ -664,7 +702,6 @@
 .cover-content.cover-layout-band {
   position: relative;
 }
-
 .cover-content.cover-layout-band h1 {
   background: color-mix(in srgb, var(--qc, #122036) 8%, var(--pb));
   width: 100%;
@@ -673,10 +710,135 @@
   border-bottom: 2px solid var(--accent, #d4a343);
 }
 
-.cover-logo-wrap {
-  margin-bottom: 12px;
+.cover-content.cover-layout-frame {
+  border: 3px double var(--accent, #d4a343);
+  padding: 40px;
+  position: relative;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  margin: 12px auto;
 }
 
+.cover-content.cover-layout-card {
+  padding: 40px 20px;
+  position: relative;
+}
+.cover-content.cover-layout-card h1 {
+  background: color-mix(in srgb, var(--qc, #122036) 6%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--qc, #122036) 14%, transparent);
+  border-radius: 12px;
+  padding: 22px 30px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  width: 90%;
+  max-width: 90%;
+}
+
+.cover-content.cover-layout-editorial {
+  padding: 50px 30px;
+}
+.cover-content.cover-layout-editorial h1 {
+  letter-spacing: -0.5px;
+  padding-bottom: 12px;
+  border-bottom: 2.5px solid var(--qc, #122036);
+  width: 90%;
+  max-width: 90%;
+}
+.cover-content.cover-layout-editorial h2 {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 14px;
+}
+
+/* Logo Wrappers & Shapes */
+.cover-logo-wrap {
+  margin-bottom: 14px;
+}
 .cover-logo-wrap img {
+  border-radius: 8px;
+}
+.cover-logo-wrap.cover-logo-pos-middle {
+  margin: 16px auto;
+}
+.cover-logo-wrap.cover-logo-pos-bottom {
+  margin-top: 22px;
+  margin-bottom: 10px;
+}
+
+.cover-logo-wrap.logo-shape-circle img {
+  border-radius: 50% !important;
+  background: #ffffff;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid color-mix(in srgb, var(--accent, #d4a343) 40%, transparent);
+}
+.cover-logo-wrap.logo-shape-card img {
+  border-radius: 14px !important;
+  background: #ffffff;
+  padding: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Cover Metadata */
+.cover-total-qs {
+  display: inline-block;
+  background: color-mix(in srgb, var(--accent, #d4a343) 14%, transparent);
+  color: var(--qc, #122036);
+  font-weight: 600;
+  font-size: 11pt;
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin: 10px 0;
+  letter-spacing: 0.5px;
+}
+.cover-date {
+  font-size: 11.5pt;
+  color: var(--hdrc, #64748b);
+  font-weight: 500;
+  margin: 6px 0 2px 0;
+}
+.cover-exam-info {
+  font-size: 10.5pt;
+  color: var(--hdrc, #64748b);
+  margin: 4px 0 12px 0;
+}
+
+/* Section Cover Pages */
+.section-cover-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+.section-cover-page.sec-layout-band h1 {
+  background: color-mix(in srgb, var(--qc, #122036) 8%, var(--pb));
+  width: 100%;
+  padding: 16px 0;
+  border-top: 2px solid var(--accent, #d4a343);
+  border-bottom: 2px solid var(--accent, #d4a343);
+}
+.section-cover-page.sec-layout-frame {
+  border: 2px double var(--accent, #d4a343);
+  padding: 30px;
+  margin: 12px auto;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+}
+.section-cover-page.sec-layout-minimal {
+  justify-content: center;
+}
+.section-cover-page .qs {
+  font-size: 20pt;
+  font-weight: 700;
+  color: var(--accent, #d4a343);
+  margin: 10px 0 16px 0;
+  letter-spacing: 1.5px;
+}
+.sec-cover-logo img {
   border-radius: 8px;
 }

@@ -216,21 +216,43 @@ export function buildItems(secs, isAns, S = state.settings) {
       logoSrc = './medscope-watermark-default.png';
     }
     const logoSize = S.coverLogoSize || 140;
+    const logoPos = S.coverLogoPos || 'top';
+    const logoShape = S.coverLogoShape || 'original';
 
     let logoHTML = '';
     if (S.coverLogo !== false) {
-      logoHTML = `<div class="cover-logo-wrap"><img src="${esc(logoSrc)}" style="width:${logoSize}px; height:auto; display:block; margin: 0 auto 16px;" alt="Logo"></div>`;
+      let shapeClass = '';
+      if (logoShape === 'circle') shapeClass = 'logo-shape-circle';
+      else if (logoShape === 'card') shapeClass = 'logo-shape-card';
+
+      logoHTML = `<div class="cover-logo-wrap cover-logo-pos-${logoPos} ${shapeClass}"><img src="${esc(logoSrc)}" style="width:${logoSize}px; height:auto; display:block; margin: 0 auto;" alt="Logo"></div>`;
     }
 
     const ornaments = soft ? '<div class="orn">\u25C6 \u25C6 \u25C6</div>' : '';
     const subtitleAnswers = isAns ? ' — Answers' : '';
 
+    const totalQsCount = secs.reduce((sum, s) => sum + s.qs.length, 0);
+    const totalQsHTML = S.coverTotalQs ? `<p class="cover-total-qs">Total: ${totalQsCount} MCQs</p>` : '';
+    const dateHTML = S.coverDate ? `<p class="cover-date">${esc(S.coverDate)}</p>` : '';
+    const examInfoHTML = S.coverExamInfo ? `<p class="cover-exam-info">${esc(S.coverExamInfo)}</p>` : '';
+
+    const titleStyle = S.coverTitleSize ? `style="font-size:${S.coverTitleSize}pt"` : '';
+    const subStyle = S.coverSubtitleSize ? `style="font-size:${S.coverSubtitleSize}pt"` : '';
+
+    const borderClass = (S.coverBorder && S.coverBorder !== 'none') ? `cover-border-${S.coverBorder}` : '';
+    const alignClass = S.coverAlign ? `cover-align-${S.coverAlign}` : 'cover-align-center';
+
     const coverHTML = `
-      <div class="cover-content cover-layout-${coverLayout}">
-        ${logoHTML}
-        <h1>${esc(S.title)}</h1>
-        <h2>${esc(S.subtitle)}${subtitleAnswers}</h2>
+      <div class="cover-content cover-layout-${coverLayout} ${borderClass} ${alignClass}">
+        ${logoPos === 'top' ? logoHTML : ''}
+        <h1 ${titleStyle}>${esc(S.title)}</h1>
+        ${logoPos === 'middle' ? logoHTML : ''}
+        <h2 ${subStyle}>${esc(S.subtitle)}${subtitleAnswers}</h2>
+        ${totalQsHTML}
+        ${dateHTML}
+        ${examInfoHTML}
         ${ornaments}
+        ${logoPos === 'bottom' ? logoHTML : ''}
         <p class="cover-by">${esc(S.by)}</p>
         <p class="cover-join">${esc(S.joinText)}</p>
       </div>
@@ -242,13 +264,25 @@ export function buildItems(secs, isAns, S = state.settings) {
   // 2. Sections & Questions
   let globalNum = 0;
   secs.forEach(s => {
-    const qCountText = S.secTitleCount !== false ? ` <small class="sec-count">(${s.qs.length} ${s.qs.length <= 10 ? 'أسئلة' : 'سؤال'})</small>` : '';
+    // Question count in section title: ONLY English, and ONLY when explicitly turned on
+    const qCountText = S.secTitleCount ? ` <small class="sec-count">(${s.qs.length} Qs)</small>` : '';
 
     if (S.secPages && s.name) {
       const ornaments = soft ? '<div class="orn">\u25C6 \u25C6 \u25C6</div>' : '';
+      const secLayout = S.secPageLayout || 'band';
+      const secLogoSize = S.secPageLogoSize || 80;
+      let secLogoHTML = '';
+      if (S.secPageLogo !== false) {
+        let logoSrc = S.wmImg || './medscope-watermark-default.png';
+        if (logoSrc === '/medscope-watermark-default.png') logoSrc = './medscope-watermark-default.png';
+        secLogoHTML = `<div class="sec-cover-logo"><img src="${esc(logoSrc)}" style="width:${secLogoSize}px;height:auto;display:block;margin:0 auto 16px;" alt="Logo"></div>`;
+      }
+      const secSub = (S.secPageSub === 'none') ? '' : `<div class="qs">${esc(S.secPageSub || 'Qs')}</div>`;
+
       items.push({
         full: true,
-        html: `<div class="section-cover-page"><h1>${esc(s.name)}${qCountText}</h1><div class="qs">Qs</div>${ornaments}</div>`
+        isSecCover: true,
+        html: `<div class="section-cover-page sec-layout-${secLayout}">${secLogoHTML}<h1>${esc(s.name)}${qCountText}</h1>${secSub}${ornaments}</div>`
       });
     } else if (s.name) {
       items.push({
@@ -295,7 +329,7 @@ export function renderPagesHTML(isAns) {
   const S = state.settings;
 
   if (!secs.length) {
-    return `<div class="hint" style="text-align:center;padding:60px 0">الصق الأسئلة أو ارفع الملف وهتظهر هنا ورقة الامتحان جاهزة للطباعة.</div>`;
+    return `<div class="hint" style="text-align:center;padding:60px 0">Paste questions or drop files to preview the print-ready exam sheet here.</div>`;
   }
 
   const varsStyle = paperVars(S);
@@ -316,7 +350,8 @@ export function renderPagesHTML(isAns) {
       if (logoSrc === '/medscope-watermark-default.png') {
         logoSrc = './medscope-watermark-default.png';
       }
-      const logoIcon = S.headerLogo ? `<img src="${esc(logoSrc)}" style="height:18px;width:auto;vertical-align:middle;margin-inline-end:6px;" alt="Logo">` : '';
+      const headerLogoSize = S.headerLogoSize || 18;
+      const logoIcon = S.headerLogo ? `<img src="${esc(logoSrc)}" style="height:${headerLogoSize}px;width:auto;vertical-align:middle;margin-inline-end:6px;" alt="Logo">` : '';
       headerHTML = `<div class="hdr hdr-align-${hAlign}"><span>${logoIcon}${esc(S.header)}</span></div>`;
     }
 
@@ -336,7 +371,10 @@ export function renderPagesHTML(isAns) {
     }
 
     // Watermark HTML
-    const showWm = !isCoverPage || S.wmCover;
+    let showWm = !isCoverPage || S.wmCover;
+    if (S.wmTarget === 'qs-only' && (isCoverPage || p.full)) {
+      showWm = false;
+    }
     const watermarkHTML = showWm ? wmHTML(S) : '';
 
     // Top colour bar
