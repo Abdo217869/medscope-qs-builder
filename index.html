@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medscope Question Sheet Builder | مولّد أوراق الامتحانات</title>
+  <link rel="icon" type="image/svg+xml" href="/medscope-eagle.svg">
+  <!-- Google Fonts: Cairo (Arabic UI), Inter (Latin/Headings), Carlito (Calibri compatible) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700;800&family=Carlito:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/src/styles/tokens.css">
+  <link rel="stylesheet" href="/src/styles/app.css">
+  <link rel="stylesheet" href="/src/styles/paper.css">
+  <link rel="stylesheet" href="/src/styles/print.css">
+</head>
+
+<body>
+  <!-- Top App Header -->
+  <header class="top-header">
+    <div class="brand">
+      <img src="/medscope-eagle.svg" alt="Medscope Constellation Eagle" class="brand-logo-img">
+      <div class="brand-text">
+        <span class="brand-title">MEDSCOPE</span>
+        <span class="brand-sub">مولّد أوراق الأسئلة والامتحانات</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="btnHelp" title="شرح طريقة الاستخدام في 30 ثانية">❓ إزاي أستخدم الموقع؟</button>
+      <button class="btn" id="btnSample" title="تحميل أسئلة تجريبية جاهزة">جرّب بمثال</button>
+      <button class="btn danger" id="btnClear" title="مسح كافة المدخلات">مسح الكل</button>
+      <button class="btn" id="btnTheme" aria-label="تبديل الوضع الليلي والنهاري" title="تبديل المظهر">🌓</button>
+    </div>
+  </header>
+
+  <!-- Step Progress Bar (Prompt 2 Part B1: ١ ضيف الأسئلة -> ٢ راجع -> ٣ نزّل الـ PDF) -->
+  <nav class="stepper-nav" aria-label="خطوات العمل">
+    <button class="step-btn active" data-step="1" id="stepBtn1">
+      <span class="step-num">١</span>
+      <span class="step-text">ضيف الأسئلة</span>
+    </button>
+    <span class="step-divider">←</span>
+    <button class="step-btn" data-step="2" id="stepBtn2">
+      <span class="step-num">٢</span>
+      <span class="step-text">راجع وضبط</span>
+    </button>
+    <span class="step-divider">←</span>
+    <button class="step-btn" data-step="3" id="stepBtn3">
+      <span class="step-num">٣</span>
+      <span class="step-text">نزّل الـ PDF</span>
+    </button>
+  </nav>
+
+  <!-- Recovery Banner (Prompt 2 Part B5b) -->
+  <div class="recovery-banner" id="recoveryBanner" hidden>
+    <span class="recovery-icon">💾</span>
+    <span class="recovery-text" id="recoveryText">وجدنا عملاً سابقًا محفوظًا.</span>
+    <div class="recovery-actions">
+      <button class="btn gold sm" id="btnRecover">استرجاع الشغل</button>
+      <button class="btn sm" id="btnDismissRecover">تجاهل ✕</button>
+    </div>
+  </div>
+
+  <!-- Main Multi-Step Workspace Container -->
+  <div class="step-container">
+
+    <!-- ================= STEP 1: ضيف الأسئلة ================= -->
+    <section class="step-section" id="step1">
+      <!-- Big Drop Zone (Prompt 2 Part A1) -->
+      <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="منطقة إسقاط الملفات">
+        <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg"
+          style="display:none">
+        <div class="drop-zone-icon">📁</div>
+        <h2 class="drop-zone-title">اسحب وأفلت الملفات هنا، أو اضغط لاختيار ملف</h2>
+        <p class="drop-zone-sub">يدعم ملفات Word (.docx), PDF (.pdf), ملفات نصية (.txt, .md), وصور الأسئلة (.png, .jpg)
+        </p>
+        <button class="btn gold drop-zone-btn" id="btnBrowseFiles" type="button">اختار ملف من جهازك</button>
+        <div class="privacy-badge">
+          <span>🔒 ملفاتك مابتتبعتش لأي سيرفر - كل المعالجة بتتم داخل جهازك مباشرة</span>
+        </div>
+      </div>
+
+      <!-- File Cards List -->
+      <div class="file-cards-list" id="fileCardsList"></div>
+
+      <!-- Collapsible Paste Textarea (Prompt 2 Part A1) -->
+      <details class="accordion" id="pasteAccordion">
+        <summary>
+          <span>✍️ أو الصق النص يدويًا (Word / PDF / تيليجرام)</span>
+        </summary>
+        <div class="accordion-body">
+          <!-- Hidden standard tabs for test compatibility -->
+          <div class="tabs-nav" role="tablist" style="display:none">
+            <button role="tab" data-tab="q" aria-selected="true">١ الأسئلة</button>
+            <button role="tab" data-tab="k" aria-selected="false">٢ الإجابات</button>
+            <button role="tab" data-tab="s" aria-selected="false">٣ الشكل</button>
+          </div>
+
+          <div class="pane" data-pane="q">
+            <label for="raw" style="display:block; font-weight:700; margin-bottom:6px;">نص الأسئلة الكامل:</label>
+            <textarea class="raw" id="raw" spellcheck="false" placeholder="الصق الأسئلة هنا..."></textarea>
+            <p class="hint">بيفهم <code>1-</code> <code>Q1.</code> <code>1)</code> <code>س1:</code> وخيارات
+              <code>a)</code> <code>A.</code> <code>(a)</code> <code>أ) ب) ج) د)</code> وعناوين المواد زي
+              <code>Physiology Qs</code> أو <code># Anatomy</code>. لو نسخت من Word والإجابات باللون الأحمر هتتعرف فورًا
+              تلقائيًا.
+            </p>
+            <div class="chips" id="chips"></div>
+          </div>
+
+          <div class="pane" data-pane="k" style="margin-top:16px;">
+            <label for="keyraw" style="display:block; font-weight:700; margin-bottom:6px;">مفتاح الإجابات المنفصل
+              (اختياري):</label>
+            <textarea class="raw key" id="keyraw" spellcheck="false"
+              placeholder="مفتاح الإجابات منفصل: 1-B, 2-C, 3-A..."></textarea>
+            <p class="hint">لو الإجابات في ملف منفصل الصق المفتاح هنا بصيغة <code>1-B 2-C</code> أو <code>1. b</code>.
+            </p>
+            <div class="chips" id="keychips"></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Big Next Step Button (Prompt 2 Part B1) -->
+      <button class="btn-step-next" id="btnStep1Next">
+        <span>كمّل: راجع الأسئلة</span>
+        <span>←</span>
+      </button>
+    </section>
+
+    <!-- ================= STEP 2: راجع وضبط ================= -->
+    <section class="step-section" id="step2" hidden>
+      <!-- "What I found" Report Card (Prompt 2 Part A6) -->
+      <div id="reportCardContainer"></div>
+
+      <!-- Problems Panel with One-Click Fixes (Prompt 2 Part B4) -->
+      <div id="problemsPanelContainer"></div>
+
+      <!-- Question Cards Editor -->
+      <div class="card" style="margin-bottom: 24px;">
+        <h3 style="margin-top:0; margin-bottom:16px;">✏️ مراجعة وتعديل الأسئلة</h3>
+        <div id="editorHost"></div>
+      </div>
+
+      <!-- Step 2 Navigation Footer -->
+      <div class="step-nav-footer">
+        <button class="btn" id="btnStep2Back">→ رجوع للملفات</button>
+        <button class="btn-step-next" id="btnStep2Next" style="margin:0; max-width:320px;">
+          <span>كمّل: نزّل الـ PDF</span>
+          <span>←</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= STEP 3: نزّل الـ PDF ================= -->
+    <section class="step-section" id="step3" hidden>
+      <!-- Hero Download Buttons (Prompt 2 Part B2) -->
+      <div class="download-hero-grid">
+        <button class="btn-download-hero primary" id="btnPrintQBig">
+          <span class="hero-icon">📄</span>
+          <span class="hero-title">نزّل ورقة الأسئلة (PDF)</span>
+          <span class="hero-desc">ورقة الامتحان الصافية للطباعة والتوزيع</span>
+        </button>
+        <button class="btn-download-hero primary" id="btnPrintABig">
+          <span class="hero-icon">🔴</span>
+          <span class="hero-title">نزّل ورقة الإجابات (PDF)</span>
+          <span class="hero-desc">ورقة الأسئلة مع تحديد الإجابات الصحيحة بالأحمر</span>
+        </button>
+        <button class="btn-download-hero" id="btnPrintBoth">
+          <span class="hero-icon">📑</span>
+          <span class="hero-title">نزّل الاثنين معًا</span>
+          <span class="hero-desc">ورقة الأسئلة متبوعة بنموذج الحل الكامل</span>
+        </button>
+      </div>
+
+      <!-- Plain Arabic Print Instructions Box (Prompt 2 Part B2) -->
+      <div class="print-guide-card">
+        <h4>💡 هيفتح لك شاشة الطباعة الخاصة بالمتصفح:</h4>
+        <div class="print-guide-steps">
+          <div class="print-step-item">
+            <span class="print-step-num">١</span>
+            <span>اختار الوجهة (Destination): <strong>Save as PDF</strong> (حفظ كـ PDF).</span>
+          </div>
+          <div class="print-step-item">
+            <span class="print-step-num">٢</span>
+            <span>فعّل خيار <strong>Background graphics</strong> (رسومات الخلفية) لظهور البادجات والألوان.</span>
+          </div>
+          <div class="print-step-item">
+            <span class="print-step-num">٣</span>
+            <span>تأكد أن الهوامش (Margins): <strong>None</strong> (بلا هوامش) أو <strong>Default</strong>.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Settings Accordion (Placed on TOP for convenience and easy editing) -->
+      <details class="accordion" id="advSettingsAccordion" open style="margin-bottom: 24px;">
+        <summary>
+          <span>⚙️ تخصيص الشكل والمظهر (القوالب، الخطوط، الأعمدة، اللوجو والعلامة المائية)</span>
+        </summary>
+        <div class="accordion-body">
+          <div id="advSettingsHost"></div>
+        </div>
+      </details>
+
+      <!-- Sheet Live Preview -->
+      <div class="preview-card" style="margin-bottom: 24px;">
+        <div class="toolbar" style="border-radius: 12px 12px 0 0; margin-bottom: 0;">
+          <div class="seg" id="views">
+            <button data-v="qs" aria-pressed="true">ورقة الأسئلة</button>
+            <button data-v="as" aria-pressed="false">ورقة الإجابات</button>
+            <button data-v="edit" aria-pressed="false">تعديل</button>
+            <button data-v="exp" aria-pressed="false">تصدير</button>
+          </div>
+          <span class="sp"></span>
+          <div class="print-actions">
+            <button class="btn gold sm" id="btnPrintQ">🖨 طباعة أسئلة</button>
+            <button class="btn gold sm" id="btnPrintA">🖨 طباعة إجابات</button>
+          </div>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div id="view"></div>
+      </div>
+
+      <!-- Other Formats Export Accordion -->
+      <details class="accordion" id="exportAccordion">
+        <summary>
+          <span>💾 حفظ بصيغ تانية (Anki, Quizlet, Moodle, JSON)</span>
+        </summary>
+        <div class="accordion-body">
+          <div id="exportHost"></div>
+        </div>
+      </details>
+
+      <!-- Step 3 Navigation Footer -->
+      <div class="step-nav-footer">
+        <button class="btn" id="btnStep3Back">→ رجوع للمراجعة والتعديل</button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Shell Footer (Prompt 2: "Made by Fishez") -->
+  <footer class="sidebar-footer"
+    style="text-align: center; padding: 24px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px;">
+    Made by <strong>Fishez</strong> for Medscope Alexandria • Alexandria Faculty of Medicine
+  </footer>
+
+  <!-- In-Page Confirmation Modal (Prompt 2 Part B5b) -->
+  <div class="modal-backdrop" id="confirmModal" hidden>
+    <div class="modal-box">
+      <h3 id="confirmTitle">تأكيد الإجراء</h3>
+      <p id="confirmMessage">هل أنت متأكد من تنفيذ هذا الإجراء؟</p>
+      <div class="modal-actions">
+        <button class="btn" id="btnConfirmCancel">إلغاء</button>
+        <button class="btn danger" id="btnConfirmOk">تأكيد ومسح</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help 30-Second Modal (Prompt 2 Part B6 & Prompt 3 Bug A Fix) -->
+  <div class="modal-backdrop" id="helpModal" hidden>
+    <div class="modal-box" style="max-width: 640px; position: relative;">
+      <button class="modal-close-x" id="btnCloseHelpX" aria-label="إغلاق النافذة" title="إغلاق (Esc)">✕</button>
+      <h3>❓ إزاي أستخدم مولّد أوراق Medscope في 30 ثانية؟</h3>
+      <div style="display:flex; flex-direction:column; gap:16px; margin: 20px 0;">
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <span
+            style="width:28px; height:28px; border-radius:50%; background:var(--gold); color:#120c02; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">١</span>
+          <div>
+            <strong>ضيف الأسئلة بتاعتك</strong>
+            <p style="margin:2px 0 0; color:var(--muted); font-size:13.5px;">اسحب أي ملف Word (.docx) أو PDF أو الصق
+              النص عادي. البرنامج بيفهم الترقيم والخيارات تلقائيًا، وبيتعرف على الإجابات الحمرا بنفسه.</p>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <span
+            style="width:28px; height:28px; border-radius:50%; background:var(--gold); color:#120c02; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">٢</span>
+          <div>
+            <strong>راجع الأسئلة في خطوة واحدة</strong>
+            <p style="margin:2px 0 0; color:var(--muted); font-size:13.5px;">لو فيه سؤال بدون إجابة أو متكرر، هيظهرلك
+              كارت بملاحظة وتقدر تحدد الإجابة الصح بضغطة زرار واحدة.</p>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <span
+            style="width:28px; height:28px; border-radius:50%; background:var(--gold); color:#120c02; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0;">٣</span>
+          <div>
+            <strong>نزّل الـ PDF جاهز ومطبوع</strong>
+            <p style="margin:2px 0 0; color:var(--muted); font-size:13.5px;">اضغط "نزّل ورقة الأسئلة" أو "نزّل ورقة
+              الإجابات". هيفتح لك أمر الطباعة، اختار Save as PDF وفعّل Background graphics.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn gold" id="btnCloseHelp">فهمت، يلا نبدأ 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Host -->
+  <div id="toastHost"></div>
+
+  <!-- Application Coordinator Script -->
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>

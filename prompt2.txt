@@ -1,0 +1,54 @@
+<USER_REQUEST>
+# Prompt 2 for Antigravity: File import (PDF / Word / text) + "anyone can use it" UX
+
+This is a follow-up to the first prompt (the Medscope Question Sheet Builder). The parser, the A4 pagination engine, the paper styles and the exports already exist. **Do not rewrite them.** This task adds two things:
+
+1. **Import from files**: the user drops a PDF, a Word file or a text file and the tool reads it by itself, instead of copy and paste.
+2. **Idiot-proof UX**: assume the person using the site is a tired student who has never seen it, reads nothing, and will click the wrong thing. The tool must still give them a correct PDF.
+
+All processing stays **100% in the browser**. No uploads, no backend, no API calls. Say this on screen ("ملفاتك مابتتبعتش لأي سيرفر").
+
+---
+
+## Part A. File import
+
+### A1. Entry points
+- A big **drop zone** that is the first thing on the screen, plus a "اختار ملف" button (`<input type=file multiple accept=".pdf,.docx,.txt,.md,.png,.jpg,.jpeg">`). Dropping files anywhere on the page works too.
+- Pasting still works (keep the textarea, but under a "أو الصق النص" section).
+- **Multiple files at once** are allowed (e.g. the questions file and a separate answers file, or several subjects). Show each file as a card with name, type, size, status (reading / done / failed), a remove button, and "up/down" to reorder. Order = order of questions in the final sheet.
+- Reading happens in a **Web Worker** so the page never freezes. Show a progress bar per file (for PDFs: "صفحة 12 من 46").
+- Files are read into the same pipeline as pasted text: `file → extractText() → text with ✓ markers → parse()`. The existing `parse()` stays the single source of truth.
+
+### A2. Supported types
+| Type | How |
+|---|---|
+| **.txt / .md / .csv** | `FileReader.readAsText`, detect UTF-8 vs UTF-16 BOM, normalise line endings. |
+| **.docx** | Unzip with **fflate** or **JSZip** and read `word/document.xml` yourself (do NOT rely on Mammoth alone, it drops colour). 
+<truncated 9972 bytes>
+فيه الإجابات كمان، هستخدمها" instead of treating it as an error.
+
+---
+
+## Part C. Acceptance tests (run them and report the numbers)
+1. Drop `Epidemiology_of_Infectious_Diseases_MCQ_Question_Bank.docx` -> **227 questions, 17 subjects, 227 with answers** (key at the end of the file is applied).
+2. Drop the same bank as PDF -> identical result.
+3. Drop `Medscope_End_Qs_30.pdf` alone -> **60 questions, 5 subjects, 60 without answers**, and the report says so with a button to add an answers file.
+4. Drop `Medscope_End_Qs_30.pdf` **and** `Medscope_End_As_30.pdf` together -> still **60 questions** (not 120), **60 with answers**, taken from the red options. Report mentions the merge.
+5. Drop only `Medscope_End_As_30.pdf` -> 60 questions, 60 answers (red detected).
+6. A Word file using automatic numbered lists -> numbers and letters recovered.
+7. A scanned PDF -> OCR offer appears, no crash; a corrupt file -> friendly message; a `.doc` file -> friendly message.
+8. Arabic digits and `أ ب ج د` options -> parsed correctly.
+9. 1000-question file -> UI stays responsive, parse < 2 s, first page rendered < 1 s.
+10. Everything works with the network off after first load (lazy chunks for pdf.js / tesseract are cached by a service worker or bundled locally, no CDN dependency at runtime).
+11. Keyboard-only run through all 3 steps; phone-width layout (390px) usable.
+
+## Part D. Rules
+- Reuse existing modules. New code goes in `src/import/` (`readTxt.js`, `readDocx.js`, `readPdf.js`, `ocr.js`, `merge.js`, `worker.js`) with unit tests where DOM is not required.
+- Lazy-load heavy libraries (pdf.js, tesseract.js) so the first load stays fast.
+- No external requests at runtime, no analytics, no uploads.
+- Footer credit on the app shell (not on the printed paper): "Made by Fishez".
+- When finished, list what you built, what you could not verify, and any file type that behaves worse than the others.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-19T23:13:04+02:00.
+</ADDITIONAL_METADATA>

@@ -1,0 +1,1212 @@
+Epidemiology of Infectious Diseases: MCQ Question Bank
+Prepared in the style of the Community Medicine mock exam: single best answer, scenario-based stems, NOT/INCORRECT questions, matching-style statements and calculations.
+Sources: Practical 1 (Evaluation of Screening Programs), Practical 2 (Surveillance, Elimination and Eradication) and the lecture notes on meningococcal meningitis, enteric fever, hepatitis B and tetanus. All doses, schedules and cut-offs follow your course material.
+Contents: 227 questions in 17 topics. The answer key with short workings is at the very end.
+1. Levels of Prevention and Natural History
+Q1. A health directorate runs a school-based campaign to vaccinate children against measles. Which level of prevention does this represent?
+A. Secondary prevention
+B. Primary prevention
+C. Tertiary prevention
+D. Quaternary prevention
+Q2. A rehabilitation center provides artificial limbs and vocational retraining for workers who have undergone amputation. This is an example of:
+A. Primary prevention
+B. Secondary prevention
+C. Tertiary prevention
+D. Quaternary prevention
+Q3. Which of the following is an example of secondary prevention?
+A. Hearing and visual aids
+B. Immunization against infectious diseases
+C. Chronic disease management programs
+D. Screening tests to detect disease in its earliest stages
+Q4. Which of the following is NOT an example of tertiary prevention?
+A. Cardiac rehabilitation after a stroke
+B. Diabetes management programs
+C. Early detection of disease through screening
+D. Vocational rehabilitation
+Q5. A community program promotes regular exercise, healthy eating and smoking cessation to prevent disease before it ever occurs. This represents:
+A. Primary prevention
+B. Secondary prevention
+C. Tertiary prevention
+D. Quaternary prevention
+Q6. Screening programs aim to detect disease during which phase of its natural history?
+A. Stage of susceptibility
+B. Pre-clinical phase
+C. Clinical phase
+D. Stage of disability
+2. Screening: Concepts, Uses and Types
+Q7. A ministry team tests all factory workers who have no symptoms and have not asked for care for hepatitis C antibodies. This activity is best classified as:
+A. Diagnosis
+B. Case finding
+C. Screening
+D. Periodic examination
+Q8. Pregnant women attending antenatal clinics are tested for HIV as part of their routine antenatal care. This is an example of:
+A. Screening
+B. Diagnosis
+C. Periodic examination
+D. Case finding
+Q9. A 40-year-old man visits his physician every year without any complaint; several body systems are examined and a series of investigations are requested. This is:
+A. Periodic examination
+B. Screening
+C. Case finding
+D. Diagnosis
+Q10. A patient with fever for 4 days, headache and abdominal pain undergoes history, clinical examination and blood culture to confirm or exclude enteric fever. This is:
+A. Screening
+B. Case finding
+C. Diagnosis
+D. Periodic examination
+Q11. Which of the following is true of a screening test when compared with a diagnostic test?
+A. It is more accurate and more expensive
+B. Its result is preliminary and it is applied to large groups
+C. It is applied to a single person at the patient's request
+D. It is interpreted on symptoms plus investigations
+Q12. Which of the following is NOT a use of screening programs?
+A. Case detection
+B. Research purposes
+C. Control of diseases
+D. Confirming the diagnosis in a symptomatic patient
+Q13. In screening for research purposes, the initial screening is used to estimate ______, while subsequent screening provides data on ______.
+A. prevalence; incidence
+B. incidence; prevalence
+C. mortality; morbidity
+D. sensitivity; specificity
+Q14. How does early detection of communicable diseases through screening contribute to their control?
+A. It increases the number of reservoirs
+B. It interrupts the chain of transmission to susceptible individuals
+C. It eliminates the agent from the environment
+D. It replaces the need for vaccination
+Q15. Screening all school children in a governorate for anemia irrespective of their individual risk is an example of:
+A. Case finding
+B. High-risk screening
+C. Mass screening
+D. Periodic examination
+Q16. Screening hemodialysis patients and dentists for hepatitis B represents:
+A. High-risk (selective) screening
+B. Mass screening
+C. Periodic examination
+D. Diagnosis
+Q17. High-risk screening is preferred to mass screening for diseases of low prevalence because it:
+A. Raises the sensitivity of the test
+B. Eliminates false-negative results
+C. Decreases the specificity of the test
+D. Increases disease prevalence in the screened group, improving PPV and reducing false positives
+Q18. Which of the following diseases is NOT suitable for a screening program?
+A. HIV/AIDS
+B. Hepatitis B
+C. Tuberculosis
+D. Meningococcal meningitis
+Q19. Which of the following pairs (disease - suitable type of screening) is correct?
+A. Meningitis - mass screening
+B. HIV/AIDS - high-risk screening
+C. Tuberculosis - mass screening
+D. Hepatitis B - not suitable for screening
+Q20. In an area with high prevalence of hepatitis B, the most appropriate type of screening is:
+A. Not suitable for screening
+B. High-risk screening only
+C. Mass screening
+D. Case finding only
+Q21. Why is meningitis not suitable for a screening program?
+A. It is chronic with a long pre-clinical phase
+B. It is acute with a very short pre-clinical period
+C. No effective treatment exists
+D. Its prevalence is very low
+3. Criteria for Screening Programs and Screening Tests
+Q22. Which of the following is NOT a criterion of a disease suitable for screening?
+A. Lack of any means for confirmation of the diagnosis
+B. A major public health problem with serious consequences
+C. A detectable pre-clinical phase
+D. High prevalence among the screened population
+Q23. Phenylketonuria (PKU) is screened for in newborns although it is rare (about 1 in 15,000 births). Which is the best justification?
+A. It has high prevalence and mild consequences
+B. It has no effective treatment
+C. It has serious long-term consequences that can be prevented by dietary intervention
+D. The test is cheap and painless
+Q24. A disease has high prevalence, serious consequences and a detectable pre-clinical phase, and a valid test exists, but there is no effective treatment at the early stage. A screening program for this disease would be:
+A. Justified
+B. Not justified, because effective early treatment is required
+C. Justified as mass screening
+D. Justified as high-risk screening
+Q25. Screening is considered cost-effective when:
+A. The cost of screening exceeds the cost of care
+B. The disease is very rare
+C. The test is the most expensive one available
+D. The cost of screening is less than the cost of care if the disease is not detected early
+Q26. The three main criteria of an ideal screening test are:
+A. Acceptability, reliability and validity
+B. Sensitivity, specificity and accuracy
+C. Simplicity, flexibility and timeliness
+D. Safety, speed and cost
+Q27. A screening procedure that is painful and embarrassing to the public mainly fails which criterion?
+A. Validity
+B. Reliability
+C. Acceptability
+D. Yield
+Q28. Three nurses measure the blood pressure of the same person using the same device under the same conditions and obtain widely different readings. Which criterion is lacking?
+A. Acceptability
+B. Reliability
+C. Specificity
+D. Positive predictive value
+Q29. Which statement about reliability and validity is correct?
+A. Reliability guarantees validity
+B. Validity is another name for repeatability
+C. Lack of reliability constrains validity
+D. A reliable test is always accurate
+Q30. The two components of validity of a screening test are:
+A. Sensitivity and specificity
+B. Positive and negative predictive values
+C. Precision and repeatability
+D. Acceptability and cost
+Q31. The yield of a screening test is measured by its:
+A. Sensitivity
+B. Positive predictive value
+C. Specificity
+D. Negative predictive value
+4. Sensitivity, Specificity and Predictive Values: Concepts
+Q32. An increase in the specificity of a screening test results in a decrease in the:
+A. False-negative rate
+B. Sensitivity
+C. False-positive rate
+D. Prevalence
+Q33. Which of the following depends on the prevalence of the disease in the screened population?
+A. Sensitivity
+B. Specificity
+C. Reliability
+D. Positive predictive value
+Q34. False-positive results of a screening test lead mainly to:
+A. A false sense of security
+B. Missed cases
+C. Unnecessary anxiety and further investigations
+D. Increased sensitivity
+Q35. False-negative results of a screening test lead mainly to:
+A. A false sense of security among the screened
+B. Unnecessary invasive investigations
+C. Increased PPV
+D. Over-diagnosis
+Q36. Screening blood donors for HIV requires a test with high:
+A. Specificity
+B. Reliability
+C. Sensitivity
+D. Acceptability only
+Q37. Confirming a diagnosis of HIV/AIDS requires a test with high:
+A. Sensitivity
+B. Specificity
+C. Yield
+D. Prevalence
+Q38. Increasing the sensitivity of a screening test usually:
+A. Also increases its specificity
+B. Has no effect on its specificity
+C. Eliminates false positives
+D. Tends to reduce its specificity
+Q39. If the prevalence of a disease rises from 1% to 10% while sensitivity and specificity remain unchanged, the positive predictive value will:
+A. Decrease
+B. Remain unchanged
+C. Increase markedly
+D. Fall while NPV rises
+Q40. The accuracy of a screening test is:
+A. TP / (TP + FN)
+B. TN / (TN + FP)
+C. TP / (TP + FP)
+D. (TP + TN) expressed as a percentage of the screened population
+Q41. Which term describes the probability that a person with a negative test result truly does not have the disease?
+A. Negative predictive value
+B. Positive predictive value
+C. Sensitivity
+D. Specificity
+Q42. The false-negative rate of a test is equal to:
+A. 1 - specificity
+B. 1 - sensitivity
+C. 1 - PPV
+D. 1 - NPV
+Q43. A test was positive in all 40 patients and negative in 30 of 60 healthy persons. Which interpretation is correct?
+A. High sensitivity but low specificity; suitable for screening but not for final confirmation
+B. High specificity but low sensitivity; suitable for confirmation
+C. Both high; suitable for confirmation
+D. Both low; unsuitable for any purpose
+5. Screening: Calculations
+Use the following data for Q44-Q50. A rapid test for hepatitis C was evaluated against a gold standard in 1,000 adults.
+Test result
+Diseased
+Not diseased
+Total
+Positive
+90
+60
+150
+Negative
+10
+840
+850
+Total
+100
+900
+1,000
+Q44. What is the sensitivity of the test?
+A. 85%
+B. 90%
+C. 93.3%
+D. 60%
+Q45. What is the specificity of the test?
+A. 93.3%
+B. 90%
+C. 98.8%
+D. 84%
+Q46. What is the positive predictive value?
+A. 90%
+B. 15%
+C. 60%
+D. 93.3%
+Q47. What is the negative predictive value?
+A. 93.3%
+B. 98.8%
+C. 90%
+D. 84%
+Q48. What is the false-negative rate?
+A. 10%
+B. 6.7%
+C. 40%
+D. 1.2%
+Q49. What is the accuracy of the test?
+A. 90%
+B. 98.8%
+C. 95%
+D. 93%
+Q50. What is the false-positive rate?
+A. 10%
+B. 6.7%
+C. 40%
+D. 93.3%
+Q51. A test was applied to 200 persons (100 diseased and 100 healthy). It was positive in 70 diseased persons and negative in 80 healthy persons. The sensitivity, specificity and accuracy are, respectively:
+A. 70%, 80%, 75%
+B. 80%, 70%, 75%
+C. 70%, 80%, 150%
+D. 75%, 75%, 75%
+Use the following data for Q52-Q53. A new test for hepatitis C was evaluated in 2,000 people. Of the 200 who truly had the disease, 180 tested positive. Of the 1,800 who did not have the disease, 90 tested positive.
+Q52. What is the specificity of the test?
+A. 90%
+B. 95%
+C. 5%
+D. 98%
+Q53. A person who tests positive has what probability of truly having the disease (PPV)?
+A. 90%
+B. 95%
+C. 50%
+D. 66.7%
+Use the following data for Q54-Q55. A hepatitis B screening test was applied to 5,000 asymptomatic adults. 250 were truly infected, of whom 225 tested positive. 475 non-infected persons also tested positive.
+Q54. What is the false-positive percentage?
+A. 9.5%
+B. 10%
+C. 5%
+D. 90%
+Q55. What is the positive predictive value?
+A. 90%
+B. 47.4%
+C. 32.1%
+D. 10%
+Use the following data for Q56-Q57. A screening test has sensitivity 90% and specificity 95% and is applied to 100,000 persons.
+Q56. If the prevalence of the disease is 2%, the approximate positive predictive value is:
+A. 27%
+B. 90%
+C. 73%
+D. 95%
+Q57. If the same test is applied to a high-risk population with 20% prevalence, the approximate positive predictive value becomes:
+A. 27%
+B. 55%
+C. 90%
+D. 82%
+6. Surveillance: Definition, Components, Case Definitions and Types
+Q58. Which of the following best defines disease surveillance?
+A. Systematic, ongoing collection, collation and analysis of data and timely dissemination of information for public health response
+B. The search for unrecognized disease among apparently healthy individuals
+C. A one-time survey to estimate disease prevalence
+D. Investigation and treatment of an individual patient
+Q59. A public health team collects case reports of a disease, analyzes trends, and then sends reports to clinicians to guide management. Sending the reports to clinicians represents which component of surveillance?
+A. Data collection
+B. Data analysis
+C. Timely dissemination of results
+D. Case definition
+Q60. Which of the following statements about surveillance is INCORRECT?
+A. It targets chronic diseases such as cancer and diabetes
+B. It includes occupational and environmentally related diseases
+C. It may target health behaviors
+D. It is restricted to infectious diseases
+Q61. The main public health importance of a standard case definition is that it:
+A. Eliminates the need for laboratory testing
+B. Ensures every case is equivalent regardless of when or where it occurred or who identified it
+C. Is fixed and never modified
+D. Replaces reporting by physicians
+Q62. A person has laboratory evidence of recent infection but no signs or symptoms. How is this person classified under surveillance?
+A. Suspected case
+B. Probable case
+C. Confirmed case
+D. Not a case
+Q63. A child has signs and symptoms consistent with the disease and a positive rapid test that indicates, but does not confirm, recent infection. This is a:
+A. Probable case
+B. Suspected case
+C. Confirmed case
+D. Discarded case
+Q64. A 6-year-old has fever of 38.6 °C for 4 days, generalized maculopapular rash, coryza and cough. A blood sample was sent but results are not yet available. Under the national measles surveillance program she is a:
+A. Confirmed case
+B. Probable case
+C. Discarded case
+D. Suspected case
+Q65. The standard case definition of which of the following diseases depends on distinctive clinical signs rather than laboratory findings?
+A. Enteric fever
+B. Hepatitis B
+C. Poliomyelitis
+D. Tetanus
+Q66. A district health office receives routine weekly notification forms from hospitals, with no extra effort to search for unreported cases. This is:
+A. Active surveillance
+B. Passive surveillance
+C. Periodic examination
+D. Case finding
+Q67. Which is a disadvantage of passive surveillance?
+A. High cost
+B. Labor intensive
+C. Low sensitivity
+D. Difficult to sustain over time
+Q68. Which of the following is NOT a feature of active surveillance?
+A. More sensitive
+B. Provides more detailed information
+C. High cost and labor intensive
+D. Inexpensive and simple to carry out
+Q69. Active surveillance is usually applied for:
+A. All diseases routinely
+B. Diseases targeted for elimination or eradication, and outbreak investigation
+C. Chronic diseases only
+D. Monitoring trends cheaply
+Q70. Designated staff review hospital registers, interview health workers and visit wards to search for acute flaccid paralysis cases. This is:
+A. Active surveillance, because staff actively search for cases
+B. Passive surveillance, because data come from routine reports
+C. Passive surveillance, because reporting is voluntary
+D. Active surveillance, because only physicians report
+Q71. What is the correct flow of surveillance data in Egypt from the lowest to the highest level?
+A. Health facilities, governorate, district, MoH, WHO
+B. Health facilities, district, governorate, MoH, WHO
+C. District, health facilities, governorate, WHO, MoH
+D. Health facilities, MoH, governorate, district, WHO
+Q72. Analysis of surveillance data occurs mainly at:
+A. The health facility only
+B. The community level
+C. The highest administrative level, to monitor patterns and identify possible outbreaks
+D. The WHO only
+Q73. Surveillance data should be disseminated to:
+A. The MoH only
+B. Laboratory staff only
+C. WHO only
+D. Practitioners, clinicians, policy makers, community organizations and the general public
+7. Surveillance: Selection Criteria, Data Types and Uses
+Q74. Which of the following lists the three groups of criteria for selecting an infectious disease for surveillance?
+A. Incidence, prevalence and mortality
+B. Public health importance; ability to prevent, control or treat; capacity of the health system to implement control measures
+C. Cost, benefit and political commitment
+D. Agent, reservoir and host
+Q75. Which of the following is NOT a component of the 'public health importance' of a problem?
+A. Incidence and prevalence
+B. Mortality
+C. Availability of an effective vaccine
+D. Socioeconomic impact
+Q76. Which feature made measles suitable for surveillance under 'ability to prevent, control or treat the health problem'?
+A. Preventability through an effective vaccine
+B. High communicability
+C. Severe complications
+D. International elimination target
+Q77. Which of the following belongs to the 'capacity of the health system to implement control measures'?
+A. Socioeconomic impact
+B. Speed of response
+C. Public perception and concern
+D. Severity and disabilities
+Q78. Which of the following is NOT a role of the public health laboratory in surveillance?
+A. Confirming cases
+B. Genomic sequencing of the causative agent
+C. Determining bacterial resistance to antibiotics
+D. Individual treatment of patients
+Q79. The number of houses sprayed with insecticide is which type of surveillance data?
+A. Morbidity and mortality data
+B. Data about preventive and control measures
+C. Data about vectors
+D. Laboratory results
+Q80. The percentage of houses supplied with safe water belongs to:
+A. Data about the population
+B. Data about vectors
+C. Data related to environmental conditions
+D. Data about the reservoir
+Q81. Data about the type, habits and insecticide susceptibility of mosquitoes are:
+A. Vector data
+B. Reservoir data
+C. Population data
+D. Laboratory data
+Q82. Monitoring circulating influenza viruses each year so that the vaccine is antigenically similar to them illustrates which use of surveillance?
+A. Identifying the population at risk
+B. Evaluation of control programs
+C. Formulating hypotheses
+D. Guiding seasonal vaccine formulation
+Q83. Surveillance data show a higher rate of hepatitis B infection among dentists than in the general population. This corresponds to:
+A. Evaluation of public health interventions
+B. Identification of the population at risk
+C. Detection of emerging infections
+D. Monitoring of disease trend over time
+Q84. A cluster of severe pneumonia caused by a previously unknown virus is recognized for the first time. This corresponds to:
+A. Detecting and responding to emerging infections
+B. Monitoring seasonal trends
+C. Evaluating a public health program
+D. Identifying the population at risk
+Q85. Surveillance data show an association between maternal smoking and low-birth-weight babies, prompting further studies. This use of surveillance is:
+A. Identifying outbreaks
+B. Evaluating interventions
+C. Monitoring trends
+D. Generating hypotheses for further research
+Q86. Malaria cases fell by 90% in a village after insecticide-treated bed nets, compared with a 50% fall after swamp filling in another village. This represents:
+A. Identification of outbreaks
+B. Identification of emerging diseases
+C. Evaluation of preventive and control measures
+D. Formulating hypotheses
+Q87. The yearly incidence of hepatitis A has risen steadily over the last decade. This corresponds to:
+A. Monitoring disease trends over time
+B. Identification of outbreaks
+C. Detecting emerging infections
+D. Evaluating a screening program
+8. Evaluation of Surveillance Systems
+Q88. A surveillance system detects 60 of the 80 true cases that occurred in its catchment area. Its sensitivity is:
+A. 75%
+B. 60%
+C. 80%
+D. 25%
+Q89. The system received 100 case reports, of which 80 truly had the condition under surveillance. Its positive predictive value is:
+A. 20%
+B. 100%
+C. 80%
+D. 60%
+Q90. Reports reach the district three weeks after disease onset, so control actions start late. Which indicator is poor?
+A. Sensitivity
+B. Timeliness
+C. Acceptability
+D. Flexibility
+Q91. Most private clinics decline to take part in notification. Which indicator is poor?
+A. Simplicity
+B. Timeliness
+C. Sensitivity
+D. Acceptability
+Q92. A system adapted easily to a new case definition and a new disease with little additional cost in time, personnel or funds. This reflects:
+A. Flexibility
+B. Simplicity
+C. Positive predictive value
+D. Timeliness
+Q93. A system that accurately describes the occurrence of a health event by person, place and time, allowing findings to be generalized, has good:
+A. Sensitivity
+B. Acceptability
+C. Representativeness
+D. Simplicity
+Q94. A system with a short reporting form and an easy structure and operation has good:
+A. Flexibility
+B. Simplicity
+C. Timeliness
+D. Representativeness
+Q95. Compared with active surveillance, passive surveillance is typically weaker in which indicators?
+A. Sensitivity and representativeness
+B. Simplicity and cost
+C. Acceptability and flexibility
+D. Timeliness only
+Q96. Which of the following is NOT one of the indicators used to evaluate a surveillance system?
+A. Timeliness
+B. Flexibility
+C. Representativeness
+D. Reliability
+9. Control, Elimination, Eradication and Extinction
+Q97. Which of the following is an example of a disease at the 'control' level?
+A. Smallpox
+B. Neonatal tetanus
+C. Tuberculosis
+D. Measles
+Q98. Which feature characterizes disease control?
+A. Continued intervention measures are required to maintain the reduction
+B. Zero worldwide incidence
+C. Control measures are no longer needed
+D. The agent is absent from laboratories
+Q99. Which level is described as reducing incidence to a minimal target in a defined area so that the disease is no longer a public health problem, while infection may still occur?
+A. Control
+B. Elimination of disease
+C. Elimination of infection
+D. Eradication
+Q100. Which of the following is an example of elimination of infection?
+A. Neonatal tetanus
+B. Leprosy
+C. Measles
+D. Smallpox
+Q101. Which statement refers to disease eradication?
+A. Reduction of incidence to a locally acceptable level
+B. Zero incidence in one country with possible re-introduction from abroad
+C. Reduction to a minimal level while infection still occurs
+D. Permanent reduction to zero of the worldwide incidence of infection, after which control measures are not required
+Q102. Which of the following has been achieved worldwide to date?
+A. Extinction of smallpox
+B. Eradication of measles
+C. Extinction of poliovirus
+D. Eradication of smallpox
+Q103. Which of the following has been certified as eradicated?
+A. Wild poliovirus type 2
+B. Wild poliovirus type 1
+C. Measles virus
+D. Neonatal tetanus
+Q104. Smallpox eradication was declared by WHO in:
+A. 1958
+B. 1994
+C. 1979
+D. 2015
+Q105. Which pair of eradication certification years is correct?
+A. WPV2 - 2019; WPV3 - 2015
+B. WPV2 - 1979; WPV3 - 1980
+C. WPV2 - 2015; WPV3 - 2019
+D. WPV2 - 2004; WPV3 - 2021
+Q106. Which outcome requires zero incidence, continued control measures, and coverage of a country or region only?
+A. Elimination of infection
+B. Eradication
+C. Control
+D. Extinction
+Q107. The elimination goal for neonatal tetanus is:
+A. Less than 1 per 100 live births
+B. Less than 1 per 1,000 live births
+C. Less than 1 per 10,000 population
+D. Zero cases worldwide
+Q108. Which Egyptian achievement is matched with the correct year?
+A. Leprosy elimination - 2004
+B. Elimination of WPV1 infection - 2007
+C. Neonatal tetanus elimination - 2007
+D. Measles elimination - 1994
+Q109. Egypt was verified by WHO as having eliminated measles, rubella and congenital rubella syndrome in:
+A. 1994
+B. 2004
+C. 2007
+D. 2021
+Q110. Extinction of a disease means that the causative agent:
+A. Is no longer present in nature or in laboratories
+B. Has zero worldwide incidence but remains in laboratories
+C. Is absent from one country
+D. Is controlled to an acceptable level
+Q111. The elimination target for leprosy is:
+A. Less than 1 per 10,000 population
+B. Less than 1 per 1,000 live births
+C. Less than 5 per 100,000
+D. Zero cases worldwide
+10. Features Favoring Eradication, Strategies and Points of Attack
+Q112. Which of the following is NOT a biological feature favoring eradication?
+A. A single, antigenically stable serotype
+B. Humans as the only reservoir
+C. Definite and limited modes of transmission
+D. Presence of carrier state and subclinical cases
+Q113. Which characteristic of a disease makes it amenable to eradication?
+A. Short incubation period
+B. Easily diagnosed on clinical grounds
+C. Frequent carrier state
+D. Weak post-infection immunity
+Q114. Why does a single, antigenically stable serotype favor eradication?
+A. It allows production of a potent and stable vaccine
+B. It makes the disease zoonotic
+C. It prolongs the incubation period
+D. It eliminates the carrier state
+Q115. Which diseases pose the greatest problem for interventions directed toward the mode of transmission?
+A. Sexually transmitted diseases
+B. Water-borne diseases only
+C. Airborne and vector-borne diseases
+D. Diseases transmitted by direct contact only
+Q116. Which disease is difficult to control by breaking the mode of transmission because it spreads by respiratory droplets, facilitated by crowding?
+A. Enteric fever
+B. Tetanus
+C. Hepatitis B
+D. Meningococcal meningitis
+Q117. Which statement about the non-infectious candidates for elimination (iron, iodine, vitamin A and folic acid deficiencies) is correct?
+A. None can be eradicated, because their causes cannot be finished completely
+B. Iodine deficiency can be eradicated
+C. All can be eradicated
+D. Vitamin A deficiency can be eradicated
+Q118. Which of the following is described as the backbone of disease control, elimination and eradication?
+A. Mass vaccination
+B. Surveillance
+C. Isolation
+D. Health education
+Q119. Which measure is directed toward the reservoir of infection?
+A. Safe water supply
+B. Vaccination
+C. Vector control
+D. Carrier identification, treatment and isolation
+Q120. The main difficulty in interventions directed toward the reservoir is that:
+A. The reservoir is always vaccinated
+B. It may be subclinical, a carrier, or unreachable such as wild animals
+C. The incubation period is short
+D. Surveillance is unavailable
+Q121. Super-chlorination of water attacks which link of the cycle of infection?
+A. Mode of transmission (vehicle-borne, water)
+B. Reservoir
+C. Susceptible host
+D. Agent
+Q122. Spraying houses with insecticide to control malaria targets:
+A. Reservoir
+B. Susceptible host
+C. Mode of transmission (vector-borne)
+D. Susceptible host and reservoir
+Q123. Which pair of measures both target the susceptible host?
+A. Chlorination and vaccination
+B. Vaccination and sero-prophylaxis
+C. Insecticide and isolation
+D. Case finding and carrier treatment
+Q124. Contacts of a communicable disease case are placed under surveillance or quarantine for:
+A. The minimum incubation period
+B. The average incubation period
+C. Two weeks
+D. The maximum incubation period
+Q125. Household contacts of a case of meningococcal meningitis are best protected by:
+A. Health education only
+B. Chemoprophylaxis
+C. Insecticides
+D. Sero-prophylaxis and vaccination
+Q126. The best preventive measure for a newborn of an HBsAg-positive mother is:
+A. Vaccination alone at 6 weeks
+B. Chemoprophylaxis
+C. Sero-prophylaxis and vaccination
+D. Health education only
+Q127. The best preventive measure for HIV among the following is:
+A. Health education
+B. Vaccination
+C. Insecticides
+D. Chemoprophylaxis
+11. Poliomyelitis
+Q128. A 5-year-old child develops sudden flaccid paralysis of the left leg. Under the polio eradication program she is classified as a:
+A. Confirmed case
+B. Suspected case
+C. Probable case
+D. Discarded case
+Q129. A suspected polio case is confirmed by:
+A. CSF examination
+B. Serological testing
+C. Isolation of wild poliovirus from the stools of the case or its contacts
+D. Neurological examination
+Q130. Which of the following is NOT one of the four strategies of polio eradication?
+A. Routine immunization of infants
+B. National immunization days and mopping-up
+C. AFP and environmental surveillance
+D. Mass chemoprophylaxis of household contacts
+Q131. Environmental surveillance for poliovirus relies on testing:
+A. Sewage water samples
+B. Stool of all children
+C. Nasal swabs
+D. Drinking water only
+Q132. AFP surveillance aims at reporting and investigating all AFP cases below the age of:
+A. 5 years
+B. 10 years
+C. 15 years
+D. 18 years
+Q133. Which feature of OPV enhances herd immunity?
+A. It is injectable
+B. Shedding of vaccine viruses in the feces of vaccinated children
+C. It is given as a single dose
+D. It elicits only low intestinal immunity
+Q134. The bivalent OPV currently used protects against poliovirus types:
+A. 1 and 2
+B. 2 and 3
+C. 1, 2 and 3
+D. 1 and 3
+Q135. OPV is not given to immune-compromised patients or their household contacts because of:
+A. Higher possibility of VAPP
+B. Reduced antibody response
+C. Interference with IPV
+D. Lack of effectiveness
+Q136. Which statement about IPV (Salk vaccine) is INCORRECT?
+A. It elicits humoral immunity and a low level of gut antibodies
+B. It can be given to immune-compromised patients
+C. It induces strong intestinal immunity, so it is ideal for controlling epidemics
+D. More than one dose is required
+Q137. Which statement about VAPP is correct?
+A. It spreads to contacts
+B. It is a one-time paralytic case with no risk of spread to others
+C. It occurs only in low-coverage areas and causes outbreaks
+D. It is caused by IPV
+Q138. Why was tOPV replaced worldwide by bOPV in 2016?
+A. It was ineffective against type 1
+B. It was more expensive
+C. WPV2 had re-emerged
+D. Its type 2 component caused over 90% of cVDPV cases and about 40% of VAPP cases, and interfered with the response to types 1 and 3
+Q139. Circulating vaccine-derived poliovirus outbreaks occur mainly because of:
+A. Low vaccination coverage allowing circulation of the genetically changed vaccine virus
+B. Use of IPV
+C. Contaminated vaccines
+D. Laboratory escape of wild virus
+Q140. Which feature ENHANCES eradication of poliomyelitis?
+A. Three serotypes
+B. Humans as the only reservoir, with no animal reservoir and no chronic carriers
+C. Mostly inapparent infections
+D. Multiple modes of transmission
+Q141. Which feature is a CHALLENGE for polio eradication?
+A. Long-lasting post-infection immunity
+B. Availability of vaccines
+C. Mostly inapparent infections, so it is not easily diagnosed on clinical grounds
+D. Absence of an animal reservoir
+Q142. Endemic transmission of WPV1 still occurs in which two countries?
+A. Nigeria and Niger
+B. Egypt and Sudan
+C. Yemen and Somalia
+D. Afghanistan and Pakistan
+Q143. Two IPV doses were added to Egypt's schedule in 2021 mainly to:
+A. Strengthen herd immunity against type 2 after imported cVDPV2 was detected in sewage
+B. Replace bOPV
+C. Respond to a WPV1 outbreak
+D. Reduce VAPP
+12. Measles, Neonatal Tetanus and Hepatitis C: Elimination
+Q144. Which of the following children meets the suspected case definition of measles?
+A. Fever of 38.6 °C for 4 days, generalized maculopapular rash and conjunctivitis
+B. Fever of 39 °C for 2 days, rash and cough
+C. Rash and cough without fever
+D. Fever of 38.5 °C for 5 days with cough only
+Q145. A suspected measles case becomes a confirmed case when:
+A. The child had contact with another case
+B. Koplik spots are seen
+C. The rash lasts more than 3 days
+D. The virus is isolated or specific antibodies are detected
+Q146. Which of the following is a core strategy for measles elimination?
+A. Environmental surveillance of sewage
+B. Maintaining high vaccination coverage and a good surveillance system
+C. Mass chemoprophylaxis
+D. Cholecystectomy of carriers
+Q147. Measles vaccine is:
+A. Inactivated and given as a single dose
+B. Live attenuated and given as a single dose
+C. Live attenuated, given in two doses, and elicits life-long immunity
+D. Killed and given in two doses
+Q148. Which strategy helps reduce measles-associated mortality?
+A. Improved management of complicated cases and vitamin A supplementation
+B. Mass chemoprophylaxis
+C. Isolation of cases for 3 weeks
+D. Super-chlorination of water
+Q149. Egypt's achievement regarding measles in 2021 represents:
+A. Control
+B. Elimination of infection
+C. Elimination of disease
+D. Eradication
+Q150. Which of the following is a challenge for the elimination of neonatal tetanus?
+A. Person-to-person transmission
+B. Multiple serotypes of the agent
+C. Spores that remain viable in soil for years and resist boiling and most disinfectants
+D. Absence of an effective vaccine
+Q151. Which feature ENHANCES the elimination of neonatal tetanus?
+A. Recovery gives life-long immunity
+B. Long incubation period
+C. Humans are the only reservoir
+D. It is easily diagnosed on clinical grounds
+Q152. Which of the following is NOT a strategy for hepatitis C elimination as described in your course?
+A. Mass vaccination of infants
+B. Political commitment
+C. Mass screening
+D. Access to affordable treatment
+Q153. According to WHO standards, Egypt became the first nation to reach which status on the route to hepatitis C elimination?
+A. Silver tier
+B. Gold tier
+C. Platinum tier
+D. Bronze tier
+Q154. The ultimate target for hepatitis C elimination is fewer than ______ new infections per 100,000 per year.
+A. 1
+B. 10
+C. 5
+D. 50
+Q155. Between 2014 and 2022, Egypt's new hepatitis C infection rate fell from:
+A. 30 to 3 per 100,000
+B. 100 to 20 per 100,000
+C. 500 to 50 per 100,000
+D. 300 to 9 per 100,000
+13. Meningococcal Meningitis
+Q156. The primary reservoir of Neisseria meningitidis is:
+A. Clinical cases
+B. Asymptomatic nasopharyngeal carriers
+C. Soil
+D. Domestic animals
+Q157. The incubation period of meningococcal meningitis is usually:
+A. 1-2 days
+B. 10-21 days
+C. 2-10 days (average 3-4 days)
+D. 45-180 days
+Q158. An outbreak occurs among military recruits living in overcrowded barracks. The main mode of transmission is:
+A. Respiratory droplets and direct contact
+B. Feco-oral route
+C. Vector-borne
+D. Blood-borne
+Q159. A patient with meningococcal meningitis is no longer communicable after:
+A. 7 days of illness
+B. 48 hours of symptoms
+C. 10 days of isolation
+D. 24 hours of effective antibiotic treatment
+Q160. In the African meningitis belt, incidence of meningococcal disease peaks during:
+A. The rainy season
+B. The dry season, associated with hot, dry and dusty conditions
+C. Winter only
+D. Spring only
+Q161. Which of the following is NOT a recognized risk factor for meningococcal disease?
+A. Asplenia
+B. Complement deficiency
+C. Arterial hypertension
+D. Smoking
+Q162. Which statement about conjugate meningococcal vaccines is correct?
+A. They induce immunologic memory, are given intramuscularly, and immunity lasts about 5 years
+B. They are given subcutaneously; immunity starts after 7-10 days and lasts about 3 years
+C. They are unsafe during pregnancy
+D. They are not given to children
+Q163. A booster dose of the meningococcal polysaccharide vaccine is recommended every:
+A. Year
+B. 5 years
+C. 10 years
+D. 3 years if exposure continues
+Q164. Which of the following is NOT an indication for meningococcal vaccine?
+A. Military recruits
+B. Healthy adults living in a non-endemic area with no exposure risk
+C. Pilgrims
+D. Laboratory personnel exposed to aerosolized meningococci
+Q165. Which chemoprophylactic agent should be avoided in persons under 18 years and in pregnancy?
+A. Ciprofloxacin
+B. Rifampin
+C. Ceftriaxone
+D. None of the above
+Q166. According to your course, rifampin chemoprophylaxis for an 8-year-old close contact is:
+A. 5 mg/kg every 12 hours for 2 days
+B. A single dose of 600 mg
+C. 10 mg/kg every 12 hours for 2 days (maximum 600 mg per dose)
+D. 10 mg/kg once daily for 7 days
+Q167. Household and day-care contacts of a meningococcal case should be kept under close surveillance for:
+A. 3 days
+B. 21 days
+C. 6 weeks
+D. 10 days
+Q168. A case of meningococcal meningitis occurs in a single school. The most appropriate epidemic measure is:
+A. Mass chemoprophylaxis
+B. National mass vaccination
+C. No action
+D. Quarantine of the school for 3 weeks
+Q169. Which vaccine against bacterial meningitis is routine in Egypt as part of the pentavalent vaccine?
+A. PCV13
+B. Hib vaccine
+C. PPSV23
+D. Quadrivalent meningococcal vaccine
+Q170. Which pneumococcal vaccine covers 23 serotypes and is used in adults and high-risk groups?
+A. PCV13
+B. PCV10
+C. PPSV23
+D. PCV20
+Q171. Chemoprophylaxis for close contacts of a meningococcal case should be given within:
+A. 7 days
+B. 72 hours
+C. 48 hours
+D. 24 hours
+14. Enteric Fever (Typhoid and Paratyphoid)
+Q172. A 20-year-old has fever of 38.5 °C for 4 days, headache and abdominal discomfort. Blood culture is pending. Under surveillance he is a:
+A. Confirmed case
+B. Suspected case
+C. Chronic carrier
+D. Contact
+Q173. The preferred specimen for laboratory confirmation of enteric fever is:
+A. Blood or another normally sterile site
+B. Sputum
+C. Urine only
+D. CSF only
+Q174. The only known reservoir of Salmonella Typhi is:
+A. Cattle
+B. Flies
+C. Humans
+D. Soil
+Q175. A chronic typhoid carrier is one who excretes the bacilli for more than:
+A. 1 month
+B. 3 months
+C. 6 months
+D. 12 months
+Q176. Which measure may be indicated for a chronic biliary carrier who remains persistently positive despite appropriate treatment?
+A. Splenectomy
+B. Cholecystectomy
+C. Appendectomy
+D. Nephrectomy
+Q177. The usual incubation period of typhoid fever is:
+A. 8-14 days
+B. 1-3 days
+C. 45-180 days
+D. 3-21 days
+Q178. In Egypt, enteric fever shows a seasonal increase during:
+A. Winter
+B. Spring
+C. Summer
+D. Autumn
+Q179. Which condition increases susceptibility to enteric fever?
+A. Gastric hyperacidity
+B. Smoking
+C. Splenic enlargement
+D. Achlorhydria (reduced gastric acidity)
+Q180. A confirmed typhoid carrier working as a food handler may return to work only after:
+A. One negative stool specimen
+B. Three consecutive negative specimens obtained 1 month apart and 48 hours after stopping antibiotics
+C. Two negative specimens 24 hours apart
+D. 6 weeks of antibiotics
+Q181. A food-handler contact of a typhoid case should not work until:
+A. At least 2 negative cultures are obtained 48 hours apart
+B. One negative culture is obtained
+C. 10 days have passed
+D. 3 weeks have passed
+Q182. A typhoid outbreak is traced to a contaminated water supply. The most appropriate immediate measure is:
+A. Mass chemoprophylaxis
+B. Vitamin A supplementation
+C. Chlorinating the suspected water supply or avoiding its use
+D. Banning travel
+Q183. The preferred typhoid vaccine, because it can be given from 6 months of age as a single dose and gives longer-lasting protection, is:
+A. Typhoid conjugate vaccine (TCV)
+B. Vi capsular polysaccharide vaccine
+C. Live attenuated oral Ty21a
+D. Whole-cell killed vaccine
+Q184. Which of the following is a challenge against elimination of typhoid fever?
+A. Humans are the only reservoir
+B. Chronic carriers continue to serve as reservoirs
+C. Life-long post-infection immunity
+D. A single mode of transmission
+Q185. Which of the following is NOT a challenge against elimination of meningococcal meningitis?
+A. Multiple serotypes
+B. Short incubation period
+C. Asymptomatic carriers
+D. Solid, life-long post-vaccination immunity
+Q186. Which of the following is part of the epidemiological investigation of a cluster of enteric fever?
+A. Searching for unreported cases and carriers and for common food or water exposures
+B. Treating only the reported patients
+C. Closing all schools
+D. Vaccinating the whole country
+15. Hepatitis B
+Q187. The incubation period of hepatitis B is typically:
+A. 2-10 days
+B. 8-14 days
+C. 3-21 days
+D. 45-180 days
+Q188. A suspected case of acute hepatitis B is confirmed serologically by:
+A. Anti-HBs alone
+B. IgM anti-HBc
+C. IgG anti-HBc
+D. Elevated liver enzymes alone
+Q189. The risk of developing chronic HBV infection in infants infected at birth is about:
+A. 2-6%
+B. 10%
+C. 90%
+D. 50%
+Q190. HBV can survive outside the body and remain infective for at least:
+A. 7 days
+B. 1 hour
+C. 24 hours
+D. 1 month
+Q191. Which of the following effectively inactivates HBV?
+A. Cold storage
+B. Rinsing with tap water
+C. Boiling for 1 minute
+D. Moist heat at 121 °C for 15 minutes
+Q192. Which of the following is NOT a significant source of HBV transmission?
+A. Needle-stick injury
+B. Tears and sweat
+C. Blood
+D. Skin puncture with infected blood
+Q193. Which of the following is NOT listed among risk groups for hepatitis B?
+A. Healthcare providers
+B. Patients on hemodialysis
+C. Persons with iron-deficiency anemia
+D. Intravenous drug users
+Q194. After the birth dose, the additional doses of hepatitis B vaccine in infants are given at least ______ apart.
+A. 4 weeks
+B. 1 week
+C. 6 months
+D. 2 weeks
+Q195. The recommended schedule of monovalent hepatitis B vaccine for adults at increased risk is:
+A. A single dose
+B. 0, 3 and 12 months
+C. 0 and 6 weeks
+D. 0, 1 and 6 months
+Q196. For healthcare personnel, anti-HBs testing to confirm immunity should be done:
+A. Immediately after the last dose
+B. 1-2 months after the final dose
+C. 1 year after the final dose
+D. 5 years after the final dose
+Q197. An unvaccinated nurse sustains a needle-stick injury from an HBV-infected patient. The best post-exposure management is:
+A. Vaccine only after 1 month
+B. Antibiotic prophylaxis
+C. A single dose of HBIG as soon as possible, preferably within 24 hours, and starting the vaccination series
+D. Observation only
+Q198. A previously vaccinated person with an unknown antibody response is exposed to HBV. A booster is given if anti-HBs is below:
+A. 10 mIU/mL
+B. 100 mIU/mL
+C. 1 mIU/mL
+D. 1000 mIU/mL
+Q199. Infants born to infected mothers should receive HBIG (0.5 mL) and the first vaccine dose within:
+A. 24 hours
+B. 7 days
+C. 6 weeks
+D. 12 hours of birth
+16. Tetanus
+Q200. The neurotoxin responsible for the clinical manifestations of tetanus is:
+A. Tetanospasmin
+B. Exotoxin A
+C. Botulinum toxin
+D. Endotoxin
+Q201. Which statement about the diagnosis of tetanus is correct?
+A. It requires culture of C. tetani from the wound
+B. It is diagnosed clinically; laboratory confirmation is not required for case classification
+C. Serology is mandatory
+D. PCR is mandatory
+Q202. A 9-day-old infant who sucked and cried normally during the first 2 days of life now has rigidity and spasms. How is he classified?
+A. Confirmed neonatal tetanus
+B. Suspected non-neonatal tetanus
+C. Suspected neonatal tetanus
+D. Not a case
+Q203. The main reservoir of Clostridium tetani is:
+A. Humans only
+B. Mosquitoes
+C. Rodents
+D. The intestinal tract of humans and herbivorous animals
+Q204. Which statement about contacts of a tetanus case is correct?
+A. No contact tracing, quarantine or chemoprophylaxis is required, because there is no person-to-person transmission
+B. Contacts are quarantined for 3 weeks
+C. Household members receive chemoprophylaxis
+D. Strict isolation of the patient is required
+Q205. Herd immunity does not protect against tetanus because:
+A. The vaccine is ineffective
+B. There is no person-to-person transmission
+C. Spores are airborne
+D. The incubation period is long
+Q206. A shorter incubation period in tetanus is generally associated with:
+A. Milder disease
+B. Life-long immunity
+C. A wound closer to the central nervous system, more severe disease and a higher risk of death
+D. Neonatal disease only
+Q207. Which wound carries the highest risk of tetanus?
+A. A clean superficial cut
+B. Sunburn
+C. A closed fracture
+D. A puncture wound contaminated with soil
+Q208. Neonatal tetanus usually results from contamination of:
+A. The umbilical stump during delivery or cord care
+B. The respiratory tract
+C. The conjunctiva
+D. Breast milk
+Q209. WHO recommends how many lifetime doses of tetanus-toxoid-containing vaccine (three primary doses plus boosters)?
+A. 3
+B. 5
+C. 6
+D. 10
+Q210. In Egypt, the school-entry booster (6-7 years) contains:
+A. DTP
+B. Td
+C. Pentavalent vaccine
+D. DT
+Q211. A previously unvaccinated adult at increased risk of tetanus should receive:
+A. A 3-dose Td primary series at 0, 4 weeks and 6-12 months, then a dose every 10 years
+B. A single Td dose and nothing further
+C. Five doses of tetanus toxoid
+D. Doses at 0, 1 and 6 weeks
+Q212. A person with a minor, clean wound completed the primary series, and the last dose was 12 years ago. The appropriate management is:
+A. TIG only
+B. A tetanus-containing vaccine (TT or Td) without TIG
+C. No intervention
+D. TIG plus antibiotics
+Q213. A person with a major, contaminated wound completed the primary series, and the last dose was 7 years ago. The appropriate management is:
+A. No intervention
+B. TIG alone
+C. A booster dose of tetanus-toxoid vaccine
+D. Antibiotics alone
+Q214. A person with a major, contaminated wound has an unknown vaccination history. The appropriate management is:
+A. Vaccine only
+B. Antibiotics only
+C. Intravenous TIG
+D. At least 250 IU human TIG intramuscularly plus the tetanus toxoid vaccination schedule, using separate syringes and separate sites
+Q215. Regarding antibiotics after a wound, which statement is correct?
+A. They are not used solely to prevent tetanus; they are given when the wound is infected or otherwise clinically indicated
+B. They are given routinely to every wounded person to prevent tetanus
+C. They replace TIG
+D. They replace tetanus toxoid
+Q216. For women who were never vaccinated, how many properly spaced doses of tetanus toxoid are recommended to protect against neonatal tetanus?
+A. 2
+B. 5
+C. 3
+D. 6
+Q217. In Egypt, neonatal tetanus is listed by the Ministry of Health and Population as:
+A. A Group B disease
+B. A non-notifiable disease
+C. A Group A (immediately reportable) disease
+D. A disease reported annually
+Q218. A patient who is recovering from tetanus should:
+A. Be considered immune for life
+B. Receive no further action
+C. Receive repeated TIG doses
+D. Receive or complete tetanus vaccination, because the disease does not reliably confer immunity
+Q219. According to WHO, neonatal tetanus deaths declined by about ______ between 2000 and 2021.
+A. 84%
+B. 48%
+C. 64%
+D. 94%
+Q220. Which of the following is NOT a good birth practice for preventing neonatal tetanus?
+A. Delivery by a skilled birth attendant
+B. Dressing the cord stump with unclean materials
+C. Use of clean or sterile equipment for cutting the cord
+D. Educating mothers about clean cord care
+17. Integrated Questions
+Q221. Which of the following has been achieved in Egypt?
+A. Eradication of WPV1 worldwide
+B. Elimination of neonatal tetanus
+C. Elimination of typhoid fever
+D. Elimination of meningococcal meningitis
+Q222. Which of the following best distinguishes surveillance from screening?
+A. Screening tests apparently healthy individuals to detect disease early, whereas surveillance is ongoing systematic data collection, analysis and dissemination for public health action
+B. Both apply only to infectious diseases
+C. Surveillance is applied to a single patient
+D. Screening is a continuous process of data analysis
+Q223. Which of the following is at the level of 'elimination of disease' (no longer a public health problem while infection may still occur)?
+A. Smallpox
+B. WPV2
+C. Measles
+D. Neonatal tetanus
+Q224. Which list correctly gives the agents certified as eradicated?
+A. Smallpox and measles
+B. Smallpox, WPV1 and WPV2
+C. Smallpox, WPV2 and WPV3
+D. WPV1 and WPV3 only
+Q225. Which of the following diseases is NOT transmitted from person to person?
+A. Tetanus
+B. Enteric fever
+C. Meningococcal meningitis
+D. Hepatitis B
+Q226. Immunity following meningococcal infection or vaccination is largely:
+A. Life-long against all serogroups
+B. Serogroup specific
+C. Absent
+D. Life-long in adults only
+Q227. Which disease would benefit most from environmental (sewage) surveillance?
+A. Tetanus
+B. Hepatitis B
+C. Meningococcal meningitis
+D. Poliomyelitis
+Answer Key (Model Answers)
+1. Levels of Prevention (Q1-6): 1-B, 2-C, 3-D, 4-C, 5-A, 6-B
+2. Screening Concepts and Types (Q7-21): 7-C, 8-D, 9-A, 10-C, 11-B, 12-D, 13-A, 14-B, 15-C, 16-A, 17-D, 18-D, 19-B, 20-C, 21-B
+3. Criteria for Screening (Q22-31): 22-A, 23-C, 24-B, 25-D, 26-A, 27-C, 28-B, 29-C, 30-A, 31-B
+4. Sensitivity, Specificity, Predictive Values (Q32-43): 32-C, 33-D, 34-C, 35-A, 36-C, 37-B, 38-D, 39-C, 40-D, 41-A, 42-B, 43-A
+5. Screening Calculations (Q44-57): 44-B, 45-A, 46-C, 47-B, 48-A, 49-D, 50-B, 51-A, 52-B, 53-D, 54-B, 55-C, 56-A, 57-D
+6. Surveillance Basics (Q58-73): 58-A, 59-C, 60-D, 61-B, 62-C, 63-A, 64-D, 65-D, 66-B, 67-C, 68-D, 69-B, 70-A, 71-B, 72-C, 73-D
+7. Surveillance Criteria, Data, Uses (Q74-87): 74-B, 75-C, 76-A, 77-B, 78-D, 79-B, 80-C, 81-A, 82-D, 83-B, 84-A, 85-D, 86-C, 87-A
+8. Evaluation of Surveillance (Q88-96): 88-A, 89-C, 90-B, 91-D, 92-A, 93-C, 94-B, 95-A, 96-D
+9. Control, Elimination, Eradication, Extinction (Q97-111): 97-C, 98-A, 99-B, 100-C, 101-D, 102-D, 103-A, 104-C, 105-C, 106-A, 107-B, 108-C, 109-D, 110-A, 111-A
+10. Eradication Features, Strategies, Points of Attack (Q112-127): 112-D, 113-B, 114-A, 115-C, 116-D, 117-A, 118-B, 119-D, 120-B, 121-A, 122-C, 123-B, 124-D, 125-B, 126-C, 127-A
+11. Poliomyelitis (Q128-143): 128-B, 129-C, 130-D, 131-A, 132-C, 133-B, 134-D, 135-A, 136-C, 137-B, 138-D, 139-A, 140-B, 141-C, 142-D, 143-A
+12. Measles, Neonatal Tetanus, Hepatitis C (Q144-155): 144-A, 145-D, 146-B, 147-C, 148-A, 149-B, 150-C, 151-D, 152-A, 153-B, 154-C, 155-D
+13. Meningococcal Meningitis (Q156-171): 156-B, 157-C, 158-A, 159-D, 160-B, 161-C, 162-A, 163-D, 164-B, 165-A, 166-C, 167-D, 168-A, 169-B, 170-C, 171-D
+14. Enteric Fever (Q172-186): 172-B, 173-A, 174-C, 175-D, 176-B, 177-A, 178-C, 179-D, 180-B, 181-A, 182-C, 183-A, 184-B, 185-D, 186-A
+15. Hepatitis B (Q187-199): 187-D, 188-B, 189-C, 190-A, 191-D, 192-B, 193-C, 194-A, 195-D, 196-B, 197-C, 198-A, 199-D
+16. Tetanus (Q200-220): 200-A, 201-B, 202-C, 203-D, 204-A, 205-B, 206-C, 207-D, 208-A, 209-C, 210-D, 211-A, 212-B, 213-C, 214-D, 215-A, 216-B, 217-C, 218-D, 219-A, 220-B
+17. Integrated (Q221-227): 221-B, 222-A, 223-D, 224-C, 225-A, 226-B, 227-D
+Workings for the calculation questions
+Q44-Q50: Sensitivity = 90/100 = 90%. Specificity = 840/900 = 93.3%. PPV = 90/150 = 60%. NPV = 840/850 = 98.8%. False-negative rate = 10/100 = 10%. Accuracy = (90 + 840)/1,000 = 93%. False-positive rate = 60/900 = 6.7%.
+Q51: Sensitivity = 70/100 = 70%. Specificity = 80/100 = 80%. Accuracy = (70 + 80)/200 = 75%.
+Q52-Q53: True negatives = 1,800 - 90 = 1,710, so specificity = 1,710/1,800 = 95%. PPV = 180/(180 + 90) = 66.7%.
+Q54-Q55: Non-infected = 5,000 - 250 = 4,750, so false-positive percentage = 475/4,750 = 10%. PPV = 225/(225 + 475) = 225/700 = 32.1%.
+Q56-Q57: At 2% prevalence: TP = 1,800 and FP = 5% of 98,000 = 4,900, so PPV = 1,800/6,700 = 27%. At 20% prevalence: TP = 18,000 and FP = 5% of 80,000 = 4,000, so PPV = 18,000/22,000 = 82%. The same test gives a far better yield in a high-risk group.
+Q88-Q89: Surveillance sensitivity = a/(a + c) = 60/80 = 75%. PPV = a/(a + b) = 80/100 = 80%.
+Short rationales for selected questions
+Q17: High-risk screening raises the prevalence in the screened group, which raises PPV and cuts false positives.
+Q18 and Q21: Meningococcal meningitis is acute with a very short pre-clinical period, so it is not suitable for screening.
+Q39: PPV rises with prevalence while sensitivity and specificity stay fixed.
+Q75: Availability of an effective vaccine falls under 'ability to prevent, control or treat', not under public health importance.
+Q101 and Q110: Eradication means zero worldwide incidence with the agent still held in laboratories; extinction means the agent is gone from nature and laboratories, and has not been achieved for any disease.
+Q116: Airborne spread by droplets, helped by crowding, makes meningococcal meningitis hard to control by breaking transmission.
+Q136: IPV gives humoral immunity but low gut immunity, so it is not useful for controlling epidemics.
+Q138: The type 2 component of tOPV caused over 90% of cVDPV cases and about 40% of VAPP cases, and interfered with types 1 and 3.
+Q166 and Q213: Doses and intervals follow your course notes (rifampin 10 mg/kg every 12 hours for 2 days from 1 month of age, maximum 600 mg per dose; booster for a major or contaminated wound if the last dose was 5 or more years ago).
+Q184 and Q185: Chronic typhoid carriers sustain transmission; for meningococcal disease, post-vaccination immunity is NOT solid, so option D in Q185 is the non-challenge.
