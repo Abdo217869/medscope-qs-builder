@@ -19,6 +19,8 @@ import { processLogoFile, removeCustomLogo, DEFAULT_MEDSCOPE_LOGO } from './imag
 import { showToast } from './export.js';
 
 let updateDebounceTimer = null;
+let currentSettingsTab = 'all';
+let currentSettingsSearch = '';
 
 function debouncedUpdate(onUpdate) {
   clearTimeout(updateDebounceTimer);
@@ -161,6 +163,28 @@ export function buildSettingsUI(onUpdate) {
 
     host.appendChild(customSection);
   }
+
+  // Category Navigation Tabs + Live Search Filter
+  const navFilterWrap = document.createElement('div');
+  navFilterWrap.className = 'settings-nav-filter-wrap';
+  navFilterWrap.innerHTML = `
+    <div class="settings-search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="settingsSearchInput" class="settings-search-input" placeholder="ابحث عن أي خيار (لوجو، غلاف، خط، لون، هامش، QR...)" value="${escapeHTML(currentSettingsSearch)}" autocomplete="off">
+      <button type="button" id="btnClearSettingsSearch" class="btn-clear-search" ${currentSettingsSearch ? '' : 'hidden'} title="مسح">✕</button>
+    </div>
+    <div class="settings-nav-tabs" role="tablist">
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'all' ? 'active' : ''}" data-tab="all">✨ الكل</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'presets' ? 'active' : ''}" data-tab="presets">🌟 القوالب</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'palette' ? 'active' : ''}" data-tab="palette">🎨 الألوان</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'cover' ? 'active' : ''}" data-tab="cover">📖 الغلاف والـ QR</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'watermark' ? 'active' : ''}" data-tab="watermark">🦅 العلامة واللوجو</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'typography' ? 'active' : ''}" data-tab="typography">✍️ الخطوط والأسئلة</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'layout' ? 'active' : ''}" data-tab="layout">📐 التخطيط والهوامش</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'headerFooter' ? 'active' : ''}" data-tab="headerFooter">📑 الهيدر والفوتر</button>
+    </div>
+  `;
+  host.appendChild(navFilterWrap);
 
   // Iterate Schema Groups
   SETTINGS_SCHEMA.forEach((groupObj, groupIdx) => {
@@ -482,6 +506,84 @@ export function buildSettingsUI(onUpdate) {
     details.appendChild(groupBody);
     host.appendChild(details);
   });
+
+  // Category & Search Filtering Engine
+  const applySettingsFilter = () => {
+    const accordions = host.querySelectorAll('.settings-group-accordion');
+    const searchVal = currentSettingsSearch.trim().toLowerCase();
+
+    accordions.forEach(acc => {
+      const g = acc.dataset.group;
+      let matchesTab = false;
+
+      if (currentSettingsTab === 'all') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'presets' && g === 'presets') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'palette' && g === 'palette') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'cover' && g === 'cover') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'watermark' && g === 'watermark') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'typography' && (g === 'typography' || g === 'questions')) {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'layout' && (g === 'layout' || g === 'randomize')) {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'headerFooter' && (g === 'headerFooter' || g === 'keyPage')) {
+        matchesTab = true;
+      }
+
+      if (!matchesTab) {
+        acc.style.display = 'none';
+        return;
+      }
+
+      if (!searchVal) {
+        acc.style.display = 'block';
+        return;
+      }
+
+      const text = acc.textContent.toLowerCase();
+      if (text.includes(searchVal)) {
+        acc.style.display = 'block';
+        acc.open = true;
+      } else {
+        acc.style.display = 'none';
+      }
+    });
+  };
+
+  // Wire Tab Buttons
+  navFilterWrap.addEventListener('click', (e) => {
+    const btn = e.target.closest('.settings-tab-btn');
+    if (!btn) return;
+    navFilterWrap.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSettingsTab = btn.dataset.tab;
+    applySettingsFilter();
+    const sidebar = document.getElementById('studioSidebar');
+    if (sidebar) sidebar.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Wire Search Events
+  const searchInput = navFilterWrap.querySelector('#settingsSearchInput');
+  const btnClearSearch = navFilterWrap.querySelector('#btnClearSettingsSearch');
+
+  searchInput?.addEventListener('input', (e) => {
+    currentSettingsSearch = e.target.value;
+    if (btnClearSearch) btnClearSearch.hidden = !currentSettingsSearch;
+    applySettingsFilter();
+  });
+
+  btnClearSearch?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    currentSettingsSearch = '';
+    btnClearSearch.hidden = true;
+    applySettingsFilter();
+  });
+
+  applySettingsFilter();
 
   if (prevScroll) {
     host.scrollTop = prevScroll;

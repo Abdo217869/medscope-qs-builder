@@ -194,33 +194,56 @@
         </div>
       </div>
 
-      <!-- Advanced Settings Accordion (Placed on TOP for convenience and easy editing) -->
-      <details class="accordion" id="advSettingsAccordion" open style="margin-bottom: 24px;">
-        <summary>
-          <span>⚙️ تخصيص الشكل والمظهر (القوالب، الخطوط، الأعمدة، اللوجو والعلامة المائية)</span>
-        </summary>
-        <div class="accordion-body">
-          <div id="advSettingsHost"></div>
+      <!-- Layout Mode Switcher Bar -->
+      <div class="studio-top-bar">
+        <div class="studio-view-toggle">
+          <button type="button" class="studio-toggle-btn active" id="btnStudioSideBySide" title="عرض الاستوديو: لوحة التحكم بجانب المعاينة المباشرة لتسهيل التعديل بدون صعود ونزول">
+            <span>🖥️ شاشة استوديو (جنباً إلى جنب)</span>
+          </button>
+          <button type="button" class="studio-toggle-btn" id="btnStudioStacked" title="عرض كلاسيكي: الإعدادات والمعاينة تحت بعض">
+            <span>📱 عرض رأسي كلاسيكي</span>
+          </button>
         </div>
-      </details>
+      </div>
 
-      <!-- Sheet Live Preview -->
-      <div class="preview-card" style="margin-bottom: 24px;">
-        <div class="toolbar" style="border-radius: 12px 12px 0 0; margin-bottom: 0;">
-          <div class="seg" id="views">
-            <button data-v="qs" aria-pressed="true">ورقة الأسئلة</button>
-            <button data-v="as" aria-pressed="false">ورقة الإجابات</button>
-            <button data-v="edit" aria-pressed="false">تعديل</button>
-            <button data-v="exp" aria-pressed="false">تصدير</button>
+      <!-- Studio Workspace: Settings Panel + Sticky Live Preview -->
+      <div class="step3-studio-layout mode-split" id="step3Studio">
+        <!-- Control Side / Studio Drawer -->
+        <aside class="studio-sidebar" id="studioSidebar">
+          <details class="accordion" id="advSettingsAccordion" open>
+            <summary>
+              <div class="studio-summary-content">
+                <span class="studio-summary-title">⚙️ استوديو التصميم والتخصيص</span>
+                <span class="studio-live-badge">⚡ تحكّم وتأثير فوري</span>
+              </div>
+            </summary>
+            <div class="accordion-body">
+              <div id="advSettingsHost"></div>
+            </div>
+          </details>
+        </aside>
+
+        <!-- Live Preview Side (In Viewport Beside Controls!) -->
+        <main class="studio-main" id="studioMain">
+          <!-- Sheet Live Preview -->
+          <div class="preview-card" id="studioPreviewCard">
+            <div class="toolbar" style="border-radius: 12px 12px 0 0; margin-bottom: 0;">
+              <div class="seg" id="views">
+                <button data-v="qs" aria-pressed="true">ورقة الأسئلة</button>
+                <button data-v="as" aria-pressed="false">ورقة الإجابات</button>
+                <button data-v="edit" aria-pressed="false">تعديل</button>
+                <button data-v="exp" aria-pressed="false">تصدير</button>
+              </div>
+              <span class="sp"></span>
+              <div class="print-actions">
+                <button class="btn gold sm" id="btnPrintQ">🖨 طباعة أسئلة</button>
+                <button class="btn gold sm" id="btnPrintA">🖨 طباعة إجابات</button>
+              </div>
+            </div>
+            <div class="stats" id="stats"></div>
+            <div id="view"></div>
           </div>
-          <span class="sp"></span>
-          <div class="print-actions">
-            <button class="btn gold sm" id="btnPrintQ">🖨 طباعة أسئلة</button>
-            <button class="btn gold sm" id="btnPrintA">🖨 طباعة إجابات</button>
-          </div>
-        </div>
-        <div class="stats" id="stats"></div>
-        <div id="view"></div>
+        </main>
       </div>
 
       <!-- Other Formats Export Accordion -->

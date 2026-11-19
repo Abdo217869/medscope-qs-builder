@@ -643,6 +643,34 @@ export function init() {
     btn.addEventListener('click', () => setView(btn.dataset.v));
   });
 
+  // Studio View Mode Toggle (Side-by-Side vs Stacked)
+  const btnSideBySide = $('#btnStudioSideBySide');
+  const btnStacked = $('#btnStudioStacked');
+  const studioWrap = $('#step3Studio');
+
+  const setStudioMode = (mode) => {
+    if (!studioWrap) return;
+    if (mode === 'stacked') {
+      studioWrap.classList.remove('mode-split');
+      studioWrap.classList.add('mode-stacked');
+      btnSideBySide?.classList.remove('active');
+      btnStacked?.classList.add('active');
+    } else {
+      studioWrap.classList.add('mode-split');
+      studioWrap.classList.remove('mode-stacked');
+      btnSideBySide?.classList.add('active');
+      btnStacked?.classList.remove('active');
+    }
+    store.set('mq.studioMode', mode);
+    setTimeout(() => fitZoom(), 50);
+  };
+
+  btnSideBySide?.addEventListener('click', () => setStudioMode('split'));
+  btnStacked?.addEventListener('click', () => setStudioMode('stacked'));
+
+  const savedStudioMode = store.get('mq.studioMode') || 'split';
+  setStudioMode(savedStudioMode);
+
   // Print Buttons
   $('#btnPrintQ')?.addEventListener('click', () => printMode('qs'));
   $('#btnPrintA')?.addEventListener('click', () => printMode('as'));
