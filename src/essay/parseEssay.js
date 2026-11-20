@@ -51,25 +51,20 @@ export function parseDocument(rawText, keyText = '', options = {}) {
   const { hasKey, questionsText, keyText: extractedKeyText } = splitAnswerKeySection(rawText);
   const combinedKeyText = (keyText || '') + (extractedKeyText ? '\n' + extractedKeyText : '');
 
-  // 2. If mode is explicitly 'mcq' or document is pure classic MCQ format without essay signals,
-  // we can evaluate whether standard MCQ parser should run directly.
+  // 2. If mode is explicitly 'mcq'
   if (mode === 'mcq') {
     return parseMCQ(questionsText, combinedKeyText);
   }
 
-  // Check if document has clear essay markers:
-  // e.g. "Q1.1", "Construct the 2x2 table", sub-parts a-f with question words, or Answer Key part
-  const hasEssaySignals = (
-    hasKey ||
-    /^Q\d+\.\d+/im.test(questionsText) ||
-    /Part\s*\d+\s*:/i.test(questionsText) ||
-    /Construct\s+the|Calculate\s+the|Fill in the blanks|True or false|Compare\s+.*?\s+in a table/i.test(questionsText)
-  );
+  // Check if document has hierarchical essay questions like Q1.1, Q1.2:
+  const hasHierarchicalEssay = /^Q\d+\.\d+/im.test(questionsText);
 
-  // If in 'auto' mode and NO essay signals exist at all, use fast standard MCQ parser to ensure zero regressions
-  if (mode === 'auto' && !hasEssaySignals) {
+  // If in 'auto' mode and NOT explicitly hierarchical essay:
+  // Try classic MCQ parser first to preserve full section segmentation and options
+  if (mode === 'auto' && !hasHierarchicalEssay) {
     const mcqResult = parseMCQ(questionsText, combinedKeyText);
-    if (mcqResult.sections && mcqResult.sections.length > 0) {
+    const mcqCount = mcqResult.sections ? mcqResult.sections.reduce((sum, s) => sum + s.qs.length, 0) : 0;
+    if (mcqCount > 0) {
       return mcqResult;
     }
   }
@@ -157,17 +152,49 @@ export function parseDocument(rawText, keyText = '', options = {}) {
     const line = lines[i];
     if (!line) continue;
 
-    // Check Section / Part Headings:
-    // e.g. "Part 1: Prevention and Screening", "Part 2: Surveillance", "# Anatomy", "Section A"
-    const isSectionHeading = (
-      /^(?:part\s*\d+|section\s*[a-z]|chapter\s*\d+|unit\s*\d+)\s*[:\-]\s*(.*)$/i.test(line) ||
-      /^#\s+(.*)$/.test(line) ||
-      /^(?:المادة|القسم|الفصل)\s*(?:\d+|[أ-ي])?\s*[:\-]\s*(.*)$/i.test(line)
-    );
+    const lClean = line.replace(/[*✓✔✅]/g, '').trim();
+    const words = lClean.split(/\s+/).length;
+    let nextNBLine = '';
+    for (let j = i + 1; j < lines.length; j++) {
+      if (lines[j] && lines[j].trim()) {
+        nextNBLine = lines[j].trim();
+        break;
+      }
+    }
 
-    if (isSectionHeading) {
+    // 1. Markdown Headings: "# Physiology", "## Histology", "### Unit 1"
+    const isMarkdownHeading = /^#{1,4}\s*(.+)$/.test(lClean);
+
+    // 2. Explicit Keyword Headings:
+    // English: part, section, chapter, unit, lesson, topic, lecture, module, subject
+    // Arabic: مادة, المادة, قسم, القسم, فصل, الفصل, درس, الدرس, وحدة, الوحدة, محاضرة, المحاضرة, موضوع, الموضوع, باب, الباب
+    const isKeywordHeading = /^(?:part|section|chapter|unit|lesson|topic|lecture|module|subject|مادة|المادة|قسم|القسم|فصل|الفصل|درس|الدرس|وحدة|الوحدة|محاضرة|المحاضرة|موضوع|الموضوع|باب|الباب)\s*(?:\d+|[أ-يA-Za-z]+)?(?:\s*[:\-–]\s*|\s+)(.+)$/i.test(lClean) ||
+      /^(?:part|section|chapter|unit|lesson|topic|lecture|module|مادة|المادة|قسم|القسم|فصل|الفصل|درس|الدرس|وحدة|الوحدة|محاضرة|المحاضرة|موضوع|الموضوع|باب|الباب)\s+(?:\d+|[أ-يA-Za-z]+)$/i.test(lClean);
+
+    // 3. Standalone Heading followed by or ending in "Qs" or "Questions":
+    // e.g. "Physiology Qs" or "Cardiovascular System Questions"
+    const isQsHeading = words <= 6 && /^([A-Za-z\u0600-\u06ff][A-Za-z\u0600-\u06ff &,'/-]*?)\s+(?:Qs?|questions?|أسئلة)$/i.test(lClean);
+    const isHeadingFollowedByQs = words <= 6 && !/[?]$/.test(lClean) && /^Qs?$/i.test(nextNBLine);
+
+    // 4. Numbered Topic / Lesson Heading:
+    // e.g. "1. Levels of Prevention and Natural History" or "2. Screening: Concepts"
+    // Followed by Q-numbered question (e.g. Q1, Q1.1, 1., 1-)
+    let isNumberedLessonHeading = false;
+    const numHeadingMatch = lClean.match(/^\d{1,2}\s*[.)]\s+([A-Za-z\u0600-\u06ff][^?]*)$/);
+    if (numHeadingMatch && !lClean.includes('?') && !/^Q\s*\d/i.test(lClean)) {
+      const nextIsQ = /^(?:Q\d|س\d|\d{1,2}\s*[-.)])/.test(nextNBLine);
+      if (nextIsQ && (nextNBLine.startsWith('1.') || nextNBLine.startsWith('1-') || nextNBLine.startsWith('1)') || /^Q\d/i.test(nextNBLine) || words <= 12)) {
+        isNumberedLessonHeading = true;
+      }
+    }
+
+    if (isMarkdownHeading || isKeywordHeading || isQsHeading || isHeadingFollowedByQs || isNumberedLessonHeading) {
       flushSection();
-      currentSection.name = line.replace(/^#\s*/, '').trim();
+      let secName = lClean.replace(/^#{1,4}\s*/, '').replace(/\s+Qs?$/i, '').trim();
+      if (isNumberedLessonHeading && numHeadingMatch) {
+        secName = numHeadingMatch[1].trim();
+      }
+      currentSection.name = secName;
       continue;
     }
 

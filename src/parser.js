@@ -212,13 +212,15 @@ export function parse(text, keyText) {
     const nxClean = nx.replace(/[*✓✔✅]/g, '').trim();
     const words = lClean.split(/\s+/).length;
 
-    // Heading: "# Physiology" or "Section: Physiology" or "مادة: الفسيولوجي"
+    // Heading: "# Physiology" or "Section: Physiology" or "الدرس الأول: الجهاز الهضمي"
     if (
-      (m = lClean.match(/^#{1,3}\s*(.+)$/)) ||
-      (m = lClean.match(/^(?:section|chapter|subject|مادة|قسم)\s*[:\-]\s*(.+)$/i))
+      (m = lClean.match(/^#{1,4}\s*(.+)$/)) ||
+      (m = lClean.match(/^(?:section|chapter|subject|part|topic|lesson|unit|lecture|module|مادة|المادة|قسم|القسم|فصل|الفصل|درس|الدرس|وحدة|الوحدة|محاضرة|المحاضرة|موضوع|الموضوع|باب|الباب)\s*(?:\d+|[أ-يA-Za-z]+)?(?:\s*[:\-–]\s*|\s+)(.+)$/i)) ||
+      (m = lClean.match(/^(?:part|section|chapter|unit|lesson|topic|lecture|module|مادة|المادة|قسم|القسم|فصل|الفصل|درس|الدرس|وحدة|الوحدة|محاضرة|المحاضرة|موضوع|الموضوع|باب|الباب)\s+(?:\d+|[أ-يA-Za-z]+)$/i))
     ) {
       flush();
-      newSec(m[1].replace(/\s+Qs?$/i, '').trim());
+      const secName = (m[1] || m[0]).replace(/\s+Qs?$/i, '').trim();
+      newSec(secName);
       continue;
     }
 
@@ -246,11 +248,13 @@ export function parse(text, keyText) {
       continue;
     }
 
-    // "3. Criteria for Screening" followed by Q-numbered question
+    // "3. Criteria for Screening" followed by Q-numbered question or question restarting at 1
     if (
-      (m = lClean.match(/^\d{1,2}\s*[.)]\s+([A-Za-z\u0600-\u06ff][^?]*)$/)) &&
+      (m = lClean.match(/^\d{1,2}\s*[.)\-–]\s+([A-Za-z\u0600-\u06ff][^?]*)$/)) &&
       !/^Q\s*\d/i.test(lClean) &&
-      (/^Q\s*\d/i.test(nxClean) || (qPrefix && words <= 14 && !/[.:;,]$/.test(lClean)))
+      words <= 14 &&
+      !/[.:;,?]$/.test(lClean) &&
+      (/^Q\s*\d/i.test(nxClean) || /^(?:1\s*[-.)–]|س\s*1)/.test(nxClean) || (qPrefix && !/[.:;,]$/.test(lClean)))
     ) {
       flush();
       newSec(m[1].trim());
