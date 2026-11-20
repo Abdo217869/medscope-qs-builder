@@ -254,7 +254,8 @@ export function buildSettingsUI(onUpdate) {
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'typography' ? 'active' : ''}" data-tab="typography">✍️ الخطوط والأسئلة</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'essay' ? 'active' : ''}" data-tab="essay">📝 المقالي والحالات</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'watermark' ? 'active' : ''}" data-tab="watermark">🦅 العلامة واللوجو</button>
-      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'cover' ? 'active' : ''}" data-tab="cover">📖 الغلاف والـ QR</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'cover' ? 'active' : ''}" data-tab="cover">📖 صفحة الغلاف</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'dividers' ? 'active' : ''}" data-tab="dividers">📑 الصفحات الفاصلة</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'headerFooter' ? 'active' : ''}" data-tab="headerFooter">📑 الهيدر والفوتر</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'answers' ? 'active' : ''}" data-tab="answers">🎯 نموذج الإجابات</button>
     </div>
@@ -506,6 +507,7 @@ export function buildSettingsUI(onUpdate) {
 
         controlEl = document.createElement('select');
         controlEl.className = 'modern-field-select';
+        controlEl.dataset.key = field.key;
         field.options.forEach(opt => {
           const optEl = document.createElement('option');
           optEl.value = opt.val;
@@ -539,6 +541,7 @@ export function buildSettingsUI(onUpdate) {
         const chk = document.createElement('input');
         chk.type = 'checkbox';
         chk.className = 'modern-toggle-input';
+        chk.dataset.key = field.key;
         chk.checked = isChecked;
 
         const sliderSpan = document.createElement('span');
@@ -574,11 +577,13 @@ export function buildSettingsUI(onUpdate) {
         const colorInput = document.createElement('input');
         colorInput.type = 'color';
         colorInput.className = 'modern-field-color';
+        colorInput.dataset.key = field.key;
         colorInput.value = S[field.key] || field.default || '#000000';
 
         const textInput = document.createElement('input');
         textInput.type = 'text';
         textInput.className = 'modern-field-color-text';
+        textInput.dataset.key = field.key;
         textInput.value = colorInput.value;
 
         colorInput.addEventListener('input', () => {
@@ -604,6 +609,7 @@ export function buildSettingsUI(onUpdate) {
         controlEl = document.createElement('input');
         controlEl.type = 'text';
         controlEl.className = 'modern-field-text';
+        controlEl.dataset.key = field.key;
         controlEl.value = S[field.key] !== undefined ? S[field.key] : (field.default ?? '');
         controlEl.addEventListener('input', () => {
           S[field.key] = controlEl.value;
@@ -617,6 +623,7 @@ export function buildSettingsUI(onUpdate) {
         const slider = document.createElement('input');
         slider.type = 'range';
         slider.className = 'modern-field-range';
+        slider.dataset.key = field.key;
         slider.min = field.min;
         slider.max = field.max;
         slider.step = field.step || 1;
@@ -628,6 +635,7 @@ export function buildSettingsUI(onUpdate) {
         const numBox = document.createElement('input');
         numBox.type = 'number';
         numBox.className = 'modern-field-number-box';
+        numBox.dataset.key = field.key;
         numBox.min = field.min;
         numBox.max = field.max;
         numBox.step = field.step || 1;
@@ -706,7 +714,9 @@ export function buildSettingsUI(onUpdate) {
         matchesTab = true;
       } else if (currentSettingsTab === 'watermark' && g === 'watermark') {
         matchesTab = true;
-      } else if (currentSettingsTab === 'cover' && g === 'cover') {
+      } else if (currentSettingsTab === 'cover' && (g === 'cover' || g === 'dividers')) {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'dividers' && g === 'dividers') {
         matchesTab = true;
       } else if (currentSettingsTab === 'headerFooter' && g === 'headerFooter') {
         matchesTab = true;

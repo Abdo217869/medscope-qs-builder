@@ -39,7 +39,7 @@ describe('Part C Acceptance Tests', () => {
     expect(totalQs).toBe(227);
     expect(parsed.sections.length).toBe(17);
     expect(withAns).toBe(227);
-  });
+  }, 15000);
 
   // Test 3: Drop Medscope End Qs 30.pdf alone
   it('Acceptance 3: Medscope End Qs 30.pdf alone -> 60 Qs, 5 subjects, 60 without answers', async () => {

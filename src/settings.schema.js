@@ -627,12 +627,6 @@ export const SETTINGS_SCHEMA = [
         default: true
       },
       {
-        key: 'secPages',
-        label: 'بدء كل مادة في صفحة جديدة',
-        type: 'check',
-        default: true
-      },
-      {
         key: 'qsPerPage',
         label: 'حد أقصى للأسئلة في الصفحة (0 = تلقائي)',
         type: 'number',
@@ -1007,19 +1001,28 @@ export const SETTINGS_SCHEMA = [
       },
       { key: 'coverQrLabel', label: 'نص توضيحي تحت الـ QR (اختياري)', type: 'text', default: 'Scan to join us' },
       { key: 'coverTotalQs', label: 'إظهار إجمالي عدد الأسئلة على الغلاف (Total: X Questions/MCQs)', type: 'check', default: false },
-      { key: 'coverTotalQsLabel', label: 'تسمية نوع الأسئلة على الغلاف (افتراضي: Questions أو MCQs تلقائيًا)', type: 'text', default: '' },
-      { key: 'secPages', label: 'إدراج صفحة فاصلة لكل مادة / قسم', type: 'check', default: true },
-      { key: 'secPageTitleOverride', label: 'تعديل اسم المادة الأولى (مثلاً: Part 1 بدل القسم الأول)', type: 'text', default: '' },
+      { key: 'coverTotalQsLabel', label: 'تسمية نوع الأسئلة على الغلاف (افتراضي: Questions أو MCQs تلقائيًا)', type: 'text', default: '' }
+    ]
+  },
+  {
+    group: 'dividers',
+    title: 'الصفحات الفاصلة بين الأقسام / المواد (Section Dividers)',
+    icon: '📑',
+    fields: [
+      { key: 'secPages', label: 'إدراج صفحات فاصلة للأقسام / المواد (Section Divider Pages)', type: 'check', default: true },
+      { key: 'secPageTitleOverride', label: 'تعديل عنوان الصفحة الفاصلة (Section Title - مثلاً Part 1 أو اكتب اسماً مخصصاً)', type: 'text', default: '' },
+      { key: 'secPageSub', label: 'النص الفرعي تحت العنوان (Subtitle - مثلاً Qs أو Questions أو اكتب none لإخفائه)', type: 'text', default: 'Qs' },
+      { key: 'secTitleCount', label: 'إظهار عدد الأسئلة بجانب العنوان (مثال: (15 Qs))', type: 'check', default: false },
       {
         key: 'secPageLayout',
-        label: 'تنسيق صفحة فاصل المادة',
+        label: 'تنسيق تصميم الصفحة الفاصلة (Divider Layout)',
         type: 'select',
         default: 'band',
         options: [
-          { val: 'band', text: 'شريط بارز مع لون الثيم' },
-          { val: 'center', text: 'توسيط كلاسيكي' },
-          { val: 'frame', text: 'إطار هندسي أنيق' },
-          { val: 'minimal', text: 'بسيط أبيض وأسود' }
+          { val: 'band', text: 'شريط بارز مع لون الثيم (Band)' },
+          { val: 'center', text: 'توسيط كلاسيكي فخم (Center)' },
+          { val: 'frame', text: 'إطار هندسي أنيق (Frame)' },
+          { val: 'minimal', text: 'بسيط وهادئ (Minimal)' }
         ]
       },
       { key: 'secPageLogo', label: 'ظهور اللوجو في صفحات فواصل المواد', type: 'check', default: true },
@@ -1032,9 +1035,7 @@ export const SETTINGS_SCHEMA = [
         max: 160,
         step: 5,
         unit: 'px'
-      },
-      { key: 'secPageSub', label: 'النص أسفل عنوان المادة (مثلاً: Qs أو MCQs)', type: 'text', default: 'Qs' },
-      { key: 'secTitleCount', label: 'إظهار عدد الأسئلة بجانب عنوان المادة (بالإنجليزي فقط: 17 Qs)', type: 'check', default: false }
+      }
     ]
   },
   {

@@ -14,7 +14,7 @@ describe('Section Divider Page English Auto-Detection', () => {
     expect(secCover.html).not.toContain('القسم الأول');
   });
 
-  it('keeps Arabic "القسم الأول" when exam questions are Arabic', () => {
+  it('converts generic Arabic "القسم الأول" to "Part 1" even if questions have Arabic', () => {
     const secs = [{
       name: 'القسم الأول',
       qs: [{ stem: 'ما هي الوظيفة الأساسية للأنسولين؟', opts: ['أ', 'ب'] }]
@@ -22,7 +22,7 @@ describe('Section Divider Page English Auto-Detection', () => {
     const items = buildItems(secs, false, { secPages: true });
     const secCover = items.find(it => it.isSecCover);
     expect(secCover).toBeDefined();
-    expect(secCover.html).toContain('<h1>القسم الأول</h1>');
+    expect(secCover.html).toContain('<h1>Part 1</h1>');
   });
 
   it('honors secPageTitleOverride setting', () => {

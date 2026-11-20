@@ -30,11 +30,9 @@ describe('formatTotalQuestions Grammar and Type Verification', () => {
     expect(multi).toBe('Total: 4 Questions');
   });
 
-  it('formats Arabic questions correctly with singular, dual, and plural', () => {
-    expect(formatTotalQuestions(1, { title: 'امتحان الفسيولوجي' }, [{ qs: [{ stem: 'سؤال' }] }])).toBe('سؤال واحد');
-    expect(formatTotalQuestions(2, { title: 'امتحان الفسيولوجي' }, [{ qs: [{ stem: 'سؤال' }] }])).toBe('سؤالان');
-    expect(formatTotalQuestions(5, { title: 'امتحان الفسيولوجي' }, [{ qs: [{ stem: 'سؤال' }] }])).toBe('5 أسئلة');
-    expect(formatTotalQuestions(15, { title: 'امتحان الفسيولوجي' }, [{ qs: [{ stem: 'سؤال' }] }])).toBe('15 سؤالاً');
+  it('formats questions in English even when exam title contains Arabic', () => {
+    expect(formatTotalQuestions(1, { title: 'امتحان الفسيولوجي' }, [{ qs: [{ stem: 'سؤال' }] }])).toBe('Total: 1 MCQ');
+    expect(formatTotalQuestions(5, { title: 'امتحان الفسيولوجي' }, [{ qs: [{ stem: 'سؤال' }] }])).toBe('Total: 5 MCQs');
   });
 
   it('supports user custom label override in settings', () => {

@@ -265,7 +265,7 @@ export function qHTML(q, n, isAns, S = state.settings) {
 export function formatTotalQuestions(count, S = {}, secs = []) {
   if (S.coverTotalQsLabel && S.coverTotalQsLabel.trim()) {
     const custom = S.coverTotalQsLabel.trim();
-    if (custom.toLowerCase().startsWith('total') || /^\d+/.test(custom) || /^(إجمالي|عدد)/.test(custom)) {
+    if (custom.toLowerCase().startsWith('total') || /^\d+/.test(custom)) {
       return custom;
     }
     let label = custom;
@@ -277,17 +277,8 @@ export function formatTotalQuestions(count, S = {}, secs = []) {
   }
 
   const title = ((S.title || '') + ' ' + (S.subtitle || '')).trim();
-  const isArabic = /[\u0600-\u06FF]/.test(title) || (secs[0]?.qs[0]?.stem && /[\u0600-\u06FF]/.test(secs[0].qs[0].stem));
-
-  if (isArabic) {
-    if (count === 1) return 'سؤال واحد';
-    if (count === 2) return 'سؤالان';
-    if (count >= 3 && count <= 10) return `${count} أسئلة`;
-    return `${count} سؤالاً`;
-  }
-
-  const isPractical = /practical|عملي/i.test(title);
-  const isEssayOrWritten = /written|essay|case|مقالي/i.test(title) || (secs.length > 0 && secs.every(s => s.qs.every(q => q.type === 'essay')));
+  const isPractical = /practical/i.test(title);
+  const isEssayOrWritten = /written|essay|case/i.test(title) || (secs.length > 0 && secs.every(s => s.qs.every(q => q.type === 'essay')));
 
   if (isPractical || isEssayOrWritten) {
     return count === 1 ? `Total: 1 Question` : `Total: ${count} Questions`;
@@ -364,7 +355,7 @@ export function buildItems(secs, isAns, S = state.settings) {
 
   // 2. Sections & Questions
   let globalNum = 0;
-  secs.forEach(s => {
+  secs.forEach((s, sIdx) => {
     // Question count in section title: ONLY English, and ONLY when explicitly turned on
     const qCountText = S.secTitleCount ? ` <small class="sec-count">(${s.qs.length} Qs)</small>` : '';
 
@@ -378,23 +369,58 @@ export function buildItems(secs, isAns, S = state.settings) {
         if (logoSrc === '/medscope-watermark-default.png') logoSrc = './medscope-watermark-default.png';
         secLogoHTML = `<div class="sec-cover-logo"><img src="${esc(logoSrc)}" style="width:${secLogoSize}px;height:auto;display:block;margin:0 auto 16px;" alt="Logo"></div>`;
       }
-      // Auto-detect and replace "القسم الأول" or "قسم X" if content is English
+      // Convert Arabic default/generic section labels to English Part 1 / Part 2 / etc.
       let displayName = s.name;
-      const isArabicSec = s.qs.some(q => /[\u0600-\u06FF]/.test(q.stem || '')) || /[\u0600-\u06FF]/.test(S.title || '');
-      if (!isArabicSec) {
-        if (displayName === 'القسم الأول') {
-          displayName = S.secPageTitleOverride || 'Part 1';
-        } else if (/^قسم\s*(\d+)/i.test(displayName)) {
-          const numMatch = displayName.match(/^قسم\s*(\d+)/);
-          displayName = numMatch ? `Part ${numMatch[1]}` : 'Part';
-        }
+      const trimmedName = (displayName || '').trim();
+      const arabicOrdinals = {
+        'القسم الأول': 'Part 1',
+        'الدرس الأول': 'Part 1',
+        'الفصل الأول': 'Part 1',
+        'الوحدة الأولى': 'Part 1',
+        'المحاضرة الأولى': 'Part 1',
+        'القسم الثاني': 'Part 2',
+        'الدرس الثاني': 'Part 2',
+        'الفصل الثاني': 'Part 2',
+        'الوحدة الثانية': 'Part 2',
+        'المحاضرة الثانية': 'Part 2',
+        'القسم الثالث': 'Part 3',
+        'الدرس الثالث': 'Part 3',
+        'الفصل الثالث': 'Part 3',
+        'الوحدة الثالثة': 'Part 3',
+        'المحاضرة الثالثة': 'Part 3',
+        'القسم الرابع': 'Part 4',
+        'الدرس الرابع': 'Part 4',
+        'الفصل الرابع': 'Part 4',
+        'القسم الخامس': 'Part 5',
+        'الدرس الخامس': 'Part 5',
+        'الفصل الخامس': 'Part 5',
+        'القسم السادس': 'Part 6',
+        'الدرس السادس': 'Part 6',
+        'القسم السابع': 'Part 7',
+        'الدرس السابع': 'Part 7',
+        'القسم الثامن': 'Part 8',
+        'الدرس الثامن': 'Part 8',
+        'القسم التاسع': 'Part 9',
+        'الدرس التاسع': 'Part 9',
+        'القسم العاشر': 'Part 10',
+        'الدرس العاشر': 'Part 10'
+      };
+
+      if (arabicOrdinals[trimmedName]) {
+        displayName = (trimmedName === 'القسم الأول' || trimmedName === 'الدرس الأول') && S.secPageTitleOverride
+          ? S.secPageTitleOverride
+          : arabicOrdinals[trimmedName];
+      } else if (/^(?:قسم|القسم|درس|الدرس|فصل|الفصل|وحدة|الوحدة|محاضرة|المحاضرة|موضوع|الموضوع|باب|الباب)\s*(\d+)/i.test(trimmedName)) {
+        const numMatch = trimmedName.match(/\d+/);
+        displayName = numMatch ? `Part ${numMatch[0]}` : 'Part';
       }
-      if (S.secPageTitleOverride && (secs.length === 1 || displayName === 'القسم الأول' || displayName === 'Part 1')) {
+
+      if (S.secPageTitleOverride && (secs.length === 1 || sIdx === 0 || /^Part\s*1?$/i.test(displayName))) {
         displayName = S.secPageTitleOverride;
       }
 
       let secSub = '';
-      if (S.secPageSub && S.secPageSub !== 'none') {
+      if (S.secPageSub && S.secPageSub.toLowerCase() !== 'none' && S.secPageSub.trim() !== '') {
         secSub = `<div class="qs">${esc(S.secPageSub)}</div>`;
       } else if (S.secPageSub === undefined || S.secPageSub === null) {
         secSub = `<div class="qs">Qs</div>`;

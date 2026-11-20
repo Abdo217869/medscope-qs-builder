@@ -135,10 +135,7 @@ export function parseDocument(rawText, keyText = '', options = {}) {
     flushQuestion();
     if (currentSection.qs.length > 0 || currentSection.name) {
       if (!currentSection.name) {
-        const isArabicText = /[\u0600-\u06FF]/.test(rawText);
-        currentSection.name = sections.length === 0
-          ? (isArabicText ? 'القسم الأول' : 'Part 1')
-          : (isArabicText ? `قسم ${sections.length + 1}` : `Part ${sections.length + 1}`);
+        currentSection.name = sections.length === 0 ? 'Part 1' : `Part ${sections.length + 1}`;
       }
       sections.push(currentSection);
       currentSection = {
