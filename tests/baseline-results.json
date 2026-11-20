@@ -1,0 +1,16 @@
+{
+  "dropZoneUsableMs": 4938,
+  "fcpMs": 3140,
+  "totalRequests": 122,
+  "totalBytesKB": 534,
+  "bytesByType": {
+    "js": 0,
+    "css": 0,
+    "font": 275600,
+    "wasm": 0,
+    "other": 271122
+  },
+  "tDocxMs": 842,
+  "tPdf8Ms": 3603,
+  "peakHeapMB": "9.54"
+}

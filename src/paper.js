@@ -191,7 +191,7 @@ export function wmHTML(S = state.settings) {
   }
 
   if (S.wmType === 'image') {
-    return `<div class="wm wm-${pos}" style="${posStyle}"><img src="${esc(imgSrc)}" style="width:${size}px; height:auto; max-width:85%; display:block;" alt="MEDSCOPE Watermark Logo"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">MEDSCOPE</span></div>`;
+    return `<div class="wm wm-${pos}" style="${posStyle}"><img src="${esc(imgSrc)}" loading="lazy" style="width:${size}px; height:auto; max-width:85%; display:block;" alt="MEDSCOPE Watermark Logo"><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">MEDSCOPE</span></div>`;
   }
 
   return `<div class="wm wm-${pos}" style="${posStyle}"><b>${esc(S.wmText || 'MEDSCOPE')}</b><em>${esc(S.wmSub || 'Spread your wingS')}</em></div>`;

@@ -82,3 +82,15 @@ export async function delAsset(key) {
     return false;
   }
 }
+
+/**
+ * File Text Extraction Caching (Prompt 6 Section 2)
+ */
+export async function getCachedFileExtraction(fileHash) {
+  return getAsset(`file_cache_${fileHash}`);
+}
+
+export async function cacheFileExtraction(fileHash, extractedData) {
+  return setAsset(`file_cache_${fileHash}`, extractedData);
+}
+

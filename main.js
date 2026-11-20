@@ -143,6 +143,32 @@ export function setStep(stepNum) {
   if (s2) s2.hidden = (stepNum !== 2);
   if (s3) s3.hidden = (stepNum !== 3);
 
+  // Sync Mobile Sticky Bottom Thumb Action Bar (Prompt 6 Section 4)
+  const mobileBar = $('#mobileBottomBar');
+  const mobileBtn = $('#mobileMainActionBtn');
+  const mobileActionText = $('#mobileActionText');
+  const btnMobileSheet = $('#btnMobileToggleSheet');
+  const mobileZoom = $('#mobileZoomBar');
+
+  if (mobileBar && mobileBtn && mobileActionText) {
+    if (stepNum === 1) {
+      mobileActionText.textContent = 'كمّل: راجع الأسئلة';
+      if (btnMobileSheet) btnMobileSheet.style.display = 'none';
+      if (mobileZoom) mobileZoom.style.display = 'none';
+      mobileBtn.onclick = () => setStep(2);
+    } else if (stepNum === 2) {
+      mobileActionText.textContent = 'كمّل: للشكل والتحميل';
+      if (btnMobileSheet) btnMobileSheet.style.display = 'none';
+      if (mobileZoom) mobileZoom.style.display = 'none';
+      mobileBtn.onclick = () => setStep(3);
+    } else if (stepNum === 3) {
+      mobileActionText.textContent = 'تحميل ورقة الأسئلة مباشر';
+      if (btnMobileSheet) btnMobileSheet.style.display = 'flex';
+      if (mobileZoom) mobileZoom.style.display = 'flex';
+      mobileBtn.onclick = () => downloadDirectPDF('qs');
+    }
+  }
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (stepNum === 2) {
@@ -748,6 +774,18 @@ export function init() {
       fileInput.value = '';
     });
 
+    // Mobile Camera Capture Support (Prompt 6 Section 4)
+    const cameraInput = $('#cameraInput');
+    const btnCaptureCamera = $('#btnCaptureCamera');
+    btnCaptureCamera?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cameraInput?.click();
+    });
+    cameraInput?.addEventListener('change', (e) => {
+      handleFilesUpload(e.target.files);
+      cameraInput.value = '';
+    });
+
     ['dragenter', 'dragover'].forEach(eventName => {
       dropZone.addEventListener(eventName, (e) => {
         e.preventDefault();
@@ -1003,12 +1041,117 @@ export function init() {
   window.addEventListener('afterprint', () => {
     fitZoom();
   });
-  // Register Service Worker for offline PWA
+
+  // Mobile Bottom Sheet Toggle (Prompt 6 Section 4)
+  const btnMobileSheet = $('#btnMobileToggleSheet');
+  const studioSidebar = $('#studioSidebar');
+  btnMobileSheet?.addEventListener('click', () => {
+    if (studioSidebar) {
+      studioSidebar.classList.toggle('sheet-open');
+    }
+  });
+
+  // Mobile Floating Zoom Controls (Prompt 6 Section 4)
+  const updateMobileZoomDisplay = () => {
+    const lbl = $('#mobileZoomLevel');
+    if (lbl) {
+      const z = Math.round((state.settings?.zoom || 1) * 100);
+      lbl.textContent = `${z}%`;
+    }
+  };
+
+  $('#btnMobileZoomIn')?.addEventListener('click', () => {
+    const cur = state.settings.zoom || 1;
+    const next = Math.min(2.5, +(cur + 0.15).toFixed(2));
+    state.settings.zoom = next;
+    const wrap = $('#pagesWrap');
+    if (wrap) wrap.style.setProperty('--z', next.toString());
+    updateMobileZoomDisplay();
+  });
+
+  $('#btnMobileZoomOut')?.addEventListener('click', () => {
+    const cur = state.settings.zoom || 1;
+    const next = Math.max(0.3, +(cur - 0.15).toFixed(2));
+    state.settings.zoom = next;
+    const wrap = $('#pagesWrap');
+    if (wrap) wrap.style.setProperty('--z', next.toString());
+    updateMobileZoomDisplay();
+  });
+
+  $('#btnMobileZoomFit')?.addEventListener('click', () => {
+    fitZoom();
+    updateMobileZoomDisplay();
+  });
+
+  // In-App Browser Detection (Telegram, Instagram, Facebook) (Prompt 6 Section 4)
+  const ua = navigator.userAgent || '';
+  const isInApp = /FBAN|FBAV|Instagram|Telegram|Line|WhatsApp/i.test(ua);
+  if (isInApp) {
+    const inAppBanner = $('#inAppBanner');
+    if (inAppBanner) inAppBanner.hidden = false;
+    $('#btnCopyInAppLink')?.addEventListener('click', () => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+      }
+      showToast('تم نسخ الرابط! افتحه في متصفح خارجي (Chrome أو Safari) ✓');
+    });
+  }
+
+  // Register Service Worker with Idle Background Caching (Prompt 6 Section 1)
   if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       reg.update();
+
+      const offlineTag = $('#offlineCacheTag');
+      const offlineText = $('#offlineCacheText');
+      const showOfflineStatus = (text) => {
+        if (offlineTag && offlineText) {
+          offlineTag.style.display = 'inline-flex';
+          offlineText.textContent = text;
+        }
+      };
+
+      if (store.get('mq.offlineCached') === 'true') {
+        showOfflineStatus('جاهز للعمل بدون نت ✓');
+      }
+
+      // Schedule background caching only during idle periods, unless on saveData
+      const triggerBackgroundCache = () => {
+        const conn = navigator.connection;
+        if (conn && (conn.saveData || conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g')) {
+          return;
+        }
+        if (store.get('mq.offlineCached') === 'true') return;
+        if (reg.active) {
+          reg.active.postMessage({ type: 'START_BACKGROUND_PRECACHE' });
+        }
+      };
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(triggerBackgroundCache, { timeout: 4000 });
+      } else {
+        setTimeout(triggerBackgroundCache, 2500);
+      }
     }).catch((err) => {
       console.warn('Service worker registration failed:', err);
+    });
+
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (!event.data) return;
+      const offlineTag = $('#offlineCacheTag');
+      const offlineText = $('#offlineCacheText');
+      if (event.data.type === 'OFFLINE_CACHE_PROGRESS') {
+        if (offlineTag && offlineText) {
+          offlineTag.style.display = 'inline-flex';
+          offlineText.textContent = `جاري تجهيز الموقع للعمل بدون نت ${event.data.percent}%`;
+        }
+      } else if (event.data.type === 'OFFLINE_CACHE_COMPLETE') {
+        store.set('mq.offlineCached', 'true');
+        if (offlineTag && offlineText) {
+          offlineTag.style.display = 'inline-flex';
+          offlineText.textContent = 'جاهز للعمل بدون نت ✓';
+        }
+      }
     });
   }
 }

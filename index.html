@@ -3,9 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Medscope Question Sheet Builder | مولّد أوراق الامتحانات</title>
   <link rel="icon" type="image/svg+xml" href="/medscope-eagle.svg">
+  <!-- Critical Font Preloading for Fast FCP (Prompt 6 Section 1) -->
+  <link rel="preload" href="/fonts/cairo-400-normal-arabic-3.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Stylesheets -->
   <link rel="stylesheet" href="/src/styles/fonts.css">
   <link rel="stylesheet" href="/src/styles/tokens.css">
@@ -15,6 +17,11 @@
 </head>
 
 <body>
+  <!-- In-App Browser Warning Banner (Prompt 6 Section 4) -->
+  <div id="inAppBanner" class="in-app-banner" hidden>
+    <span>⚠️ يُفضل فتح الموقع في متصفح خارجي (سفاري أو كروم) لضمان حفظ ومشاركة ملفات الـ PDF بسهولة.</span>
+    <button type="button" class="in-app-banner-btn" id="btnCopyInAppLink">نسخ الرابط</button>
+  </div>
   <!-- Ambient Obsidian Textures & Glow Spheres -->
   <div class="bg-grid-layer" aria-hidden="true"></div>
   <div class="bg-noise-layer" aria-hidden="true"></div>
@@ -63,6 +70,10 @@
           <span class="status-dot" id="statusDot"></span>
           <span class="status-text" id="statusText">IDLE</span>
         </div>
+        <div class="system-status-tag" id="offlineCacheTag" style="display:none;" title="حالة العمل بدون نت">
+          <span class="status-dot" style="background:#10b981;"></span>
+          <span id="offlineCacheText" style="font-size:10px;">جاهز بدون نت ✓</span>
+        </div>
         <button class="btn btn-help-pill" id="btnHelp" title="شرح طريقة الاستخدام في 30 ثانية">إزاي أستخدم الموقع؟</button>
         <button class="btn btn-glass-pill" id="btnSample" title="تحميل أسئلة تجريبية جاهزة">جرّب بمثال</button>
         <button class="btn btn-glass-pill danger" id="btnClear" title="مسح كافة المدخلات">مسح الكل</button>
@@ -99,10 +110,14 @@
             <!-- Large Glass Drop Zone Card -->
             <div class="drop-zone glass-card" id="dropZone">
               <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg" style="display:none">
+              <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
               <div class="drop-zone-icon">📁</div>
               <h2 class="drop-zone-title" id="dropZoneTitle">اسحب وأفلت الملفات هنا، أو اضغط لاختيار ملف</h2>
               <p class="drop-zone-sub">يدعم ملفات Word (.docx), PDF (.pdf), ملفات نصية (.txt, .md), وصور الأسئلة (.png, .jpg)</p>
-              <button class="btn neon-pulse-btn drop-zone-btn" id="btnBrowseFiles" type="button">اختار ملف من جهازك</button>
+              <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <button class="btn neon-pulse-btn drop-zone-btn" id="btnBrowseFiles" type="button">اختار ملف من جهازك</button>
+                <button class="btn drop-zone-btn" id="btnCaptureCamera" type="button" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff;">📷 صوّر الورقة</button>
+              </div>
               <div class="privacy-badge">
                 <span>🔒 ملفاتك مابتتبعتش لأي سيرفر - كل المعالجة بتتم داخل جهازك مباشرة</span>
               </div>
@@ -471,6 +486,25 @@
         <button class="neon-pulse-btn" id="btnCloseHelp" style="width: 100%; justify-content: center;">فهمت، يلا نبدأ 🚀</button>
       </div>
     </div>
+  </div>
+
+  <!-- Mobile Sticky Bottom Thumb Action Bar (Prompt 6 Section 4) -->
+  <div class="mobile-bottom-bar" id="mobileBottomBar">
+    <button type="button" class="mobile-bottom-btn" id="mobileMainActionBtn">
+      <span id="mobileActionText">كمّل: راجع الأسئلة</span>
+      <span>←</span>
+    </button>
+    <button type="button" class="mobile-sheet-toggle-btn" id="btnMobileToggleSheet" style="display:none;">
+      ⚙️ التعديلات
+    </button>
+  </div>
+
+  <!-- Floating Mobile Zoom Controls for Paper (Prompt 6 Section 4) -->
+  <div class="mobile-zoom-bar" id="mobileZoomBar" style="display:none;">
+    <button type="button" class="mobile-zoom-btn" id="btnMobileZoomOut" title="تصغير">−</button>
+    <span class="mobile-zoom-label" id="mobileZoomLevel">Fit</span>
+    <button type="button" class="mobile-zoom-btn" id="btnMobileZoomIn" title="تكبير">+</button>
+    <button type="button" class="mobile-zoom-btn" id="btnMobileZoomFit" style="width:auto; padding:0 8px; font-size:12px;" title="ملء الشاشة">Fit</button>
   </div>
 
   <!-- Toast Notification Host -->

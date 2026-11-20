@@ -300,7 +300,7 @@ export function buildSettingsUI(onUpdate) {
         uploaderWrap.innerHTML = `
           <div class="logo-preview-row">
             <div class="logo-thumb-box">
-              <img src="${currentLogo}" class="logo-thumb-img" alt="Logo preview" id="logoThumbImg">
+              <img src="${currentLogo}" loading="lazy" class="logo-thumb-img" alt="Logo preview" id="logoThumbImg">
             </div>
             <div class="logo-actions-col">
               <label class="btn sm gold" id="lblLogoFile" title="اختيار صورة أو لوجو مخصص">
@@ -541,6 +541,9 @@ export function buildSettingsUI(onUpdate) {
 
       if (!searchVal) {
         acc.style.display = 'block';
+        if (currentSettingsTab !== 'all') {
+          acc.open = true;
+        }
         return;
       }
 

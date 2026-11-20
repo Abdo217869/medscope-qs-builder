@@ -19,6 +19,9 @@
   overflow: hidden;
   flex: none;
   box-sizing: border-box;
+  content-visibility: auto;
+  contain-intrinsic-size: 210mm 297mm;
+  contain: layout paint;
 }
 
 .paper {
