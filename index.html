@@ -3,16 +3,23 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Medscope Question Sheet Builder | مولّد أوراق الامتحانات</title>
   <link rel="icon" type="image/svg+xml" href="./medscope-eagle.svg">
+  <!-- Critical Font Preloading for Fast FCP (Prompt 6 Section 1) -->
+  <link rel="preload" href="./fonts/cairo-400-normal-arabic-3.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="data:text/css;base64,LyogcHJpbnQuY3NzIC0gSGlnaCBQcmVjaXNpb24gQG1lZGlhIHByaW50IHJ1bGVzIGZvciBBNCBleHBvcnQgKi8NCg0KQG1lZGlhIHByaW50IHsNCiAgQHBhZ2Ugew0KICAgIHNpemU6IEE0IHBvcnRyYWl0Ow0KICAgIG1hcmdpbjogMDsNCiAgfQ0KDQogIGh0bWwsIGJvZHkgew0KICAgIGJhY2tncm91bmQ6ICNmZmZmZmYgIWltcG9ydGFudDsNCiAgICBjb2xvcjogIzAwMDAwMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgICBtaW4taGVpZ2h0OiBhdXRvICFpbXBvcnRhbnQ7DQogIH0NCg0KICAvKiBDb21wbGV0ZWx5IGhpZGUgYWxsIFVJIGVsZW1lbnRzLCBiYWNrZ3JvdW5kcywgc2lkZWJhcnMsIG5hdmlnYXRpb24sIG1vZGFscywgYW5kIHRvb2xiYXJzICovDQogIGJvZHk6OmJlZm9yZSwNCiAgLmJnLWdyaWQtbGF5ZXIsDQogIC5iZy1ub2lzZS1sYXllciwNCiAgLmdsb3ctc3BoZXJlLA0KICAudG9wLWhlYWRlciwNCiAgLnN0ZXBwZXItbmF2LA0KICAucmVjb3ZlcnktYmFubmVyLA0KICAuZHJvcC16b25lLA0KICAuZmlsZS1jYXJkcy1saXN0LA0KICAuc3RlcC1uYXYtZm9vdGVyLA0KICAuZG93bmxvYWQtaGVyby1ncmlkLA0KICAucHJpbnQtZ3VpZGUtY2FyZCwNCiAgZGV0YWlscy5hY2NvcmRpb24sDQogIC5yZXBvcnQtY2FyZCwNCiAgLmJlbnRvLWdyaWQsDQogIC5wcm9ibGVtcy1ib3gsDQogIC5wYW5lbCwNCiAgLnRvb2xiYXIsDQogIC5zdGF0cywNCiAgLnRvYXN0LA0KICAudW5kby10b2FzdCwNCiAgLm1vZGFsLWJhY2tkcm9wLA0KICAuc2lkZWJhci1mb290ZXIsDQogIC5vYnNpZGlhbi1mb290ZXIsDQogIC5lbXB0eS1wYXBlci1wbGFjZWhvbGRlciwNCiAgLmVtcHR5LWVkaXRvci1wbGFjZWhvbGRlciwNCiAgLmVtcHR5LWV4cG9ydC1wbGFjZWhvbGRlciwNCiAgLnN0dWRpby10b3AtYmFyLA0KICAuc3R1ZGlvLXNpZGViYXIsDQogIC5zdHVkaW8tdmlldy10b2dnbGUsDQogIC5zZXR0aW5ncy1uYXYtZmlsdGVyLXdyYXAsDQogIC5zZXR0aW5ncy10b3AtdG9vbGJhciwNCiAgLmN1c3RvbS1wcmVzZXRzLWJhciwNCiAgLnNldHRpbmdzLWdyb3VwLWFjY29yZGlvbiwNCiAgLnN0ZXAtaGVhZGVyLWRlc2MsDQogIC5wZGYtcHJvZ3Jlc3Mtb3ZlcmxheSwNCiAgI3N0ZXAxLA0KICAjc3RlcDIsDQogICNleHBvcnRIb3N0LA0KICAjZWRpdG9ySG9zdCwNCiAgbmF2LA0KICBoZWFkZXIsDQogIGZvb3RlciwNCiAgYXNpZGUsDQogIGJ1dHRvbiwNCiAgaW5wdXQsDQogIHNlbGVjdCwNCiAgdGV4dGFyZWEgew0KICAgIGRpc3BsYXk6IG5vbmUgIWltcG9ydGFudDsNCiAgfQ0KDQogIC5mbG9hdGluZy1zaGVsbCB7DQogICAgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsNCiAgICBtYXJnaW46IDAgIWltcG9ydGFudDsNCiAgICBwYWRkaW5nOiAwICFpbXBvcnRhbnQ7DQogICAgbWF4LXdpZHRoOiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyOiBub25lICFpbXBvcnRhbnQ7DQogICAgYm94LXNoYWRvdzogbm9uZSAhaW1wb3J0YW50Ow0KICAgIGJvcmRlci1yYWRpdXM6IDAgIWltcG9ydGFudDsNCiAgICBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudCAhaW1wb3J0YW50Ow0KICB9DQoNCiAgLnN0ZXAtY29udGFpbmVyLA0KICAjc3RlcDMsDQogIC5jb250cmFzdC1zZWN0aW9uLA0KICAuY29udHJhc3QtaW5uZXIsDQogIC5zdGVwMy1zdHVkaW8tbGF5b3V0LA0KICAuc3R1ZGlvLW1haW4gew0KICAgIGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7DQogICAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDsNCiAgICBtYXJnaW46IDAgIWltcG9ydGFudDsNCiAgICBwYWRkaW5nOiAwICFpbXBvcnRhbnQ7DQogICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQgIWltcG9ydGFudDsNCiAgICBib3JkZXI6IG5vbmUgIWltcG9ydGFudDsNCiAgICBib3JkZXItcmFkaXVzOiAwICFpbXBvcnRhbnQ7DQogIH0NCg0KICAucHJldmlldy1jYXJkLA0KICAuc3RhZ2UsDQogICNzdGFnZUNhcmQgew0KICAgIGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7DQogICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQgIWltcG9ydGFudDsNCiAgICBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyOiBub25lICFpbXBvcnRhbnQ7DQogICAgcGFkZGluZzogMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7DQogIH0NCg0KICAjdmlldyB7DQogICAgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsNCiAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgfQ0KDQogIC5wYWdlcy13cmFwIHsNCiAgICBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50Ow0KICAgIHRyYW5zZm9ybTogbm9uZSAhaW1wb3J0YW50Ow0KICAgIGdhcDogMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgfQ0KDQogIC8qIFBhcGVyIFBhZ2VzIC0gSGlnaCBwcmVjaXNpb24gQTQgaXNvbGF0aW9uICovDQogIC5wYWdlLnBhcGVyIHsNCiAgICBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyOiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyLXJhZGl1czogMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgICBwYWdlLWJyZWFrLWFmdGVyOiBhbHdheXMgIWltcG9ydGFudDsNCiAgICBicmVhay1hZnRlcjogcGFnZSAhaW1wb3J0YW50Ow0KICAgIHBhZ2UtYnJlYWstaW5zaWRlOiBhdm9pZCAhaW1wb3J0YW50Ow0KICAgIGJyZWFrLWluc2lkZTogYXZvaWQgIWltcG9ydGFudDsNCiAgICBwb3NpdGlvbjogcmVsYXRpdmUgIWltcG9ydGFudDsNCiAgICBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50Ow0KICAgIHdpZHRoOiAyMTBtbSAhaW1wb3J0YW50Ow0KICAgIGhlaWdodDogMjk3bW0gIWltcG9ydGFudDsNCiAgICBvdmVyZmxvdzogaGlkZGVuICFpbXBvcnRhbnQ7DQogICAgLXdlYmtpdC1wcmludC1jb2xvci1hZGp1c3Q6IGV4YWN0ICFpbXBvcnRhbnQ7DQogICAgcHJpbnQtY29sb3ItYWRqdXN0OiBleGFjdCAhaW1wb3J0YW50Ow0KICB9DQoNCiAgLyogUHJldmVudCB0cmFpbGluZyBibGFuayBwYWdlICovDQogIC5wYWdlLnBhcGVyOmxhc3QtY2hpbGQgew0KICAgIHBhZ2UtYnJlYWstYWZ0ZXI6IGF1dG8gIWltcG9ydGFudDsNCiAgICBicmVhay1hZnRlcjogYXV0byAhaW1wb3J0YW50Ow0KICB9DQp9DQo=" media="print">
-  <script type="module" crossorigin src="./assets/index-Bz2MR4i1.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CoHH-h8S.css">
+  <link rel="stylesheet" href="data:text/css;base64,LyogcHJpbnQuY3NzIC0gSGlnaCBQcmVjaXNpb24gQG1lZGlhIHByaW50IHJ1bGVzIGZvciBBNCBleHBvcnQgKi8NCg0KQG1lZGlhIHByaW50IHsNCiAgQHBhZ2Ugew0KICAgIHNpemU6IEE0IHBvcnRyYWl0Ow0KICAgIG1hcmdpbjogMDsNCiAgfQ0KDQogIGh0bWwsIGJvZHkgew0KICAgIGJhY2tncm91bmQ6ICNmZmZmZmYgIWltcG9ydGFudDsNCiAgICBjb2xvcjogIzAwMDAwMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgICBtaW4taGVpZ2h0OiBhdXRvICFpbXBvcnRhbnQ7DQogIH0NCg0KICAvKiBDb21wbGV0ZWx5IGhpZGUgYWxsIFVJIGVsZW1lbnRzLCBiYWNrZ3JvdW5kcywgc2lkZWJhcnMsIG5hdmlnYXRpb24sIG1vZGFscywgYW5kIHRvb2xiYXJzICovDQogIGJvZHk6OmJlZm9yZSwNCiAgLmJnLWdyaWQtbGF5ZXIsDQogIC5iZy1ub2lzZS1sYXllciwNCiAgLmdsb3ctc3BoZXJlLA0KICAudG9wLWhlYWRlciwNCiAgLnN0ZXBwZXItbmF2LA0KICAucmVjb3ZlcnktYmFubmVyLA0KICAuZHJvcC16b25lLA0KICAuZmlsZS1jYXJkcy1saXN0LA0KICAuc3RlcC1uYXYtZm9vdGVyLA0KICAuZG93bmxvYWQtaGVyby1ncmlkLA0KICAucHJpbnQtZ3VpZGUtY2FyZCwNCiAgZGV0YWlscy5hY2NvcmRpb24sDQogIC5yZXBvcnQtY2FyZCwNCiAgLmJlbnRvLWdyaWQsDQogIC5wcm9ibGVtcy1ib3gsDQogIC5wYW5lbCwNCiAgLnRvb2xiYXIsDQogIC5zdGF0cywNCiAgLnRvYXN0LA0KICAudW5kby10b2FzdCwNCiAgLm1vZGFsLWJhY2tkcm9wLA0KICAuc2lkZWJhci1mb290ZXIsDQogIC5vYnNpZGlhbi1mb290ZXIsDQogIC5lbXB0eS1wYXBlci1wbGFjZWhvbGRlciwNCiAgLmVtcHR5LWVkaXRvci1wbGFjZWhvbGRlciwNCiAgLmVtcHR5LWV4cG9ydC1wbGFjZWhvbGRlciwNCiAgLnN0dWRpby10b3AtYmFyLA0KICAuc3R1ZGlvLXNpZGViYXIsDQogIC5zdHVkaW8tdmlldy10b2dnbGUsDQogIC5zZXR0aW5ncy1uYXYtZmlsdGVyLXdyYXAsDQogIC5zZXR0aW5ncy10b3AtdG9vbGJhciwNCiAgLmN1c3RvbS1wcmVzZXRzLWJhciwNCiAgLnNldHRpbmdzLWdyb3VwLWFjY29yZGlvbiwNCiAgLnN0ZXAtaGVhZGVyLWRlc2MsDQogIC5wZGYtcHJvZ3Jlc3Mtb3ZlcmxheSwNCiAgI3N0ZXAxLA0KICAjc3RlcDIsDQogICNleHBvcnRIb3N0LA0KICAjZWRpdG9ySG9zdCwNCiAgbmF2LA0KICBoZWFkZXIsDQogIGZvb3RlciwNCiAgYXNpZGUsDQogIGJ1dHRvbiwNCiAgaW5wdXQsDQogIHNlbGVjdCwNCiAgdGV4dGFyZWEgew0KICAgIGRpc3BsYXk6IG5vbmUgIWltcG9ydGFudDsNCiAgfQ0KDQogIC5mbG9hdGluZy1zaGVsbCB7DQogICAgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsNCiAgICBtYXJnaW46IDAgIWltcG9ydGFudDsNCiAgICBwYWRkaW5nOiAwICFpbXBvcnRhbnQ7DQogICAgbWF4LXdpZHRoOiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyOiBub25lICFpbXBvcnRhbnQ7DQogICAgYm94LXNoYWRvdzogbm9uZSAhaW1wb3J0YW50Ow0KICAgIGJvcmRlci1yYWRpdXM6IDAgIWltcG9ydGFudDsNCiAgICBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudCAhaW1wb3J0YW50Ow0KICB9DQoNCiAgLnN0ZXAtY29udGFpbmVyLA0KICAjc3RlcDMsDQogIC5jb250cmFzdC1zZWN0aW9uLA0KICAuY29udHJhc3QtaW5uZXIsDQogIC5zdGVwMy1zdHVkaW8tbGF5b3V0LA0KICAuc3R1ZGlvLW1haW4gew0KICAgIGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7DQogICAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDsNCiAgICBtYXJnaW46IDAgIWltcG9ydGFudDsNCiAgICBwYWRkaW5nOiAwICFpbXBvcnRhbnQ7DQogICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQgIWltcG9ydGFudDsNCiAgICBib3JkZXI6IG5vbmUgIWltcG9ydGFudDsNCiAgICBib3JkZXItcmFkaXVzOiAwICFpbXBvcnRhbnQ7DQogIH0NCg0KICAucHJldmlldy1jYXJkLA0KICAuc3RhZ2UsDQogICNzdGFnZUNhcmQgew0KICAgIGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7DQogICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQgIWltcG9ydGFudDsNCiAgICBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyOiBub25lICFpbXBvcnRhbnQ7DQogICAgcGFkZGluZzogMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7DQogIH0NCg0KICAjdmlldyB7DQogICAgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsNCiAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgfQ0KDQogIC5wYWdlcy13cmFwIHsNCiAgICBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50Ow0KICAgIHRyYW5zZm9ybTogbm9uZSAhaW1wb3J0YW50Ow0KICAgIGdhcDogMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgfQ0KDQogIC8qIFBhcGVyIFBhZ2VzIC0gSGlnaCBwcmVjaXNpb24gQTQgaXNvbGF0aW9uICovDQogIC5wYWdlLnBhcGVyIHsNCiAgICBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyOiBub25lICFpbXBvcnRhbnQ7DQogICAgYm9yZGVyLXJhZGl1czogMCAhaW1wb3J0YW50Ow0KICAgIG1hcmdpbjogMCAhaW1wb3J0YW50Ow0KICAgIHBhZGRpbmc6IDAgIWltcG9ydGFudDsNCiAgICBwYWdlLWJyZWFrLWFmdGVyOiBhbHdheXMgIWltcG9ydGFudDsNCiAgICBicmVhay1hZnRlcjogcGFnZSAhaW1wb3J0YW50Ow0KICAgIHBhZ2UtYnJlYWstaW5zaWRlOiBhdm9pZCAhaW1wb3J0YW50Ow0KICAgIGJyZWFrLWluc2lkZTogYXZvaWQgIWltcG9ydGFudDsNCiAgICBwb3NpdGlvbjogcmVsYXRpdmUgIWltcG9ydGFudDsNCiAgICBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50Ow0KICAgIHdpZHRoOiAyMTBtbSAhaW1wb3J0YW50Ow0KICAgIGhlaWdodDogMjk3bW0gIWltcG9ydGFudDsNCiAgICBvdmVyZmxvdzogaGlkZGVuICFpbXBvcnRhbnQ7DQogICAgY29udGVudC12aXNpYmlsaXR5OiB2aXNpYmxlICFpbXBvcnRhbnQ7DQogICAgY29udGFpbjogbm9uZSAhaW1wb3J0YW50Ow0KICAgIC13ZWJraXQtcHJpbnQtY29sb3ItYWRqdXN0OiBleGFjdCAhaW1wb3J0YW50Ow0KICAgIHByaW50LWNvbG9yLWFkanVzdDogZXhhY3QgIWltcG9ydGFudDsNCiAgfQ0KDQogIC8qIFByZXZlbnQgdHJhaWxpbmcgYmxhbmsgcGFnZSAqLw0KICAucGFnZS5wYXBlcjpsYXN0LWNoaWxkIHsNCiAgICBwYWdlLWJyZWFrLWFmdGVyOiBhdXRvICFpbXBvcnRhbnQ7DQogICAgYnJlYWstYWZ0ZXI6IGF1dG8gIWltcG9ydGFudDsNCiAgfQ0KfQ0K" media="print">
+  <script type="module" crossorigin src="./assets/index-xHyPBZAT.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CP51GwKR.css">
 </head>
 
 <body>
+  <!-- In-App Browser Warning Banner (Prompt 6 Section 4) -->
+  <div id="inAppBanner" class="in-app-banner" hidden>
+    <span>⚠️ يُفضل فتح الموقع في متصفح خارجي (سفاري أو كروم) لضمان حفظ ومشاركة ملفات الـ PDF بسهولة.</span>
+    <button type="button" class="in-app-banner-btn" id="btnCopyInAppLink">نسخ الرابط</button>
+  </div>
   <!-- Ambient Obsidian Textures & Glow Spheres -->
   <div class="bg-grid-layer" aria-hidden="true"></div>
   <div class="bg-noise-layer" aria-hidden="true"></div>
@@ -61,6 +68,10 @@
           <span class="status-dot" id="statusDot"></span>
           <span class="status-text" id="statusText">IDLE</span>
         </div>
+        <div class="system-status-tag" id="offlineCacheTag" style="display:none;" title="حالة العمل بدون نت">
+          <span class="status-dot" style="background:#10b981;"></span>
+          <span id="offlineCacheText" style="font-size:10px;">جاهز بدون نت ✓</span>
+        </div>
         <button class="btn btn-help-pill" id="btnHelp" title="شرح طريقة الاستخدام في 30 ثانية">إزاي أستخدم الموقع؟</button>
         <button class="btn btn-glass-pill" id="btnSample" title="تحميل أسئلة تجريبية جاهزة">جرّب بمثال</button>
         <button class="btn btn-glass-pill danger" id="btnClear" title="مسح كافة المدخلات">مسح الكل</button>
@@ -97,10 +108,14 @@
             <!-- Large Glass Drop Zone Card -->
             <div class="drop-zone glass-card" id="dropZone">
               <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg" style="display:none">
+              <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
               <div class="drop-zone-icon">📁</div>
               <h2 class="drop-zone-title" id="dropZoneTitle">اسحب وأفلت الملفات هنا، أو اضغط لاختيار ملف</h2>
               <p class="drop-zone-sub">يدعم ملفات Word (.docx), PDF (.pdf), ملفات نصية (.txt, .md), وصور الأسئلة (.png, .jpg)</p>
-              <button class="btn neon-pulse-btn drop-zone-btn" id="btnBrowseFiles" type="button">اختار ملف من جهازك</button>
+              <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <button class="btn neon-pulse-btn drop-zone-btn" id="btnBrowseFiles" type="button">اختار ملف من جهازك</button>
+                <button class="btn drop-zone-btn" id="btnCaptureCamera" type="button" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff;">📷 صوّر الورقة</button>
+              </div>
               <div class="privacy-badge">
                 <span>🔒 ملفاتك مابتتبعتش لأي سيرفر - كل المعالجة بتتم داخل جهازك مباشرة</span>
               </div>
@@ -469,6 +484,25 @@
         <button class="neon-pulse-btn" id="btnCloseHelp" style="width: 100%; justify-content: center;">فهمت، يلا نبدأ 🚀</button>
       </div>
     </div>
+  </div>
+
+  <!-- Mobile Sticky Bottom Thumb Action Bar (Prompt 6 Section 4) -->
+  <div class="mobile-bottom-bar" id="mobileBottomBar">
+    <button type="button" class="mobile-bottom-btn" id="mobileMainActionBtn">
+      <span id="mobileActionText">كمّل: راجع الأسئلة</span>
+      <span>←</span>
+    </button>
+    <button type="button" class="mobile-sheet-toggle-btn" id="btnMobileToggleSheet" style="display:none;">
+      ⚙️ التعديلات
+    </button>
+  </div>
+
+  <!-- Floating Mobile Zoom Controls for Paper (Prompt 6 Section 4) -->
+  <div class="mobile-zoom-bar" id="mobileZoomBar" style="display:none;">
+    <button type="button" class="mobile-zoom-btn" id="btnMobileZoomOut" title="تصغير">−</button>
+    <span class="mobile-zoom-label" id="mobileZoomLevel">Fit</span>
+    <button type="button" class="mobile-zoom-btn" id="btnMobileZoomIn" title="تكبير">+</button>
+    <button type="button" class="mobile-zoom-btn" id="btnMobileZoomFit" style="width:auto; padding:0 8px; font-size:12px;" title="ملء الشاشة">Fit</button>
   </div>
 
   <!-- Toast Notification Host -->

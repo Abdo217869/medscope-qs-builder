@@ -1,11 +1,18 @@
-// public/sw.js - Service Worker for 100% offline capability
-const CACHE_NAME = 'medscope-essay-v6';
+// public/sw.js - Fast App Shell Precache + Idle Background Caching
+const CACHE_NAME = 'medscope-v7-perf';
 
-const STATIC_ASSETS = [
+// 1. Critical App Shell: Tiny instant install (< 100 KB)
+const STATIC_SHELL = [
   "./",
   "./index.html",
   "./manifest.json",
   "./medscope-eagle.svg",
+  "./fonts/cairo-400-normal-arabic-3.woff2",
+  "./fonts/space-grotesk-700-normal-all-15.woff2"
+];
+
+// 2. Heavy Secondary Assets: Lazily cached on first use OR in background when idle
+const BACKGROUND_ASSETS = [
   "./medscope-watermark-default.png",
   "./pdfjs/pdf.worker.mjs",
   "./tesseract/worker.min.js",
@@ -13,89 +20,29 @@ const STATIC_ASSETS = [
   "./tesseract/tesseract-core.wasm",
   "./tesseract/tesseract-core-simd.wasm",
   "./tesseract/eng.traineddata.gz",
-  "./fonts/cairo-400-normal-arabic-3.woff2",
+  "./fonts/cairo-700-normal-arabic-9.woff2",
+  "./fonts/jetbrains-mono-400-normal-latin-5.woff2",
   "./fonts/cairo-400-normal-latin-2.woff2",
   "./fonts/cairo-400-normal-latin-ext-1.woff2",
   "./fonts/cairo-600-normal-arabic-6.woff2",
   "./fonts/cairo-600-normal-latin-5.woff2",
   "./fonts/cairo-600-normal-latin-ext-4.woff2",
-  "./fonts/cairo-700-normal-arabic-9.woff2",
   "./fonts/cairo-700-normal-latin-8.woff2",
   "./fonts/cairo-700-normal-latin-ext-7.woff2",
   "./fonts/cairo-800-normal-all-12.woff2",
-  "./fonts/cairo-800-normal-latin-11.woff2",
-  "./fonts/cairo-800-normal-latin-ext-10.woff2",
-  "./fonts/font-1.woff2",
-  "./fonts/font-10.woff2",
-  "./fonts/font-11.woff2",
-  "./fonts/font-12.woff2",
-  "./fonts/font-13.woff2",
-  "./fonts/font-14.woff2",
-  "./fonts/font-15.woff2",
-  "./fonts/font-16.woff2",
-  "./fonts/font-17.woff2",
-  "./fonts/font-18.woff2",
-  "./fonts/font-19.woff2",
-  "./fonts/font-2.woff2",
-  "./fonts/font-20.woff2",
-  "./fonts/font-21.woff2",
-  "./fonts/font-22.woff2",
-  "./fonts/font-23.woff2",
-  "./fonts/font-24.woff2",
-  "./fonts/font-25.woff2",
-  "./fonts/font-26.woff2",
-  "./fonts/font-27.woff2",
-  "./fonts/font-28.woff2",
-  "./fonts/font-29.woff2",
-  "./fonts/font-3.woff2",
-  "./fonts/font-30.woff2",
-  "./fonts/font-31.woff2",
-  "./fonts/font-4.woff2",
-  "./fonts/font-5.woff2",
-  "./fonts/font-6.woff2",
-  "./fonts/font-7.woff2",
-  "./fonts/font-8.woff2",
-  "./fonts/font-9.woff2",
-  "./fonts/jetbrains-mono-400-normal-cyrillic-1.woff2",
-  "./fonts/jetbrains-mono-400-normal-cyrillic-ext-6.woff2",
-  "./fonts/jetbrains-mono-400-normal-greek-2.woff2",
-  "./fonts/jetbrains-mono-400-normal-latin-5.woff2",
-  "./fonts/jetbrains-mono-400-normal-latin-ext-4.woff2",
-  "./fonts/jetbrains-mono-400-normal-vietnamese-3.woff2",
-  "./fonts/jetbrains-mono-500-normal-cyrillic-7.woff2",
-  "./fonts/jetbrains-mono-500-normal-cyrillic-ext-12.woff2",
-  "./fonts/jetbrains-mono-500-normal-greek-8.woff2",
-  "./fonts/jetbrains-mono-500-normal-latin-11.woff2",
-  "./fonts/jetbrains-mono-500-normal-latin-ext-10.woff2",
-  "./fonts/jetbrains-mono-500-normal-vietnamese-9.woff2",
-  "./fonts/jetbrains-mono-700-normal-all-18.woff2",
-  "./fonts/jetbrains-mono-700-normal-cyrillic-13.woff2",
-  "./fonts/jetbrains-mono-700-normal-greek-14.woff2",
-  "./fonts/jetbrains-mono-700-normal-latin-17.woff2",
-  "./fonts/jetbrains-mono-700-normal-latin-ext-16.woff2",
-  "./fonts/jetbrains-mono-700-normal-vietnamese-15.woff2",
   "./fonts/space-grotesk-300-normal-latin-2.woff2",
-  "./fonts/space-grotesk-300-normal-latin-ext-1.woff2",
-  "./fonts/space-grotesk-300-normal-vietnamese-3.woff2",
   "./fonts/space-grotesk-400-normal-latin-5.woff2",
-  "./fonts/space-grotesk-400-normal-latin-ext-4.woff2",
-  "./fonts/space-grotesk-400-normal-vietnamese-6.woff2",
-  "./fonts/space-grotesk-500-normal-latin-8.woff2",
-  "./fonts/space-grotesk-500-normal-latin-ext-7.woff2",
-  "./fonts/space-grotesk-500-normal-vietnamese-9.woff2",
   "./fonts/space-grotesk-600-normal-latin-11.woff2",
-  "./fonts/space-grotesk-600-normal-latin-ext-10.woff2",
-  "./fonts/space-grotesk-600-normal-vietnamese-12.woff2",
-  "./fonts/space-grotesk-700-normal-all-15.woff2",
-  "./fonts/space-grotesk-700-normal-latin-14.woff2",
-  "./fonts/space-grotesk-700-normal-latin-ext-13.woff2"
+  "./fonts/jetbrains-mono-500-normal-latin-11.woff2",
+  "./fonts/jetbrains-mono-700-normal-all-18.woff2"
 ];
 
 self.addEventListener('install', (event) => {
+  // Precache ONLY the minimal app shell for instant install
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch((err) => {
-        console.warn('Some assets failed to precache during install:', err);
+      return cache.addAll(STATIC_SHELL).catch((err) => {
+        console.warn('Some shell assets failed to precache:', err);
       });
     }).then(() => self.skipWaiting())
   );
@@ -111,11 +58,71 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Broadcast message helper
+async function broadcast(data) {
+  const clients = await self.clients.matchAll({ type: 'window' });
+  for (const client of clients) {
+    client.postMessage(data);
+  }
+}
+
+// Background Idle Caching Engine
+let isBackgroundCaching = false;
+async function performBackgroundCaching() {
+  if (isBackgroundCaching) return;
+  isBackgroundCaching = true;
+
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const total = BACKGROUND_ASSETS.length;
+    let completed = 0;
+
+    for (let i = 0; i < total; i++) {
+      const url = BACKGROUND_ASSETS[i];
+      try {
+        const match = await cache.match(url);
+        if (!match) {
+          const res = await fetch(url);
+          if (res && res.status === 200) {
+            await cache.put(url, res);
+          }
+        }
+      } catch (e) {
+        // Continue with next asset
+      }
+      completed++;
+      await broadcast({
+        type: 'OFFLINE_CACHE_PROGRESS',
+        loaded: completed,
+        total,
+        percent: Math.round((completed / total) * 100)
+      });
+      // Small pause between downloads to yield network/CPU
+      await new Promise(r => setTimeout(r, 60));
+    }
+
+    await broadcast({ type: 'OFFLINE_CACHE_COMPLETE' });
+  } catch (err) {
+    console.warn('Background cache error:', err);
+  } finally {
+    isBackgroundCaching = false;
+  }
+}
+
+self.addEventListener('message', (event) => {
+  if (!event.data) return;
+  if (event.data.type === 'START_BACKGROUND_PRECACHE') {
+    performBackgroundCaching();
+  } else if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
 
-  // Network-First for HTML navigation so users always see the latest deployed app immediately
+  // Network-First for HTML navigation
   if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(request, { cache: 'no-cache' }).then((networkResponse) => {
@@ -131,7 +138,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-First for versioned static assets (fonts, chunks, icons)
+  // Cache-First for static assets
   event.respondWith(
     caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
