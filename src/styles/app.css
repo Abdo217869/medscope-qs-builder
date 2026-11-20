@@ -4032,3 +4032,395 @@ button {
   color: var(--accent-lime, #ccff00);
   margin-top: 6px;
 }
+
+/* =========================================================================
+   Prompt 9: Individual Dividers Manager & Custom Page Download / Exclusion
+   ========================================================================= */
+
+/* 1. Custom Page Range & Page Exclusion Card in Step 3 */
+.custom-pages-card {
+  margin: 16px 0 20px;
+  background: rgba(18, 22, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.custom-pages-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.custom-pages-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-pages-icon {
+  font-size: 18px;
+}
+
+.custom-pages-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.custom-pages-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(204, 255, 0, 0.15);
+  color: var(--accent-lime, #ccff00);
+  border: 1px solid rgba(204, 255, 0, 0.3);
+}
+
+.custom-pages-pill.has-excluded {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.btn-toggle-custom-pages {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle-custom-pages:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.custom-pages-body {
+  padding: 18px;
+}
+
+.custom-pages-cols-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .custom-pages-cols-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.custom-pages-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.col-header-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: #f8fafc;
+}
+
+.col-icon {
+  font-size: 16px;
+}
+
+.col-desc {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0 0 4px;
+  line-height: 1.45;
+}
+
+.custom-range-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.custom-range-input-row input {
+  flex: 1;
+  padding: 7px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.quick-range-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.quick-chips-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.btn-range-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-range-chip:hover {
+  background: rgba(204, 255, 0, 0.15);
+  border-color: rgba(204, 255, 0, 0.4);
+  color: var(--accent-lime, #ccff00);
+}
+
+.range-info-status,
+.excluded-info-status {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* 2. On-Page Hover Action Toolbar */
+.page-action-toolbar {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 4px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page:hover .page-action-toolbar {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.page-badge-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.page-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-page-action {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.2;
+}
+
+.btn-page-action.download {
+  background: rgba(204, 255, 0, 0.15);
+  color: var(--accent-lime, #ccff00);
+  border-color: rgba(204, 255, 0, 0.3);
+}
+
+.btn-page-action.download:hover {
+  background: var(--accent-lime, #ccff00);
+  color: #000000;
+}
+
+.btn-page-action.exclude {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.btn-page-action.exclude:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.btn-page-action.restore {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.btn-page-action.restore:hover {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+/* 3. Excluded Page Visual Style */
+.page.is-page-excluded {
+  opacity: 0.45 !important;
+  filter: grayscale(0.85);
+  outline: 3px dashed #ef4444 !important;
+  outline-offset: -3px;
+  position: relative;
+}
+
+.page.is-page-excluded::after {
+  content: '🚫 صفحة مستبعدة (لن تظهر في الـ PDF أو الطباعة)';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(15, 23, 42, 0.92);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+@media print {
+  .page-action-toolbar,
+  .page.is-page-excluded {
+    display: none !important;
+  }
+}
+
+/* 4. Individual Dividers Manager Cards in Studio Sidebar */
+.individual-dividers-manager-card {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dividers-manager-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+}
+
+.dividers-manager-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.dividers-manager-hint {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.dividers-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sec-divider-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: all 0.2s ease;
+}
+
+.sec-divider-card.is-disabled {
+  opacity: 0.6;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.sec-divider-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.sec-divider-number {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #e2e8f0;
+}
+
+.sec-tag {
+  background: rgba(204, 255, 0, 0.12);
+  color: var(--accent-lime, #ccff00);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.sec-divider-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sec-divider-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sec-divider-field-label {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.sec-divider-card-body input {
+  padding: 6px 10px;
+  font-size: 12.5px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #ffffff;
+}
+

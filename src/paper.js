@@ -359,18 +359,21 @@ export function buildItems(secs, isAns, S = state.settings) {
     // Question count in section title: ONLY English, and ONLY when explicitly turned on
     const qCountText = S.secTitleCount ? ` <small class="sec-count">(${s.qs.length} Qs)</small>` : '';
 
-    if (S.secPages && s.name) {
+    const secPageEnabled = (s.secPageEnabled !== undefined) ? s.secPageEnabled : S.secPages;
+
+    if (secPageEnabled && s.name) {
       const ornaments = soft ? '<div class="orn">\u25C6 \u25C6 \u25C6</div>' : '';
-      const secLayout = S.secPageLayout || 'band';
+      const secLayout = s.secPageLayout || S.secPageLayout || 'band';
       const secLogoSize = S.secPageLogoSize || 80;
       let secLogoHTML = '';
-      if (S.secPageLogo !== false) {
+      const showLogo = (s.secPageLogo !== undefined) ? s.secPageLogo : (S.secPageLogo !== false);
+      if (showLogo) {
         let logoSrc = S.wmImg || './medscope-watermark-default.png';
         if (logoSrc === '/medscope-watermark-default.png') logoSrc = './medscope-watermark-default.png';
         secLogoHTML = `<div class="sec-cover-logo"><img src="${esc(logoSrc)}" style="width:${secLogoSize}px;height:auto;display:block;margin:0 auto 16px;" alt="Logo"></div>`;
       }
       // Convert Arabic default/generic section labels to English Part 1 / Part 2 / etc.
-      let displayName = s.name;
+      let displayName = s.secPageTitle || s.name;
       const trimmedName = (displayName || '').trim();
       const arabicOrdinals = {
         'القسم الأول': 'Part 1',
@@ -415,14 +418,15 @@ export function buildItems(secs, isAns, S = state.settings) {
         displayName = numMatch ? `Part ${numMatch[0]}` : 'Part';
       }
 
-      if (S.secPageTitleOverride && (secs.length === 1 || sIdx === 0 || /^Part\s*1?$/i.test(displayName))) {
+      if (!s.secPageTitle && S.secPageTitleOverride && (secs.length === 1 || sIdx === 0 || /^Part\s*1?$/i.test(displayName))) {
         displayName = S.secPageTitleOverride;
       }
 
       let secSub = '';
-      if (S.secPageSub && S.secPageSub.toLowerCase() !== 'none' && S.secPageSub.trim() !== '') {
-        secSub = `<div class="qs">${esc(S.secPageSub)}</div>`;
-      } else if (S.secPageSub === undefined || S.secPageSub === null) {
+      const subVal = (s.secPageSub !== undefined) ? s.secPageSub : S.secPageSub;
+      if (subVal && subVal.toLowerCase() !== 'none' && subVal.trim() !== '') {
+        secSub = `<div class="qs">${esc(subVal)}</div>`;
+      } else if (subVal === undefined || subVal === null) {
         secSub = `<div class="qs">Qs</div>`;
       }
 
@@ -548,8 +552,22 @@ export function renderPagesHTML(isAns) {
 
     const themeClass = `t-${S.theme || 'soft'}`;
     const fullClass = p.full ? ' is-full' : '';
+    const isExcluded = state.excludedPages && state.excludedPages.has(pageNumber);
+    const excludedClass = isExcluded ? ' is-page-excluded' : '';
 
-    return `<div class="page paper ${themeClass}${fullClass}${frameClass}" style="${varsStyle};width:${P.PW}px;height:${P.PH}px">${topBarHTML}${headerHTML}${watermarkHTML}${footerHTML}${bodyHTML}</div>`;
+    const pageActionsHTML = `
+      <div class="page-action-toolbar" data-page-num="${pageNumber}">
+        <span class="page-badge-pill">ص ${pageNumber}</span>
+        <div class="page-action-buttons">
+          <button type="button" class="btn-page-action download" data-download-page="${pageNumber}" title="تحميل هذه الصفحة فقط كـ PDF">📥 صفحة واحدة</button>
+          <button type="button" class="btn-page-action ${isExcluded ? 'restore' : 'exclude'}" data-toggle-page="${pageNumber}" title="${isExcluded ? 'استعادة هذه الصفحة للـ PDF والطباعة' : 'استبعاد هذه الصفحة من ملف الـ PDF'}">
+            ${isExcluded ? '↺ استعادة' : '🗑️ استبعاد'}
+          </button>
+        </div>
+      </div>
+    `;
+
+    return `<div class="page paper ${themeClass}${fullClass}${frameClass}${excludedClass}" data-page="${pageNumber}" style="${varsStyle};width:${P.PW}px;height:${P.PH}px">${pageActionsHTML}${topBarHTML}${headerHTML}${watermarkHTML}${footerHTML}${bodyHTML}</div>`;
   }).join('');
 
   return `<div class="pages-wrap" id="pagesWrap" data-pages="${totalPages}">${pagesHTML}</div>`;

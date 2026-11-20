@@ -176,6 +176,7 @@ export const state = {
     keyPairs: 0,
     keyUsed: 0
   },
+  excludedPages: new Set(),
   view: 'qs', // 'qs' | 'as' | 'edit' | 'exp'
   tab: 'q',   // 'q' | 'k' | 's'
   zoomManual: null
@@ -366,7 +367,7 @@ export function shuffle(arr, rnd = Math.random) {
 export function getViewData() {
   const S = state.settings;
   const secs = state.data.sections.map(s => ({
-    name: s.name,
+    ...s,
     qs: s.qs.map(q => ({
       ...q,
       opts: q.opts.slice()
@@ -406,3 +407,62 @@ export function getViewData() {
     return { ...sec, qs };
   });
 }
+
+/**
+ * Parses user-friendly page range strings into a sorted, deduplicated array of 1-based integers.
+ * Supports: "1", "1, 3-5", "2, 4, 7-10", "all", etc.
+ */
+export function parsePageRange(rangeStr, maxPages = 9999) {
+  if (!rangeStr || !rangeStr.trim() || rangeStr.trim().toLowerCase() === 'all') {
+    return Array.from({ length: maxPages }, (_, i) => i + 1);
+  }
+  const pages = new Set();
+  const parts = rangeStr.split(/[,;\s]+/);
+  for (const part of parts) {
+    if (!part) continue;
+    if (part.includes('-')) {
+      const [startStr, endStr] = part.split('-');
+      const start = parseInt(startStr, 10);
+      const end = parseInt(endStr, 10);
+      if (!isNaN(start) && !isNaN(end)) {
+        const lo = Math.max(1, Math.min(start, end));
+        const hi = Math.min(maxPages, Math.max(start, end));
+        for (let i = lo; i <= hi; i++) {
+          pages.add(i);
+        }
+      }
+    } else {
+      const p = parseInt(part, 10);
+      if (!isNaN(p) && p >= 1 && p <= maxPages) {
+        pages.add(p);
+      }
+    }
+  }
+  return Array.from(pages).sort((a, b) => a - b);
+}
+
+export function togglePageExclusion(pageNum) {
+  if (!state.excludedPages) state.excludedPages = new Set();
+  const num = parseInt(pageNum, 10);
+  if (isNaN(num) || num < 1) return false;
+  if (state.excludedPages.has(num)) {
+    state.excludedPages.delete(num);
+  } else {
+    state.excludedPages.add(num);
+  }
+  return state.excludedPages.has(num);
+}
+
+export function isPageExcluded(pageNum) {
+  if (!state.excludedPages) return false;
+  return state.excludedPages.has(parseInt(pageNum, 10));
+}
+
+export function restoreAllPages() {
+  if (state.excludedPages) state.excludedPages.clear();
+}
+
+export function setExcludedPages(pageNumsArray) {
+  state.excludedPages = new Set((pageNumsArray || []).map(n => parseInt(n, 10)).filter(n => !isNaN(n) && n >= 1));
+}
+

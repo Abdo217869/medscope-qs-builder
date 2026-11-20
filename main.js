@@ -2,7 +2,7 @@
 
 import { parse, richLines, LET } from './src/parser.js';
 import { parseDocument } from './src/essay/parseEssay.js';
-import { state, store, SAMPLE_TEXT, syncLogoFromIDB } from './src/state.js';
+import { state, store, SAMPLE_TEXT, syncLogoFromIDB, parsePageRange, togglePageExclusion, restoreAllPages, setExcludedPages } from './src/state.js';
 import { renderPagesHTML, fitZoom } from './src/paper.js';
 import { renderStats } from './src/stats.js';
 import { buildSettingsUI } from './src/settings.js';
@@ -248,14 +248,11 @@ export function renderStep3() {
   renderStats();
   renderView();
 
-  const advSettingsHost = $('#advSettingsHost');
-  if (advSettingsHost && !advSettingsHost.hasChildNodes()) {
-    buildSettingsUI(() => {
-      cancelBackgroundPrecompute();
-      renderAll();
-      scheduleBackgroundPrecompute();
-    });
-  }
+  buildSettingsUI(() => {
+    cancelBackgroundPrecompute();
+    renderAll();
+    scheduleBackgroundPrecompute();
+  });
 
   const exportHost = $('#exportHost');
   if (exportHost) {
@@ -884,6 +881,122 @@ export function init() {
   // Fallback to classic browser print dialog
   $('#btnBrowserPrintFallback')?.addEventListener('click', () => {
     printMode('qs');
+  });
+
+  // Custom Page Range & Page Exclusion Management (Prompt 9)
+  const updateExcludedPagesUI = () => {
+    const badge = $('#customPagesSummaryBadge');
+    const statusText = $('#excludedInfoStatus');
+    const inp = $('#inputExcludedPages');
+    const count = state.excludedPages ? state.excludedPages.size : 0;
+
+    if (badge) {
+      if (count === 0) {
+        badge.textContent = 'الكل جاهز للتحميل';
+        badge.classList.remove('has-excluded');
+      } else {
+        badge.textContent = `مستبعد ${count} صفحات`;
+        badge.classList.add('has-excluded');
+      }
+    }
+
+    if (statusText) {
+      if (count === 0) {
+        statusText.textContent = '✅ لا توجد صفحات مستبعدة حالياً. يمكنك أيضاً الضغط على أيقونة 🗑️ أعلى أي ورقة في المعاينة لحذفها بنقرة واحدة.';
+      } else {
+        const sorted = Array.from(state.excludedPages).sort((a, b) => a - b);
+        statusText.textContent = `🚫 الصفحات المستبعدة من الطباعة والـ PDF: [${sorted.join(', ')}] (إجمالي: ${count} صفحات).`;
+      }
+    }
+
+    if (inp && state.excludedPages) {
+      const sorted = Array.from(state.excludedPages).sort((a, b) => a - b);
+      inp.value = sorted.length ? sorted.join(', ') : '';
+    }
+  };
+
+  $('#btnToggleCustomPages')?.addEventListener('click', () => {
+    const body = $('#customPagesBody');
+    const btn = $('#btnToggleCustomPages');
+    if (!body || !btn) return;
+    const isHidden = body.hidden;
+    body.hidden = !isHidden;
+    btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    const span = btn.querySelector('span');
+    if (span) span.textContent = isHidden ? 'إخفاء الخيارات ▴' : 'تحديد الصفحات ▾';
+  });
+
+  $('#btnDownloadCustomRange')?.addEventListener('click', () => {
+    const rangeVal = $('#inputCustomPageRange')?.value?.trim();
+    const mode = (state.view === 'as') ? 'as' : 'qs';
+    if (!rangeVal || rangeVal.toLowerCase() === 'all') {
+      downloadDirectPDF(mode);
+    } else {
+      downloadDirectPDF(mode, { pageRange: rangeVal });
+    }
+  });
+
+  $('#quickRangeChips')?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.btn-range-chip');
+    if (!chip) return;
+    const range = chip.dataset.range;
+    const inp = $('#inputCustomPageRange');
+    const status = $('#rangeInfoStatus');
+    if (inp) {
+      if (range === 'all') {
+        inp.value = '';
+        if (status) status.textContent = 'سيتم تحميل كافة الصفحات المتاحة.';
+      } else {
+        inp.value = range;
+        if (status) status.textContent = `سيتم تحميل الصفحات: ${range} فقط.`;
+      }
+    }
+  });
+
+  $('#btnApplyExcludedPages')?.addEventListener('click', () => {
+    const val = $('#inputExcludedPages')?.value?.trim();
+    if (!val) {
+      restoreAllPages();
+      showToast('تم إلغاء استبعاد الصفحات ✓');
+    } else {
+      const pages = parsePageRange(val);
+      setExcludedPages(pages);
+      showToast(`تم استبعاد الصفحات: ${pages.join(', ')} ✓`);
+    }
+    updateExcludedPagesUI();
+    renderView();
+  });
+
+  $('#btnResetExcludedPages')?.addEventListener('click', () => {
+    restoreAllPages();
+    updateExcludedPagesUI();
+    renderView();
+    showToast('تم استعادة كافة الصفحات المستبعدة ✓');
+  });
+
+  // Event delegation on view container for page-level actions
+  $('#view')?.addEventListener('click', (e) => {
+    const dlBtn = e.target.closest('[data-download-page]');
+    if (dlBtn) {
+      const pNum = parseInt(dlBtn.dataset.downloadPage, 10);
+      if (pNum) {
+        const mode = (state.view === 'as') ? 'as' : 'qs';
+        downloadDirectPDF(mode, { singlePage: pNum });
+      }
+      return;
+    }
+
+    const toggleBtn = e.target.closest('[data-toggle-page]');
+    if (toggleBtn) {
+      const pNum = parseInt(toggleBtn.dataset.togglePage, 10);
+      if (pNum) {
+        const isNowExcluded = togglePageExclusion(pNum);
+        updateExcludedPagesUI();
+        renderView();
+        showToast(isNowExcluded ? `تم استبعاد صفحة ${pNum} من ملف الـ PDF 🗑️` : `تمت استعادة صفحة ${pNum} للـ PDF ✓`);
+      }
+      return;
+    }
   });
 
   // Drop Zone Drag & Drop and File Selection

@@ -362,6 +362,63 @@
             </button>
           </div>
 
+          <!-- Custom Page Range & Page Exclusion Manager (Prompt 9) -->
+          <div class="custom-pages-card" id="customPagesCard">
+            <div class="custom-pages-header">
+              <div class="custom-pages-title-wrap">
+                <span class="custom-pages-icon">📑</span>
+                <span class="custom-pages-title">تحميل صفحات معينة أو استبعاد / حذف صفحات</span>
+                <span class="custom-pages-pill" id="customPagesSummaryBadge">الكل جاهز للتحميل</span>
+              </div>
+              <button type="button" class="btn-toggle-custom-pages" id="btnToggleCustomPages" aria-expanded="false">
+                <span>تحديد الصفحات ▾</span>
+              </button>
+            </div>
+
+            <div class="custom-pages-body" id="customPagesBody" hidden>
+              <div class="custom-pages-cols-grid">
+                <!-- Col 1: Download Specific Pages / Range -->
+                <div class="custom-pages-col">
+                  <div class="col-header-wrap">
+                    <span class="col-icon">🎯</span>
+                    <strong>تحميل نطاق أو صفحات معينة فقط:</strong>
+                  </div>
+                  <p class="col-desc">حدد أرقام الصفحات المطلوبة (صفحة واحدة أو مجموعة محددة) لتحميلها في ملف PDF مستقل فوراً:</p>
+                  <div class="custom-range-input-row">
+                    <input type="text" id="inputCustomPageRange" class="modern-field-text" placeholder="مثال: 1, 3-5, 8 (أو اتركه فارغاً للكل)" dir="ltr">
+                    <button type="button" class="btn gold sm" id="btnDownloadCustomRange">📥 تحميل هذا النطاق (PDF)</button>
+                  </div>
+                  <div class="quick-range-chips" id="quickRangeChips">
+                    <span class="quick-chips-label">اختصارات سريعة:</span>
+                    <button type="button" class="btn-range-chip" data-range="1">📄 صفحة 1 فقط</button>
+                    <button type="button" class="btn-range-chip" data-range="1-3">ص 1 إلى 3</button>
+                    <button type="button" class="btn-range-chip" data-range="all">كافة الصفحات</button>
+                  </div>
+                  <div class="range-info-status" id="rangeInfoStatus">
+                    💡 اكتب أرقام الصفحات مفصولة بفواصل أو شرطة، أو اضغط على أيقونة "📥 تحميل الصفحة" أعلى أي ورقة في المعاينة.
+                  </div>
+                </div>
+
+                <!-- Col 2: Exclude / Delete Pages -->
+                <div class="custom-pages-col">
+                  <div class="col-header-wrap">
+                    <span class="col-icon">🗑️</span>
+                    <strong>حذف / استبعاد صفحات من الـ PDF والطباعة:</strong>
+                  </div>
+                  <p class="col-desc">استبعد صفحات محددة حتى لا تظهر في ملف الـ PDF النهائي أو في نافذة الطباعة:</p>
+                  <div class="custom-range-input-row">
+                    <input type="text" id="inputExcludedPages" class="modern-field-text" placeholder="أرقام الصفحات المستبعدة (مثال: 2, 4)" dir="ltr">
+                    <button type="button" class="btn sm danger" id="btnApplyExcludedPages">تطبيق الاستبعاد</button>
+                    <button type="button" class="btn sm" id="btnResetExcludedPages" title="استرجاع كافة الصفحات المستبعدة">↺ استعادة الكل</button>
+                  </div>
+                  <div class="excluded-info-status" id="excludedInfoStatus">
+                    ✅ لا توجد صفحات مستبعدة حالياً. يمكنك أيضاً الضغط على أيقونة 🗑️ أعلى أي ورقة في المعاينة لحذفها بنقرة واحدة.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Layout Mode & Paper View Switcher Bar -->
           <div class="studio-top-bar"
             style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">

@@ -685,6 +685,101 @@ export function buildSettingsUI(onUpdate) {
       groupBody.appendChild(row);
     });
 
+    // -----------------------------------------------------------------------
+    // Individual Per-Section Dividers Customization Cards
+    // -----------------------------------------------------------------------
+    if (groupObj.group === 'dividers') {
+      const secs = state.data?.sections || [];
+      if (secs.length > 0) {
+        const managerWrap = document.createElement('div');
+        managerWrap.className = 'individual-dividers-manager-card';
+        managerWrap.innerHTML = `
+          <div class="dividers-manager-header">
+            <span class="dividers-manager-title">📑 تخصيص كل صفحة فاصلة بشكل مستقل (${secs.length} مواد/أقسام):</span>
+            <span class="dividers-manager-hint">تحكم في ظهور أو عنوان كل فاصل على حدة</span>
+          </div>
+          <div class="dividers-cards-list">
+            ${secs.map((s, si) => {
+              const isEnabled = s.secPageEnabled !== false;
+              const defaultTitle = s.name || `Part ${si + 1}`;
+              const titleVal = s.secPageTitle !== undefined ? s.secPageTitle : defaultTitle;
+              const subVal = s.secPageSub !== undefined ? s.secPageSub : (S.secPageSub || 'Qs');
+              return `
+                <div class="sec-divider-card ${isEnabled ? '' : 'is-disabled'}" data-sidx="${si}">
+                  <div class="sec-divider-card-head">
+                    <span class="sec-divider-number">
+                      <span class="sec-tag">قسم ${si + 1}</span>
+                      <strong>${escapeHTML(s.name || `Part ${si + 1}`)}</strong>
+                      <small>(${s.qs.length} أسئلة)</small>
+                    </span>
+                    <label class="modern-toggle-switch" title="إظهار أو إخفاء صفحة الفاصل لهذا القسم">
+                      <input type="checkbox" class="sec-divider-toggle modern-toggle-input" data-sidx="${si}" ${isEnabled ? 'checked' : ''}>
+                      <span class="modern-toggle-slider"></span>
+                      <span class="modern-toggle-status">${isEnabled ? 'مُفعّل' : 'معطّل'}</span>
+                    </label>
+                  </div>
+                  <div class="sec-divider-card-body" ${isEnabled ? '' : 'style="opacity:0.45;pointer-events:none"'}>
+                    <div class="sec-divider-field-row">
+                      <label class="sec-divider-field-label">عنوان الفاصل لهذا القسم:</label>
+                      <input type="text" class="sec-divider-title-input modern-field-text" data-sidx="${si}" value="${escapeHTML(titleVal)}" placeholder="اسم الفاصل">
+                    </div>
+                    <div class="sec-divider-field-row">
+                      <label class="sec-divider-field-label">الكلمة الفرعية (Subtitle):</label>
+                      <input type="text" class="sec-divider-sub-input modern-field-text" data-sidx="${si}" value="${escapeHTML(subVal)}" placeholder="مثال: Qs أو اكتب none">
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+        managerWrap.addEventListener('change', (e) => {
+          const toggle = e.target.closest('.sec-divider-toggle');
+          if (toggle) {
+            const si = parseInt(toggle.dataset.sidx, 10);
+            const card = managerWrap.querySelector(`.sec-divider-card[data-sidx="${si}"]`);
+            const cardBody = card?.querySelector('.sec-divider-card-body');
+            const status = card?.querySelector('.modern-toggle-status');
+            if (secs[si]) {
+              secs[si].secPageEnabled = toggle.checked;
+              if (status) status.textContent = toggle.checked ? 'مُفعّل' : 'معطّل';
+              if (card) card.classList.toggle('is-disabled', !toggle.checked);
+              if (cardBody) {
+                cardBody.style.opacity = toggle.checked ? '1' : '0.45';
+                cardBody.style.pointerEvents = toggle.checked ? 'auto' : 'none';
+              }
+              debouncedUpdate(onUpdate);
+            }
+          }
+        });
+
+        managerWrap.addEventListener('input', (e) => {
+          const titleInput = e.target.closest('.sec-divider-title-input');
+          if (titleInput) {
+            const si = parseInt(titleInput.dataset.sidx, 10);
+            if (secs[si]) {
+              secs[si].secPageTitle = titleInput.value;
+              debouncedUpdate(onUpdate);
+            }
+            return;
+          }
+
+          const subInput = e.target.closest('.sec-divider-sub-input');
+          if (subInput) {
+            const si = parseInt(subInput.dataset.sidx, 10);
+            if (secs[si]) {
+              secs[si].secPageSub = subInput.value;
+              debouncedUpdate(onUpdate);
+            }
+            return;
+          }
+        });
+
+        groupBody.appendChild(managerWrap);
+      }
+    }
+
     details.appendChild(groupBody);
     host.appendChild(details);
   });
