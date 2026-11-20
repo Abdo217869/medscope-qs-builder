@@ -7,6 +7,7 @@ import { renderStats } from './src/stats.js';
 import { buildSettingsUI } from './src/settings.js';
 import { renderEditorHTML, bindEditorEvents } from './src/editor.js';
 import { renderExportHTML, bindExportEvents, showToast } from './src/export.js';
+import { downloadDirectPDF } from './src/pdfExporter.js';
 import { processMultipleFiles } from './src/import/fileProcessor.js';
 import { renderReportCardHTML, renderProblemsPanelHTML, bindProblemEvents } from './src/problems.js';
 
@@ -104,7 +105,8 @@ export function renderStep2() {
       },
       () => {
         renderStep2();
-      }
+      },
+      editorHost
     );
   }
 }
@@ -232,7 +234,8 @@ export function renderView() {
       },
       () => {
         renderView();
-      }
+      },
+      viewContainer
     );
   } else if (currentView === 'exp') {
     viewContainer.innerHTML = renderExportHTML();
@@ -504,12 +507,18 @@ export function init() {
   $('#btnStep2Next')?.addEventListener('click', () => setStep(3));
   $('#btnStep3Back')?.addEventListener('click', () => setStep(2));
 
-  // Big Download Hero Buttons (Prompt 2 Part B2)
-  $('#btnPrintQBig')?.addEventListener('click', () => printMode('qs'));
-  $('#btnPrintABig')?.addEventListener('click', () => printMode('as'));
+  // Big Download Hero Buttons (Direct Client-Side PDF Download)
+  $('#btnPrintQBig')?.addEventListener('click', () => {
+    downloadDirectPDF('qs');
+  });
+  $('#btnPrintABig')?.addEventListener('click', () => {
+    downloadDirectPDF('as');
+  });
   $('#btnPrintBoth')?.addEventListener('click', () => {
-    printMode('qs');
-    showToast('بعد حفظ ورقة الأسئلة، اضغط على زر ورقة الإجابات لحفظها أيضًا ✓');
+    downloadDirectPDF('both');
+  });
+  $('#btnBrowserPrintFallback')?.addEventListener('click', () => {
+    printMode(state.view === 'as' ? 'as' : 'qs');
   });
 
   // Drop Zone & File Input Events

@@ -98,8 +98,8 @@ export function renderEditorHTML() {
   return h;
 }
 
-export function bindEditorEvents(onSync, onUpdate) {
-  const container = document.getElementById('view');
+export function bindEditorEvents(onSync, onUpdate, hostEl) {
+  const container = hostEl || document.getElementById('view');
   if (!container) return;
 
   container.oninput = (e) => {

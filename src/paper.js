@@ -2,7 +2,7 @@
 
 import { LET } from './parser.js';
 import { state, getViewData } from './state.js';
-import { paginate, MM } from './paginate.js';
+import { paginate, MM, getPageDimensions } from './paginate.js';
 import { generateQrSvg } from './qrHelper.js';
 
 export function esc(s) {
@@ -12,6 +12,19 @@ export function esc(s) {
     '>': '&gt;',
     '"': '&quot;'
   }[c]));
+}
+
+export function hexToRgba(hex, alpha = 1) {
+  if (!hex || typeof hex !== 'string') return `rgba(0,0,0,${alpha})`;
+  let h = hex.replace('#', '').trim();
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  if (h.length === 6) {
+    const num = parseInt(h, 16);
+    if (!isNaN(num)) {
+      return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+    }
+  }
+  return hex;
 }
 
 export function isSoft(S = state.settings) {
@@ -81,6 +94,31 @@ export function paperVars(S = state.settings) {
   const mIn = (S.marginInside !== undefined ? S.marginInside : (S.margin || 16));
   const mOut = (S.marginOutside !== undefined ? S.marginOutside : (S.margin || 16));
 
+  let bgPattern = 'none';
+  let bgPatternSize = 'auto';
+  if (S.bgPattern === 'dots') {
+    bgPattern = 'radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px)';
+    bgPatternSize = '14px 14px';
+  } else if (S.bgPattern === 'grid') {
+    bgPattern = 'linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px)';
+    bgPatternSize = '18px 18px';
+  }
+
+  const frameRad = S.frameRadius !== undefined ? S.frameRadius : 8;
+  const hlColor = S.highlightColor || '#fef08a';
+  const textAlign = S.textAlign || 'left';
+  const hyphens = S.hyphenate !== false ? 'auto' : 'none';
+
+  const qcTint = hexToRgba(qc, 0.08);
+  const qcTint12 = hexToRgba(qc, 0.12);
+  const qcBorder20 = hexToRgba(qc, 0.20);
+  const qcBorder22 = hexToRgba(qc, 0.22);
+  const qcBorder25 = hexToRgba(qc, 0.25);
+  const qcBorder30 = hexToRgba(qc, 0.30);
+  const qcBorder35 = hexToRgba(qc, 0.35);
+  const accentTint14 = hexToRgba(accent, 0.14);
+  const accentBorder40 = hexToRgba(accent, 0.40);
+
   return [
     `--pb:${pb}`,
     `--pf:${fStem}`,
@@ -109,7 +147,22 @@ export function paperVars(S = state.settings) {
     `--m-t:${mTop}mm`,
     `--m-b:${mBot}mm`,
     `--m-in:${mIn}mm`,
-    `--m-out:${mOut}mm`
+    `--m-out:${mOut}mm`,
+    `--bg-pattern:${bgPattern}`,
+    `--bg-pattern-size:${bgPatternSize}`,
+    `--frame-radius:${frameRad}px`,
+    `--hl-c:${hlColor}`,
+    `--text-align:${textAlign}`,
+    `--hyphens:${hyphens}`,
+    `--qc-tint:${qcTint}`,
+    `--qc-tint-12:${qcTint12}`,
+    `--qc-b-20:${qcBorder20}`,
+    `--qc-b-22:${qcBorder22}`,
+    `--qc-b-25:${qcBorder25}`,
+    `--qc-b-30:${qcBorder30}`,
+    `--qc-b-35:${qcBorder35}`,
+    `--accent-tint-14:${accentTint14}`,
+    `--accent-b-40:${accentBorder40}`
   ].join(';');
 }
 
@@ -413,15 +466,17 @@ export function renderPagesHTML(isAns) {
 }
 
 export function fitZoom() {
+  if (typeof document === 'undefined') return;
   const wrap = document.getElementById('pagesWrap');
   if (!wrap) return;
 
   const stage = document.querySelector('.stage') || document.querySelector('.preview-card') || document.body;
   if (!stage) return;
 
+  const dims = getPageDimensions(state.settings);
   const availWidth = stage.clientWidth - 40;
-  const pageWidth = 210 * MM;
-  const zoom = state.zoomManual || Math.min(1, availWidth / pageWidth);
+  const pageWidth = dims.PW || (210 * MM);
+  const zoom = state.zoomManual || Math.max(0.25, Math.min(1, availWidth / pageWidth));
 
   wrap.style.setProperty('--z', zoom);
 }

@@ -2283,3 +2283,82 @@ details.accordion .accordion-body {
   cursor: pointer;
 }
 
+/* ================= Direct PDF Export Progress Overlay ================= */
+.pdf-progress-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 30, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.pdf-progress-box {
+  background: var(--panel, #ffffff);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 20px;
+  padding: 36px 32px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(212, 163, 67, 0.2);
+  border-top-color: var(--gold, #d4a343);
+  border-radius: 50%;
+  animation: pdfSpin 0.8s linear infinite;
+  margin-bottom: 6px;
+}
+
+@keyframes pdfSpin {
+  to { transform: rotate(360deg); }
+}
+
+.pdf-progress-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--fg);
+}
+
+.pdf-progress-desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.pdf-bar-wrap {
+  width: 100%;
+  height: 10px;
+  background: var(--panel2, #edf2f7);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.pdf-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold, #d4a343), #f59e0b);
+  border-radius: 99px;
+  transition: width 0.2s ease;
+}
+
+.pdf-percent-text {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--gold, #d4a343);
+}
+
+

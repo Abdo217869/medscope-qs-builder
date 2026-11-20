@@ -156,28 +156,31 @@
 
     <!-- ================= STEP 3: نزّل الـ PDF ================= -->
     <section class="step-section" id="step3" hidden>
-      <!-- Hero Download Buttons (Prompt 2 Part B2) -->
+      <!-- Hero Download Buttons (Prompt 2 Part B2 & Direct PDF Download) -->
       <div class="download-hero-grid">
-        <button class="btn-download-hero primary" id="btnPrintQBig">
-          <span class="hero-icon">📄</span>
-          <span class="hero-title">نزّل ورقة الأسئلة (PDF)</span>
-          <span class="hero-desc">ورقة الامتحان الصافية للطباعة والتوزيع</span>
+        <button class="btn-download-hero primary" id="btnPrintQBig" title="تحميل مباشر لملف الـ PDF بدون نافذة الطباعة">
+          <span class="hero-icon">📥</span>
+          <span class="hero-title">تحميل ورقة الأسئلة مباشر (PDF)</span>
+          <span class="hero-desc">تحميل فوري مباشر بنقرة واحدة للملف الصافي للطباعة</span>
         </button>
-        <button class="btn-download-hero primary" id="btnPrintABig">
+        <button class="btn-download-hero primary" id="btnPrintABig" title="تحميل مباشر لملف إجابات PDF">
           <span class="hero-icon">🔴</span>
-          <span class="hero-title">نزّل ورقة الإجابات (PDF)</span>
-          <span class="hero-desc">ورقة الأسئلة مع تحديد الإجابات الصحيحة بالأحمر</span>
+          <span class="hero-title">تحميل ورقة الإجابات مباشر (PDF)</span>
+          <span class="hero-desc">مع تحديد الإجابات الصحيحة والتفسير بنقرة واحدة</span>
         </button>
-        <button class="btn-download-hero" id="btnPrintBoth">
+        <button class="btn-download-hero" id="btnPrintBoth" title="تحميل الملفين معًا في مستند واحد">
           <span class="hero-icon">📑</span>
-          <span class="hero-title">نزّل الاثنين معًا</span>
-          <span class="hero-desc">ورقة الأسئلة متبوعة بنموذج الحل الكامل</span>
+          <span class="hero-title">تحميل الاثنين معًا (PDF)</span>
+          <span class="hero-desc">ورقة الأسئلة متبوعة بنموذج الحل الكامل في ملف واحد</span>
         </button>
       </div>
 
-      <!-- Plain Arabic Print Instructions Box (Prompt 2 Part B2) -->
+      <!-- Plain Arabic Print Instructions Box -->
       <div class="print-guide-card">
-        <h4>💡 هيفتح لك شاشة الطباعة الخاصة بالمتصفح:</h4>
+        <h4>⚡ تحميل فوري مباشر بنقرة واحدة:</h4>
+        <p style="margin: 4px 0 10px; font-size: 13.5px; color: var(--muted);">
+          التحميل يبدأ فورًا على جهازك بدون حوارات أو خطوات إضافية. إذا أردت استخدام طابعة ورقية عادية عبر المتصفح:
+        </p>
         <div class="print-guide-steps">
           <div class="print-step-item">
             <span class="print-step-num">١</span>
@@ -191,6 +194,9 @@
             <span class="print-step-num">٣</span>
             <span>تأكد أن الهوامش (Margins): <strong>None</strong> (بلا هوامش) أو <strong>Default</strong>.</span>
           </div>
+        </div>
+        <div style="margin-top: 14px; text-align: start;">
+          <button type="button" class="btn sm" id="btnBrowserPrintFallback">🖨️ فتح نافذة طباعة المتصفح التقليدية (اختياري للطابعات الورقية)</button>
         </div>
       </div>
 
