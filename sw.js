@@ -1,5 +1,5 @@
 // public/sw.js - Fast App Shell Precache + Idle Background Caching
-const CACHE_NAME = 'medscope-v7-perf';
+const CACHE_NAME = 'medscope-v8-obsidian-studio';
 
 // 1. Critical App Shell: Tiny instant install (< 100 KB)
 const STATIC_SHELL = [
