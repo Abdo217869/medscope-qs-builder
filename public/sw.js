@@ -1,5 +1,5 @@
 // public/sw.js - Service Worker for 100% offline capability
-const CACHE_NAME = 'medscope-qs-v1';
+const CACHE_NAME = 'medscope-obsidian-v2';
 
 const STATIC_ASSETS = [
   "./",
@@ -115,6 +115,23 @@ self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
 
+  // Network-First for HTML navigation so users always see the latest deployed app immediately
+  if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
+        }
+        return networkResponse;
+      }).catch(() => {
+        return caches.match('./index.html') || caches.match('./') || caches.match('/index.html') || caches.match('/');
+      })
+    );
+    return;
+  }
+
+  // Cache-First for versioned static assets (fonts, chunks, icons)
   event.respondWith(
     caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
@@ -129,11 +146,6 @@ self.addEventListener('fetch', (event) => {
           cache.put(request, responseToCache);
         });
         return networkResponse;
-      }).catch(() => {
-        // Offline fallback
-        if (request.headers.get('accept')?.includes('text/html') || request.mode === 'navigate') {
-          return caches.match('./index.html') || caches.match('./') || caches.match('/index.html') || caches.match('/');
-        }
       });
     })
   );

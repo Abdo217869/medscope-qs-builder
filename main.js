@@ -975,7 +975,9 @@ export function init() {
   });
   // Register Service Worker for offline PWA
   if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
+    navigator.serviceWorker.register('./sw.js').then((reg) => {
+      reg.update();
+    }).catch((err) => {
       console.warn('Service worker registration failed:', err);
     });
   }
