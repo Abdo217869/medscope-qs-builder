@@ -8,7 +8,7 @@ import { renderStats } from './src/stats.js';
 import { buildSettingsUI } from './src/settings.js';
 import { renderEditorHTML, bindEditorEvents } from './src/editor.js';
 import { renderExportHTML, bindExportEvents, showToast } from './src/export.js';
-import { downloadDirectPDF } from './src/pdfExporter.js';
+import { downloadDirectPDF, scheduleBackgroundPrecompute, cancelBackgroundPrecompute, setExportQuality, updateQualityUI } from './src/pdfExporter.js';
 import { processMultipleFiles } from './src/import/fileProcessor.js';
 import { renderReportCardHTML, renderProblemsPanelHTML, bindProblemEvents, getProblemsData } from './src/problems.js';
 import { SOCIAL_LINKS } from './src/config/links.js';
@@ -251,7 +251,9 @@ export function renderStep3() {
   const advSettingsHost = $('#advSettingsHost');
   if (advSettingsHost && !advSettingsHost.hasChildNodes()) {
     buildSettingsUI(() => {
+      cancelBackgroundPrecompute();
       renderAll();
+      scheduleBackgroundPrecompute();
     });
   }
 
@@ -262,12 +264,15 @@ export function renderStep3() {
   }
 
   updateSystemStatusTag();
+  updateQualityUI();
+  scheduleBackgroundPrecompute();
 }
 
 /**
  * Re-parses question and answer inputs and refreshes view and stats.
  */
 export function reparse() {
+  cancelBackgroundPrecompute();
   const rawInput = $('#raw');
   const keyInput = $('#keyraw');
   if (!rawInput || !keyInput) return;
@@ -740,6 +745,14 @@ export function init() {
 
   $('#btnPrintBoth')?.addEventListener('click', () => {
     downloadDirectPDF('both');
+  });
+
+  // Quality selector pills (Prompt 7)
+  $('#exportQualityGroup')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-quality-pill');
+    if (!btn) return;
+    const q = btn.dataset.quality;
+    if (q) setExportQuality(q);
   });
 
   // Fallback to classic browser print dialog

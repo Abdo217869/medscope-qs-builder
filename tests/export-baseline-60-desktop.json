@@ -1,0 +1,21 @@
+{
+  "label": "60 Questions (Desktop)",
+  "isThrottled": false,
+  "totalTime": 17300,
+  "totalPages": 26,
+  "fileSize": 4430401,
+  "fileSizeMB": "4.23",
+  "longTaskCount": 57,
+  "maxLongTaskMs": "720",
+  "peakHeapMB": "28.7",
+  "stages": {
+    "fontsImagesReadyMs": "61",
+    "buildPageDOMMs": "22",
+    "rasterisePageTotalMs": "15024",
+    "avgRasterisePerPageMs": "578",
+    "encodeImageTotalMs": "1690",
+    "addToPDFTotalMs": "66",
+    "saveBlobMs": "35",
+    "downloadTriggerMs": "1"
+  }
+}

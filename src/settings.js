@@ -3,7 +3,6 @@
 import { SETTINGS_SCHEMA, PRESETS, PALETTES } from './settings.schema.js';
 import {
   state,
-  DEF_SETTINGS,
   saveSettings,
   resetSettings,
   pushStyleState,
@@ -39,27 +38,95 @@ export function buildSettingsUI(onUpdate) {
 
   const S = state.settings;
 
-  // Top Style Toolbar: Undo / Redo + Reset All + Custom Styles
+  // =========================================================================
+  // 1. Top Bento Quick Toolbar (History, Sheet Mode, Font Scaling, Styles)
+  // =========================================================================
   const topToolbar = document.createElement('div');
   topToolbar.className = 'settings-top-toolbar';
   topToolbar.innerHTML = `
-    <div class="style-history-actions">
-      <button class="btn sm" id="btnStyleUndo" title="تراجع عن آخر تعديل">↶ تراجع</button>
-      <button class="btn sm" id="btnStyleRedo" title="إعادة التعديل">↷ إعادة</button>
-      <button class="btn sm danger" id="btnStyleResetAll" title="استرجاع كل الإعدادات الافتراضية">استرجاع الافتراضي</button>
+    <!-- Row 1: Fast Sheet View & Font Quick Scale -->
+    <div class="settings-quick-bar">
+      <div class="quick-view-pills" title="تبديل معاينة الورقة المباشرة فورًا بدون صعود أو نزول">
+        <span class="quick-bar-label">👁️ المعاينة:</span>
+        <button type="button" class="btn-quick-pill ${state.view === 'qs' ? 'active' : ''}" data-setview="qs">📄 أسئلة</button>
+        <button type="button" class="btn-quick-pill ${state.view === 'as' ? 'active' : ''}" data-setview="as">🔴 إجابات</button>
+        <button type="button" class="btn-quick-pill ${state.view === 'spaces' ? 'active' : ''}" data-setview="spaces">📝 مساحات حل</button>
+      </div>
+
+      <div class="quick-font-scaler" title="تكبير أو تصغير حجم خطوط الامتحان بسرعة">
+        <span class="quick-bar-label">🔤 الخط:</span>
+        <button type="button" class="btn-font-step" id="btnFontDec" title="تصغير الخط 1pt">A−</button>
+        <span class="font-current-val" id="lblCurrentFs">${S.fsStem || 15} pt</span>
+        <button type="button" class="btn-font-step" id="btnFontInc" title="تكبير الخط 1pt">A+</button>
+      </div>
     </div>
-    <div class="custom-style-actions">
-      <button class="btn sm gold" id="btnSaveCustomStyle">💾 احفظ شكلي</button>
-      <button class="btn sm" id="btnExportStyles">تصدير JSON</button>
-      <label class="btn sm" style="cursor:pointer;">
-        استيراد JSON
-        <input type="file" id="btnImportStylesFile" accept=".json" style="display:none">
-      </label>
+
+    <!-- Row 2: Undo / Redo / Reset / Custom Styles -->
+    <div class="settings-actions-bar">
+      <div class="style-history-actions">
+        <button type="button" class="btn-toolbar-action" id="btnStyleUndo" title="تراجع عن آخر تعديل">↶ تراجع</button>
+        <button type="button" class="btn-toolbar-action" id="btnStyleRedo" title="إعادة التعديل">↷ إعادة</button>
+        <button type="button" class="btn-toolbar-action danger" id="btnStyleResetAll" title="استرجاع كل الإعدادات الافتراضية">↺ استرجاع الافتراضي</button>
+      </div>
+      <div class="custom-style-actions">
+        <button type="button" class="btn-toolbar-action primary" id="btnSaveCustomStyle">💾 احفظ شكلي</button>
+        <button type="button" class="btn-toolbar-action" id="btnExportStyles" title="تصدير إعداداتك لملف JSON">تصدير</button>
+        <label class="btn-toolbar-action" style="cursor:pointer;" title="استيراد إعدادات من ملف JSON">
+          استيراد
+          <input type="file" id="btnImportStylesFile" accept=".json" style="display:none">
+        </label>
+      </div>
     </div>
   `;
   host.appendChild(topToolbar);
 
-  // Wire Top Style Toolbar Events
+  // Wire Quick View Pills
+  topToolbar.querySelectorAll('[data-setview]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.setview;
+      state.view = v;
+      topToolbar.querySelectorAll('[data-setview]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mainViews = document.querySelectorAll('#views button, #paperViewToggle button');
+      mainViews.forEach(b => {
+        if (b.dataset.v === v || b.dataset.view === v) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+      if (onUpdate) onUpdate();
+      showToast(`تم التبديل إلى: ${v === 'qs' ? 'ورقة الأسئلة' : (v === 'as' ? 'ورقة الإجابات' : 'ورقة بمساحات حل')} ✓`);
+    });
+  });
+
+  // Wire Font Scalers
+  topToolbar.querySelector('#btnFontDec')?.addEventListener('click', () => {
+    pushStyleState();
+    const curStem = S.fsStem || 15;
+    const curOpt = S.fsOpt || 14.5;
+    if (curStem > 10) {
+      S.fsStem = Math.max(10, curStem - 1);
+      S.fsOpt = Math.max(9.5, curOpt - 1);
+      saveSettings();
+      buildSettingsUI(onUpdate);
+      onUpdate && onUpdate();
+      showToast(`تم تصغير الخط إلى ${S.fsStem} pt`);
+    }
+  });
+
+  topToolbar.querySelector('#btnFontInc')?.addEventListener('click', () => {
+    pushStyleState();
+    const curStem = S.fsStem || 15;
+    const curOpt = S.fsOpt || 14.5;
+    if (curStem < 24) {
+      S.fsStem = Math.min(24, curStem + 1);
+      S.fsOpt = Math.min(23, curOpt + 1);
+      saveSettings();
+      buildSettingsUI(onUpdate);
+      onUpdate && onUpdate();
+      showToast(`تم تكبير الخط إلى ${S.fsStem} pt`);
+    }
+  });
+
+  // Wire History Actions
   topToolbar.querySelector('#btnStyleUndo')?.addEventListener('click', () => {
     if (undoStyle()) {
       buildSettingsUI(onUpdate);
@@ -77,11 +144,13 @@ export function buildSettingsUI(onUpdate) {
   });
 
   topToolbar.querySelector('#btnStyleResetAll')?.addEventListener('click', () => {
-    pushStyleState();
-    resetSettings();
-    buildSettingsUI(onUpdate);
-    onUpdate && onUpdate();
-    showToast('تم استرجاع الإعدادات الافتراضية ✓');
+    if (confirm('هل أنت متأكد من استرجاع كافة الإعدادات إلى الوضع الافتراضي؟')) {
+      pushStyleState();
+      resetSettings();
+      buildSettingsUI(onUpdate);
+      onUpdate && onUpdate();
+      showToast('تم استرجاع الإعدادات الافتراضية بالكامل ✓');
+    }
   });
 
   topToolbar.querySelector('#btnSaveCustomStyle')?.addEventListener('click', () => {
@@ -119,7 +188,9 @@ export function buildSettingsUI(onUpdate) {
     }
   });
 
-  // Saved Custom Presets List
+  // =========================================================================
+  // 2. Saved Custom Presets List
+  // =========================================================================
   const savedStyles = getSavedCustomStyles();
   if (savedStyles.length > 0) {
     const customSection = document.createElement('div');
@@ -129,8 +200,8 @@ export function buildSettingsUI(onUpdate) {
       <div class="custom-presets-chips">
         ${savedStyles.map(st => `
           <div class="custom-preset-chip">
-            <button class="chip-apply-btn" data-apply-id="${st.id}">${escapeHTML(st.name)}</button>
-            <button class="chip-del-btn" data-del-id="${st.id}" title="حذف">✕</button>
+            <button type="button" class="chip-apply-btn" data-apply-id="${st.id}">★ ${escapeHTML(st.name)}</button>
+            <button type="button" class="chip-del-btn" data-del-id="${st.id}" title="حذف هذا التنسيق">✕</button>
           </div>
         `).join('')}
       </div>
@@ -164,29 +235,35 @@ export function buildSettingsUI(onUpdate) {
     host.appendChild(customSection);
   }
 
-  // Category Navigation Tabs + Live Search Filter
+  // =========================================================================
+  // 3. Category Navigation Tabs + Live Search Filter
+  // =========================================================================
   const navFilterWrap = document.createElement('div');
   navFilterWrap.className = 'settings-nav-filter-wrap';
   navFilterWrap.innerHTML = `
     <div class="settings-search-box">
       <span class="search-icon">🔍</span>
-      <input type="text" id="settingsSearchInput" class="settings-search-input" placeholder="ابحث عن أي خيار (لوجو، غلاف، خط، لون، هامش، QR...)" value="${escapeHTML(currentSettingsSearch)}" autocomplete="off">
-      <button type="button" id="btnClearSettingsSearch" class="btn-clear-search" ${currentSettingsSearch ? '' : 'hidden'} title="مسح">✕</button>
+      <input type="text" id="settingsSearchInput" class="settings-search-input" placeholder="ابحث عن أي خيار (لوجو، غلاف، خط، لون، هامش، مقالي...)" value="${escapeHTML(currentSettingsSearch)}" autocomplete="off">
+      <button type="button" id="btnClearSettingsSearch" class="btn-clear-search" ${currentSettingsSearch ? '' : 'hidden'} title="مسح البحث">✕</button>
     </div>
     <div class="settings-nav-tabs" role="tablist">
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'all' ? 'active' : ''}" data-tab="all">✨ الكل</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'presets' ? 'active' : ''}" data-tab="presets">🌟 القوالب</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'palette' ? 'active' : ''}" data-tab="palette">🎨 الألوان</button>
-      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'cover' ? 'active' : ''}" data-tab="cover">📖 الغلاف والـ QR</button>
-      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'watermark' ? 'active' : ''}" data-tab="watermark">🦅 العلامة واللوجو</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'page' ? 'active' : ''}" data-tab="page">📐 الصفحة والهوامش</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'typography' ? 'active' : ''}" data-tab="typography">✍️ الخطوط والأسئلة</button>
-      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'layout' ? 'active' : ''}" data-tab="layout">📐 التخطيط والهوامش</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'essay' ? 'active' : ''}" data-tab="essay">📝 المقالي والحالات</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'watermark' ? 'active' : ''}" data-tab="watermark">🦅 العلامة واللوجو</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'cover' ? 'active' : ''}" data-tab="cover">📖 الغلاف والـ QR</button>
       <button type="button" class="settings-tab-btn ${currentSettingsTab === 'headerFooter' ? 'active' : ''}" data-tab="headerFooter">📑 الهيدر والفوتر</button>
+      <button type="button" class="settings-tab-btn ${currentSettingsTab === 'answers' ? 'active' : ''}" data-tab="answers">🎯 نموذج الإجابات</button>
     </div>
   `;
   host.appendChild(navFilterWrap);
 
-  // Iterate Schema Groups
+  // =========================================================================
+  // 4. Iterate Schema Groups and Build Enhanced Controls
+  // =========================================================================
   SETTINGS_SCHEMA.forEach((groupObj, groupIdx) => {
     const details = document.createElement('details');
     details.className = 'settings-group-accordion';
@@ -194,9 +271,16 @@ export function buildSettingsUI(onUpdate) {
     details.open = (groupIdx === 0 || groupIdx === 1 || groupObj.group === 'watermark');
 
     const summary = document.createElement('summary');
+    summary.className = 'group-summary';
     summary.innerHTML = `
-      <span class="group-title">${groupObj.icon} ${groupObj.title}</span>
-      <button type="button" class="btn-group-reset" data-group="${groupObj.group}" title="استرجاع افتراضيات هذه المجموعة">رجّع الافتراضي</button>
+      <div class="group-summary-left">
+        <span class="group-chevron">▾</span>
+        <span class="group-title">
+          <span class="group-icon-pill">${groupObj.icon}</span>
+          <span class="group-title-text">${groupObj.title}</span>
+        </span>
+      </div>
+      <button type="button" class="btn-group-reset" data-group="${groupObj.group}" title="استرجاع افتراضيات هذه المجموعة فقط">↺ رجّع الافتراضي</button>
     `;
 
     summary.querySelector('.btn-group-reset')?.addEventListener('click', (e) => {
@@ -220,16 +304,41 @@ export function buildSettingsUI(onUpdate) {
     groupBody.className = 'settings-group-body';
 
     groupObj.fields.forEach(field => {
-      // 1. Preset Cards
+      // ---------------------------------------------------------------------
+      // 1. Preset Cards (Upgraded with Radio Circles, Badges, and Hover Glow)
+      // ---------------------------------------------------------------------
       if (field.type === 'preset-cards') {
         const cardsWrap = document.createElement('div');
         cardsWrap.className = 'preset-cards-grid';
-        cardsWrap.innerHTML = field.options.map(p => `
-          <div class="preset-card ${S.theme === p.id || (p.id === 'large' && S.fsStem >= 18) ? 'active' : ''}" data-preset="${p.id}">
-            <div class="preset-name">${p.name}</div>
-            <div class="preset-desc">${p.desc}</div>
-          </div>
-        `).join('');
+
+        const presetIcons = {
+          soft: '🌿',
+          classic: '🏛️',
+          minimal: '⚡',
+          modern: '💎',
+          large: '📱'
+        };
+
+        cardsWrap.innerHTML = field.options.map(p => {
+          const isActive = (S.theme === p.id || (p.id === 'large' && S.fsStem >= 18));
+          const icon = presetIcons[p.id] || '🎨';
+          return `
+            <div class="preset-card ${isActive ? 'active' : ''}" data-preset="${p.id}" role="radio" aria-checked="${isActive}">
+              <div class="preset-card-header">
+                <div class="card-radio-box ${isActive ? 'checked' : ''}">
+                  ${isActive ? '<span class="radio-check-icon">✓</span>' : ''}
+                </div>
+                <div class="preset-name">${icon} ${p.name}</div>
+                ${isActive ? '<span class="preset-active-badge">مُفعّل الآن</span>' : ''}
+              </div>
+              <div class="preset-desc">${p.desc}</div>
+              <div class="preset-mini-features">
+                <span class="preset-feature-tag">${p.settings?.fontStem ? p.settings.fontStem.split(',')[0].replace(/['"]/g, '') : 'Calibri'}</span>
+                <span class="preset-feature-swatch" style="background:${p.settings?.bgColor || '#ffffff'}"></span>
+              </div>
+            </div>
+          `;
+        }).join('');
 
         cardsWrap.addEventListener('click', (e) => {
           const card = e.target.closest('[data-preset]');
@@ -250,21 +359,33 @@ export function buildSettingsUI(onUpdate) {
         return;
       }
 
-      // 2. Palette Grid
+      // ---------------------------------------------------------------------
+      // 2. Palette Grid (Upgraded with Active Badges, Swatches, and Radios)
+      // ---------------------------------------------------------------------
       if (field.type === 'palette-grid') {
         const palWrap = document.createElement('div');
         palWrap.className = 'palettes-grid';
-        palWrap.innerHTML = field.options.map(pal => `
-          <div class="palette-card" data-pal="${pal.id}" title="${pal.name}">
-            <div class="pal-colors">
-              <span style="background:${pal.qColor}"></span>
-              <span style="background:${pal.accent}"></span>
-              <span style="background:${pal.ansColor}"></span>
-              <span style="background:${pal.bg}"></span>
+
+        palWrap.innerHTML = field.options.map(pal => {
+          const isPalActive = (S.accent === pal.accent && S.qColor === pal.qColor);
+          return `
+            <div class="palette-card ${isPalActive ? 'active' : ''}" data-pal="${pal.id}" title="${pal.name}" role="radio" aria-checked="${isPalActive}">
+              <div class="palette-card-top">
+                <div class="card-radio-box ${isPalActive ? 'checked' : ''}">
+                  ${isPalActive ? '<span class="radio-check-icon">✓</span>' : ''}
+                </div>
+                ${isPalActive ? '<span class="pal-active-badge">نشط</span>' : ''}
+              </div>
+              <div class="pal-colors">
+                <span style="background:${pal.qColor}" title="لون الأسئلة"></span>
+                <span style="background:${pal.accent}" title="اللون المميز"></span>
+                <span style="background:${pal.ansColor}" title="لون الإجابات"></span>
+                <span style="background:${pal.bg}" title="لون الصفحة"></span>
+              </div>
+              <div class="pal-name">${pal.name}</div>
             </div>
-            <div class="pal-name">${pal.name}</div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
 
         palWrap.addEventListener('click', (e) => {
           const card = e.target.closest('[data-pal]');
@@ -291,7 +412,9 @@ export function buildSettingsUI(onUpdate) {
         return;
       }
 
-      // 3. Logo Uploader with Thumbnail & Fail-Safe Controls
+      // ---------------------------------------------------------------------
+      // 3. Logo Uploader (Strict Containment Box, Clean Buttons, Preview)
+      // ---------------------------------------------------------------------
       if (field.type === 'logo-uploader') {
         const uploaderWrap = document.createElement('div');
         uploaderWrap.className = 'logo-uploader-card';
@@ -299,19 +422,23 @@ export function buildSettingsUI(onUpdate) {
 
         uploaderWrap.innerHTML = `
           <div class="logo-preview-row">
-            <div class="logo-thumb-box">
-              <img src="${currentLogo}" loading="lazy" class="logo-thumb-img" alt="Logo preview" id="logoThumbImg">
+            <div class="logo-thumb-box" title="معاينة اللوجو أو العلامة المائية">
+              <img src="${currentLogo}" loading="eager" class="logo-thumb-img" alt="Logo preview" id="logoThumbImg">
             </div>
             <div class="logo-actions-col">
-              <label class="btn sm gold" id="lblLogoFile" title="اختيار صورة أو لوجو مخصص">
-                غيّر
+              <label class="btn-logo-upload" id="lblLogoFile" title="اختيار صورة أو لوجو مخصص من جهازك">
+                <span>📁 رفع لوجو جديد</span>
                 <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display:none">
               </label>
-              <button type="button" class="btn sm danger" id="btnRemoveLogo" title="إزالة اللوجو المخصص والرجوع للافتراضي">شيل الصورة</button>
-              <button type="button" class="btn sm" id="btnResetDefaultLogo" title="استرجاع لوجو ميدسكوب الرسمي">رجّع لوجو ميدسكوب</button>
+              <div class="logo-secondary-actions">
+                <button type="button" class="btn-logo-secondary reset" id="btnResetDefaultLogo" title="استرجاع لوجو ميدسكوب الرسمي">↺ لوجو ميدسكوب الافتراضي</button>
+                <button type="button" class="btn-logo-secondary danger" id="btnRemoveLogo" title="إزالة اللوجو المخصص">✕ إزالة اللوجو</button>
+              </div>
             </div>
           </div>
-          <small class="hint">يدعم PNG (بشفافية تامة), JPG, WebP, و SVG. يتم ضغط وتخزين الصور الكبيرة تلقائيًا.</small>
+          <div class="logo-help-hint">
+            💡 يدعم PNG الشفاف، JPG، WebP، و SVG. يتم ضغط ومعالجة الصور المرفوعة تلقائيًا بدقة عالية.
+          </div>
         `;
 
         const fileInput = uploaderWrap.querySelector('#logoFileInput');
@@ -360,7 +487,9 @@ export function buildSettingsUI(onUpdate) {
         return;
       }
 
-      // 4. Standard Form Controls (Select, Check, Color, Text, Range + Typed Number Box)
+      // ---------------------------------------------------------------------
+      // 4. Standard Form Controls (Selects, Modern Toggles, Color, Range)
+      // ---------------------------------------------------------------------
       const row = document.createElement('div');
       row.className = `settings-field f-${field.type}`;
 
@@ -370,9 +499,13 @@ export function buildSettingsUI(onUpdate) {
 
       let controlEl;
 
+      // Select Dropdown
       if (field.type === 'select') {
+        const selectWrap = document.createElement('div');
+        selectWrap.className = 'modern-select-wrap';
+
         controlEl = document.createElement('select');
-        controlEl.className = 'field-select';
+        controlEl.className = 'modern-field-select';
         field.options.forEach(opt => {
           const optEl = document.createElement('option');
           optEl.value = opt.val;
@@ -388,28 +521,64 @@ export function buildSettingsUI(onUpdate) {
           saveSettings();
           debouncedUpdate(onUpdate);
         });
-      } else if (field.type === 'check') {
-        controlEl = document.createElement('input');
-        controlEl.type = 'checkbox';
-        controlEl.className = 'field-checkbox';
-        controlEl.checked = !!(S[field.key] !== undefined ? S[field.key] : field.default);
-        controlEl.addEventListener('change', () => {
+
+        selectWrap.appendChild(controlEl);
+        row.appendChild(labelEl);
+        row.appendChild(selectWrap);
+        groupBody.appendChild(row);
+        return;
+      }
+
+      // Checkbox -> Modern Toggle Switch
+      if (field.type === 'check') {
+        const isChecked = !!(S[field.key] !== undefined ? S[field.key] : field.default);
+
+        const toggleLabel = document.createElement('label');
+        toggleLabel.className = 'modern-toggle-switch';
+
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.className = 'modern-toggle-input';
+        chk.checked = isChecked;
+
+        const sliderSpan = document.createElement('span');
+        sliderSpan.className = 'modern-toggle-slider';
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = 'modern-toggle-status';
+        statusSpan.textContent = isChecked ? 'مُفعّل' : 'معطّل';
+
+        chk.addEventListener('change', () => {
           pushStyleState();
-          S[field.key] = controlEl.checked;
+          S[field.key] = chk.checked;
+          statusSpan.textContent = chk.checked ? 'مُفعّل' : 'معطّل';
           saveSettings();
           debouncedUpdate(onUpdate);
         });
-      } else if (field.type === 'color') {
+
+        toggleLabel.appendChild(chk);
+        toggleLabel.appendChild(sliderSpan);
+        toggleLabel.appendChild(statusSpan);
+
+        row.appendChild(labelEl);
+        row.appendChild(toggleLabel);
+        groupBody.appendChild(row);
+        return;
+      }
+
+      // Color Picker
+      if (field.type === 'color') {
         controlEl = document.createElement('div');
-        controlEl.className = 'color-picker-wrap';
+        controlEl.className = 'modern-color-picker-wrap';
+
         const colorInput = document.createElement('input');
         colorInput.type = 'color';
-        colorInput.className = 'field-color';
+        colorInput.className = 'modern-field-color';
         colorInput.value = S[field.key] || field.default || '#000000';
 
         const textInput = document.createElement('input');
         textInput.type = 'text';
-        textInput.className = 'field-color-text';
+        textInput.className = 'modern-field-color-text';
         textInput.value = colorInput.value;
 
         colorInput.addEventListener('input', () => {
@@ -434,7 +603,7 @@ export function buildSettingsUI(onUpdate) {
       } else if (field.type === 'text') {
         controlEl = document.createElement('input');
         controlEl.type = 'text';
-        controlEl.className = 'field-text';
+        controlEl.className = 'modern-field-text';
         controlEl.value = S[field.key] !== undefined ? S[field.key] : (field.default ?? '');
         controlEl.addEventListener('input', () => {
           S[field.key] = controlEl.value;
@@ -443,26 +612,29 @@ export function buildSettingsUI(onUpdate) {
         });
       } else if (field.type === 'range') {
         controlEl = document.createElement('div');
-        controlEl.className = 'range-with-number-wrap';
+        controlEl.className = 'modern-range-with-number-wrap';
 
         const slider = document.createElement('input');
         slider.type = 'range';
-        slider.className = 'field-range';
+        slider.className = 'modern-field-range';
         slider.min = field.min;
         slider.max = field.max;
         slider.step = field.step || 1;
         slider.value = S[field.key] !== undefined ? S[field.key] : field.default;
 
+        const numBoxWrap = document.createElement('div');
+        numBoxWrap.className = 'range-number-box-wrap';
+
         const numBox = document.createElement('input');
         numBox.type = 'number';
-        numBox.className = 'field-number-box';
+        numBox.className = 'modern-field-number-box';
         numBox.min = field.min;
         numBox.max = field.max;
         numBox.step = field.step || 1;
         numBox.value = slider.value;
 
         const unitSpan = document.createElement('span');
-        unitSpan.className = 'field-unit';
+        unitSpan.className = 'range-unit-tag';
         unitSpan.textContent = field.unit || '';
 
         slider.addEventListener('input', () => {
@@ -480,13 +652,15 @@ export function buildSettingsUI(onUpdate) {
           debouncedUpdate(onUpdate);
         });
 
+        numBoxWrap.appendChild(numBox);
+        if (field.unit) numBoxWrap.appendChild(unitSpan);
+
         controlEl.appendChild(slider);
-        controlEl.appendChild(numBox);
-        if (field.unit) controlEl.appendChild(unitSpan);
+        controlEl.appendChild(numBoxWrap);
       } else if (field.type === 'number') {
         controlEl = document.createElement('input');
         controlEl.type = 'number';
-        controlEl.className = 'field-number';
+        controlEl.className = 'modern-field-number';
         controlEl.min = field.min || 0;
         controlEl.max = field.max || 100;
         controlEl.value = S[field.key] !== undefined ? S[field.key] : field.default;
@@ -507,7 +681,9 @@ export function buildSettingsUI(onUpdate) {
     host.appendChild(details);
   });
 
-  // Category & Search Filtering Engine
+  // =========================================================================
+  // 5. Category & Live Search Filtering Engine (All Schema Groups Mapped!)
+  // =========================================================================
   const applySettingsFilter = () => {
     const accordions = host.querySelectorAll('.settings-group-accordion');
     const searchVal = currentSettingsSearch.trim().toLowerCase();
@@ -520,17 +696,21 @@ export function buildSettingsUI(onUpdate) {
         matchesTab = true;
       } else if (currentSettingsTab === 'presets' && g === 'presets') {
         matchesTab = true;
-      } else if (currentSettingsTab === 'palette' && (g === 'colors' || g === 'presets' || g === 'palette')) {
+      } else if (currentSettingsTab === 'palette' && (g === 'colors' || g === 'presets')) {
         matchesTab = true;
-      } else if (currentSettingsTab === 'cover' && g === 'cover') {
-        matchesTab = true;
-      } else if (currentSettingsTab === 'watermark' && g === 'watermark') {
+      } else if (currentSettingsTab === 'page' && g === 'page') {
         matchesTab = true;
       } else if (currentSettingsTab === 'typography' && (g === 'typography' || g === 'questions')) {
         matchesTab = true;
-      } else if (currentSettingsTab === 'layout' && (g === 'layout' || g === 'randomize')) {
+      } else if (currentSettingsTab === 'essay' && g === 'essay') {
         matchesTab = true;
-      } else if (currentSettingsTab === 'headerFooter' && (g === 'headerFooter' || g === 'keyPage')) {
+      } else if (currentSettingsTab === 'watermark' && g === 'watermark') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'cover' && g === 'cover') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'headerFooter' && g === 'headerFooter') {
+        matchesTab = true;
+      } else if (currentSettingsTab === 'answers' && g === 'answers') {
         matchesTab = true;
       }
 

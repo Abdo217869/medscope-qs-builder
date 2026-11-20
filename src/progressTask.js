@@ -23,6 +23,10 @@ export class ProgressTask {
     this.itemDurations = [];
     this.isCancelled = false;
     this.isDone = false;
+    this.lastPercent = 0;
+    this.hintCustomText = null;
+    this.hintActionText = null;
+    this.onHintAction = null;
 
     this.dom = null;
     this.timerInterval = null;
@@ -105,8 +109,55 @@ export class ProgressTask {
     this.longTaskTimer = setTimeout(() => {
       if (this.isDone || this.isCancelled) return;
       const hintEl = this.dom?.querySelector('#ptHint');
-      if (hintEl) hintEl.hidden = false;
+      if (hintEl) {
+        if (this.hintCustomText) {
+          hintEl.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+              <span>💡 ${this.escapeHTML(this.hintCustomText)}</span>
+              ${this.hintActionText ? `<button type="button" class="btn-hint-action" id="btnHintAction">${this.escapeHTML(this.hintActionText)}</button>` : ''}
+            </div>
+          `;
+          if (this.onHintAction) {
+            hintEl.querySelector('#btnHintAction')?.addEventListener('click', () => {
+              const cb = this.onHintAction;
+              this.cancel();
+              if (cb) cb();
+            });
+          }
+        }
+        hintEl.hidden = false;
+      }
     }, 15000);
+  }
+
+  /**
+   * Sets custom 15-second hint text and optional one-click action
+   */
+  setHintAction(tipText, buttonText, onAction) {
+    this.hintCustomText = tipText;
+    this.hintActionText = buttonText;
+    this.onHintAction = onAction;
+  }
+
+  /**
+   * Sets a live thumbnail image preview of the page currently being rendered
+   * @param {string} thumbSrc - Data URL or object URL
+   */
+  setThumbnail(thumbSrc) {
+    if (!this.dom || !thumbSrc) return;
+    let thumbBox = this.dom.querySelector('.progress-thumb-box');
+    if (!thumbBox) {
+      thumbBox = document.createElement('div');
+      thumbBox.className = 'progress-thumb-box';
+      thumbBox.innerHTML = `<img class="progress-thumb-img" alt="معاينة الصفحة">`;
+      const card = this.dom.querySelector('.progress-task-card');
+      const track = this.dom.querySelector('.progress-track');
+      if (card && track) {
+        card.insertBefore(thumbBox, track);
+      }
+    }
+    const img = thumbBox.querySelector('.progress-thumb-img');
+    if (img) img.src = thumbSrc;
   }
 
   /**
@@ -130,10 +181,12 @@ export class ProgressTask {
     this.current = current;
     if (typeof total === 'number' && total > 0) this.total = total;
 
-    // Calculate percentage
+    // Calculate percentage (monotonic, never decreases)
     let percent = 0;
     if (this.total > 0) {
-      percent = Math.min(100, Math.round((this.current / this.total) * 100));
+      const rawPercent = Math.min(100, Math.round((this.current / this.total) * 100));
+      percent = Math.max(this.lastPercent || 0, rawPercent);
+      this.lastPercent = percent;
     }
 
     // Moving Average ETA calculation
