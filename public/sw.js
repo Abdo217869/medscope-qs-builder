@@ -1,5 +1,5 @@
 // public/sw.js - Service Worker for 100% offline capability
-const CACHE_NAME = 'medscope-obsidian-v2';
+const CACHE_NAME = 'medscope-obsidian-v3';
 
 const STATIC_ASSETS = [
   "./",

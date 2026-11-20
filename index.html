@@ -213,19 +213,33 @@
         </div>
       </section>
 
-      <!-- ================= STEP 2: راجع وضبط (Bento Grid) ================= -->
+      <!-- ================= STEP 2: راجع وضبط (Review & Edit) ================= -->
       <section class="step-section" id="step2" hidden>
-        <!-- Bento Grid Report Card (Distribution, Subjects, Counts, Files, Duplicates) -->
-        <div id="reportCardContainer"></div>
+        <!-- Top Action & Navigation Bar for Instant Access without Scrolling -->
+        <div class="step2-top-bar glass-card" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.25rem 1.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="tech-tag" lang="en">STEP 02 · REVIEW & EDIT</span>
+            <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700;">مراجعة وتعديل الأسئلة</h2>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button class="btn glass-btn" id="btnStep2BackTop">→ رجوع للملفات</button>
+            <button class="neon-pulse-btn" id="btnStep2NextTop" style="margin:0; min-width:220px; padding: 0.75rem 1.5rem;">
+              <span>كمّل: نزّل الـ PDF</span>
+              <span class="arrow-icon">←</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Cards Editor in Glass Panels (Placed FIRST so user edits immediately!) -->
+        <div class="glass-card editor-container-card" style="margin-bottom: 2rem;">
+          <div id="editorHost"></div>
+        </div>
 
         <!-- Problems Panel with One-Click Fixes -->
         <div id="problemsPanelContainer"></div>
 
-        <!-- Question Cards Editor in Glass Panels -->
-        <div class="glass-card editor-container-card" style="margin-top: 2rem; margin-bottom: 2rem;">
-          <h3 class="section-title">✏️ مراجعة وتعديل الأسئلة</h3>
-          <div id="editorHost"></div>
-        </div>
+        <!-- Bento Grid Report Card (Distribution, Subjects, Counts, Files, Duplicates) -->
+        <div id="reportCardContainer"></div>
 
         <!-- Step 2 Navigation Footer -->
         <div class="step-nav-footer">

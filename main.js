@@ -690,7 +690,9 @@ export function init() {
   // Next / Back Flow Buttons
   $('#btnStep1Next')?.addEventListener('click', () => setStep(2));
   $('#btnStep2Back')?.addEventListener('click', () => setStep(1));
+  $('#btnStep2BackTop')?.addEventListener('click', () => setStep(1));
   $('#btnStep2Next')?.addEventListener('click', () => setStep(3));
+  $('#btnStep2NextTop')?.addEventListener('click', () => setStep(3));
   $('#btnStep3Back')?.addEventListener('click', () => setStep(2));
 
   // Big Download Buttons in Step 3
