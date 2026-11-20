@@ -4,6 +4,7 @@ import { LET } from './parser.js';
 import { state, getViewData } from './state.js';
 import { paginate, MM, getPageDimensions } from './paginate.js';
 import { generateQrSvg } from './qrHelper.js';
+import { isEssayQuestion, renderEssayQuestionHTML, splitQuestionIntoFragments } from './essay/renderEssay.js';
 
 export function esc(s) {
   return String(s ?? '').replace(/[&<>"]/g, c => ({
@@ -197,6 +198,9 @@ export function wmHTML(S = state.settings) {
 }
 
 export function qHTML(q, n, isAns, S = state.settings) {
+  if (isEssayQuestion(q)) {
+    return renderEssayQuestionHTML(q, n, isAns, S);
+  }
   const markStyle = S.markStyle || S.mark || 'circle-fill';
   const mkClass = `mk-${markStyle}`;
   const soft = isSoft(S);
@@ -356,10 +360,15 @@ export function buildItems(secs, isAns, S = state.settings) {
     s.qs.forEach((q, i) => {
       globalNum++;
       const currentNumber = S.renumber ? (i + 1) : globalNum;
-      items.push({
-        isQuestion: true,
-        html: qHTML(q, currentNumber, isAns, S)
-      });
+      if (isEssayQuestion(q)) {
+        const frags = splitQuestionIntoFragments(q, currentNumber, isAns, S);
+        frags.forEach(f => items.push(f));
+      } else {
+        items.push({
+          isQuestion: true,
+          html: qHTML(q, currentNumber, isAns, S)
+        });
+      }
     });
   });
 

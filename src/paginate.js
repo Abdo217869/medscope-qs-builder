@@ -72,6 +72,10 @@ export function paginate(items, settings, paperVarsStyle) {
   let pageQs = 0;
   const qsLimit = +(settings.qsPerPage || 0);
 
+  let lastPlacedQid = null;
+  let lastPlacedPage = null;
+  let lastPlacedCol = null;
+
   const newPage = () => {
     cur = { cols: Array.from({ length: C }, () => []) };
     pages.push(cur);
@@ -84,6 +88,7 @@ export function paginate(items, settings, paperVarsStyle) {
     if (it.full) {
       pages.push({ full: it });
       cur = null;
+      lastPlacedQid = null;
       return;
     }
 
@@ -92,7 +97,8 @@ export function paginate(items, settings, paperVarsStyle) {
     let need = it.h;
 
     // Keep subject heading with its first question (never orphan a heading at bottom of page)
-    if (it.keep || settings.keepHeadWithFirst) {
+    // Also keep question header with first subpart
+    if (it.keep || it.keepWithNext || settings.keepHeadWithFirst) {
       const nextItem = items[k + 1];
       if (nextItem && !nextItem.full && nextItem.h) {
         need += nextItem.h;
@@ -101,7 +107,7 @@ export function paginate(items, settings, paperVarsStyle) {
 
     // Check if item exceeds column capacity or exceeds optional questions-per-page limit
     const exceedsCapacity = (used > 0 && used + need > availH + 0.5);
-    const exceedsQsLimit = (qsLimit > 0 && it.isQuestion && pageQs >= qsLimit);
+    const exceedsQsLimit = (qsLimit > 0 && it.isQuestion && !it.isFragment && pageQs >= qsLimit);
 
     if (exceedsCapacity || exceedsQsLimit) {
       ci++;
@@ -111,9 +117,24 @@ export function paginate(items, settings, paperVarsStyle) {
       }
     }
 
-    cur.cols[ci].push(it.html);
+    let finalHtml = it.html;
+    // Check if this fragment is a continuation of the same question across columns or pages
+    if (it.isFragment && !it.isHeader && it.qid && it.qid === lastPlacedQid) {
+      if (lastPlacedPage !== cur || lastPlacedCol !== ci) {
+        if (settings.essayShowContinued !== false) {
+          const continuedBadge = `<div class="split-continued-badge">(${it.label || 'Q'} continued)</div>`;
+          finalHtml = continuedBadge + finalHtml;
+        }
+      }
+    }
+
+    cur.cols[ci].push(finalHtml);
     used += it.h;
-    if (it.isQuestion) pageQs++;
+    if (it.isQuestion && !it.isFragment) pageQs++;
+
+    lastPlacedQid = it.qid || null;
+    lastPlacedPage = cur;
+    lastPlacedCol = ci;
   });
 
   return {

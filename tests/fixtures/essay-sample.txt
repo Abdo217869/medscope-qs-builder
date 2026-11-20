@@ -1,0 +1,71 @@
+Part 1: Prevention and Screening
+
+Q1.1 Match each action to its level of prevention (primordial / health promotion / specific protection / secondary / tertiary-rehabilitation):
+- a) Periodic deworming of school children in an endemic area
+- b) Fortifying salt with iodine
+- c) Vocational training for a worker who lost a limb
+- d) School programs that stop unhealthy lifestyle risk factors from emerging in the first place
+- e) Promoting exclusive breastfeeding
+- f) Providing helmets to construction workers
+
+Q1.2 Name the activity (screening / case finding / periodic examination / diagnosis) in each situation:
+- a) Every pregnant woman attending the antenatal clinic is tested for HIV.
+- b) An apparently healthy employee attends a yearly check-up with several system examinations and investigations.
+- c) A teenager with sudden polyuria and weight loss has a fasting glucose test to confirm diabetes.
+- d) A team visits a village and tests all adults for hepatitis C although nobody asked for care.
+
+Q1.3 A new rapid test for hepatitis C was evaluated against the gold standard in 2,000 adults. 200 had the disease. The test was positive in 170 of them. Among those without the disease 90 tested positive.
+- a) Construct the 2x2 table.
+- b) Calculate the sensitivity and specificity.
+- c) Calculate the predictive value positive and predictive value negative.
+- d) Calculate the false negative rate, false positive rate and accuracy.
+- e) The same test is used in a community of 10,000 people with a disease prevalence of 1%. Complete the new table and calculate the predictive value positive.
+- f) What does the difference between (c) and (e) show? What does it imply for the choice of screening program?
+
+Part 2: Surveillance (synthetic test content)
+
+Q2.1 (5 marks) Define public health surveillance and list four of its uses.
+
+Q2.2 Fill in the blanks: Active surveillance means that the health authority ______ for cases, while passive surveillance relies on ______ by health facilities.
+
+Q2.3 True or false, and justify: A high sensitivity test is best for confirming a diagnosis. [2 marks]
+
+Q2.4 Which of the following is a notifiable disease in Egypt?
+a) Common cold
+b) Measles
+c) Tension headache
+d) Hay fever
+
+Q2.5 Compare primary and secondary prevention in a table (3 points each). (6 marks)
+
+Part 7: Answer Key
+
+Answers to Part 1: Prevention and Screening
+
+Q1.1 a) Secondary prevention (mass treatment of the susceptible population against an endemic disease). b) Primary: specific protection (food fortification). c) Tertiary: rehabilitation (vocational). d) Primordial (prevents risk factors from emerging). e) Primary: health promotion (non-specific). f) Primary: specific protection.
+
+Q1.2 a) Case finding (testing people who attend care for another reason). b) Periodic examination (seeking care at intervals with no specific complaint). c) Diagnosis (symptomatic person, confirms or excludes disease). d) Screening (asymptomatic people, not requesting care).
+
+Q1.3
+|  | Disease + | Disease - | Total |
+| Test + | 170 | 90 | 260 |
+| Test - | 30 | 1,710 | 1,740 |
+| Total | 200 | 1,800 | 2,000 |
+
+- Sensitivity = 170/200 = 85%. Specificity = 1,710/1,800 = 95%.
+- Predictive value positive = 170/260 = 65.4%. Predictive value negative = 1,710/1,740 = 98.3%.
+- False negative rate = 30/200 = 15%. False positive rate = 90/1,800 = 5%. Accuracy = (170 + 1,710)/2,000 = 94%.
+- Community of 10,000 at 1% prevalence: 100 diseased, 9,900 not. TP = 85, FN = 15, FP = 5% of 9,900 = 495, TN = 9,405. Test positive total = 580. Predictive value positive = 85/580 = 14.7% (NPV = 9,405/9,420 = 99.8%).
+- Interpretation: with identical sensitivity and specificity, PPV fell from 65.4% to 14.7%. PPV depends on prevalence, so at low prevalence most positives are false. Screening a high-risk group (higher prevalence) gives a better yield, is more cost-effective and spares people false-positive anxiety and work-up.
+
+Answers to Part 2: Surveillance (synthetic test content)
+
+Q2.1 Continuous, systematic collection, analysis and interpretation of health data, followed by timely dissemination for action. Uses: detect outbreaks, monitor trends, plan and evaluate programs, set priorities.
+
+Q2.2 Active: actively searches; passive: routine reporting.
+
+Q2.3 False. High sensitivity rules disease OUT (SnNOut); a high specificity test is best for confirming (SpPIn).
+
+Q2.4 b) Measles
+
+Q2.5 Primary: aims to prevent disease onset; before disease; e.g. vaccination, health education. Secondary: aims at early detection; at the asymptomatic stage; e.g. screening, case finding.

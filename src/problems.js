@@ -32,9 +32,26 @@ export function getProblemsData() {
   );
 
   const totalQs = allQs.length;
-  const noAns = allQs.filter(item => item.q.ans === null);
-  const multiAns = allQs.filter(item => item.q.hasMultipleAnswers || (item.q.markedAnswers && item.q.markedAnswers.length > 1));
-  const singleOpt = allQs.filter(item => item.q.opts.length === 1 || item.q.singleOption);
+  // Only MCQs can be missing an option answer
+  const noAns = allQs.filter(item => (!item.q.type || item.q.type === 'mcq') && item.q.ans === null);
+  const multiAns = allQs.filter(item => (!item.q.type || item.q.type === 'mcq') && (item.q.hasMultipleAnswers || (item.q.markedAnswers && item.q.markedAnswers.length > 1)));
+  const singleOpt = allQs.filter(item => (!item.q.type || item.q.type === 'mcq') && (item.q.opts && item.q.opts.length === 1 || item.q.singleOption));
+
+  // Essay informational checks
+  const essayWithoutAnswer = allQs.filter(item => {
+    const q = item.q;
+    const isEssay = q.type && q.type !== 'mcq';
+    return isEssay && !q.answer && (!q.parts || !q.parts.some(p => p.answer));
+  });
+
+  const marksMismatch = allQs.filter(item => {
+    const q = item.q;
+    if (q.marks > 0 && q.parts && q.parts.length > 0) {
+      const partsSum = q.parts.reduce((sum, p) => sum + (p.marks || 0), 0);
+      return partsSum > 0 && partsSum !== q.marks;
+    }
+    return false;
+  });
 
   // Also check skipped list for single option stems
   const skippedList = state.data?.skippedList || [];
@@ -74,7 +91,7 @@ export function getProblemsData() {
   }
 
   const unplacedLines = state.data?.unplacedLines || [];
-  const totalProblemsCount = noAns.length + multiAns.length + singleOpt.length + skippedSingle.length + duplicates.length + unplacedLines.length;
+  const totalProblemsCount = noAns.length + multiAns.length + singleOpt.length + skippedSingle.length + duplicates.length + unplacedLines.length + marksMismatch.length;
 
   return {
     totalQs,
@@ -90,6 +107,8 @@ export function getProblemsData() {
     skewedLetter,
     skewedPct,
     unplacedLines,
+    essayWithoutAnswer,
+    marksMismatch,
     totalProblemsCount
   };
 }
@@ -381,6 +400,54 @@ export function renderProblemsPanelHTML() {
         </div>
       `;
     });
+    html += `</div></div>`;
+  }
+
+  // 5. Marks Mismatch (Essay)
+  if (prob.marksMismatch && prob.marksMismatch.length > 0) {
+    html += `
+      <div class="prob-group">
+        <div class="prob-group-title">
+          <span>⚠️ خلاف في مجموع درجات الأجزاء (${prob.marksMismatch.length})</span>
+          <small>مجموع درجات الأجزاء الفرعية لا يساوي درجة السؤال الكلية:</small>
+        </div>
+        <div class="prob-items">
+    `;
+    prob.marksMismatch.forEach(({ q }) => {
+      const partsSum = q.parts.reduce((sum, p) => sum + (p.marks || 0), 0);
+      html += `
+        <div class="prob-row">
+          <span class="prob-qnum">${escapeHTML(q.label || `س ${q.num}`)}:</span>
+          <span class="prob-qstem">${escapeHTML(q.stem.slice(0, 50))}...</span>
+          <span class="prob-tag warn">درجة السؤال: ${q.marks} | مجموع الأجزاء: ${partsSum}</span>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  }
+
+  // 6. Essay Questions Without Model Answer (Informational)
+  if (prob.essayWithoutAnswer && prob.essayWithoutAnswer.length > 0) {
+    html += `
+      <div class="prob-group">
+        <div class="prob-group-title">
+          <span>ℹ️ أسئلة مقالية بدون إجابة نموذجية (${prob.essayWithoutAnswer.length})</span>
+          <small>صالح كورقة أسئلة فقط، أو أضف الإجابة النموذجية من المحرر:</small>
+        </div>
+        <div class="prob-items">
+    `;
+    prob.essayWithoutAnswer.slice(0, 6).forEach(({ q }) => {
+      html += `
+        <div class="prob-row">
+          <span class="prob-qnum">${escapeHTML(q.label || `س ${q.num}`)}:</span>
+          <span class="prob-qstem">${escapeHTML(q.stem.slice(0, 50))}...</span>
+          <span class="prob-tag info">بدون إجابة نموذجية</span>
+        </div>
+      `;
+    });
+    if (prob.essayWithoutAnswer.length > 6) {
+      html += `<div class="prob-more">و ${prob.essayWithoutAnswer.length - 6} أسئلة مقالية تانية بدون إجابة نموذجية...</div>`;
+    }
     html += `</div></div>`;
   }
 

@@ -71,14 +71,70 @@ export const EXPORT_HANDLERS = [
       state.data.sections.forEach(s => {
         const tagName = (s.name || 'Medscope').replace(/\s+/g, '_');
         s.qs.forEach(q => {
-          const front = esc(q.stem) + '<br><br>' + q.opts.map((o, i) => `${(LET[i] || '').toUpperCase()}) ${esc(o)}`).join('<br>');
-          const back = q.ans == null
-            ? '—'
-            : `<b>${(LET[q.ans] || '').toUpperCase()}) ${esc(q.opts[q.ans])}</b>` + (q.expl ? `<br><br><i>${esc(q.expl)}</i>` : '');
-          rows.push([front, back, tagName].join('\t'));
+          const isEssay = q.type && q.type !== 'mcq';
+          if (!isEssay && q.opts && q.opts.length > 0) {
+            const front = esc(q.stem) + '<br><br>' + q.opts.map((o, i) => `${(LET[i] || '').toUpperCase()}) ${esc(o)}`).join('<br>');
+            const back = q.ans == null
+              ? '—'
+              : `<b>${(LET[q.ans] || '').toUpperCase()}) ${esc(q.opts[q.ans])}</b>` + (q.expl ? `<br><br><i>${esc(q.expl)}</i>` : '');
+            rows.push([front, back, tagName].join('\t'));
+          } else {
+            // Essay question card
+            let front = esc(q.stem);
+            if (q.parts && q.parts.length > 0) {
+              front += '<br><br>' + q.parts.map(p => `<b>(${esc(p.label)})</b> ${esc(p.text)}`).join('<br>');
+            }
+            let back = '<b>Model Answer / الإجابة النموذجية:</b><br>';
+            if (q.parts && q.parts.some(p => p.answer)) {
+              back += q.parts.map(p => {
+                const ans = typeof p.answer === 'object' ? JSON.stringify(p.answer) : p.answer;
+                return `<b>(${esc(p.label)})</b> ${esc(ans || '—')}`;
+              }).join('<br>');
+            } else if (q.answer) {
+              const ans = typeof q.answer === 'object' ? JSON.stringify(q.answer) : q.answer;
+              back += esc(ans);
+            } else {
+              back += '—';
+            }
+            rows.push([front, back, tagName].join('\t'));
+          }
         });
       });
       downloadFile('medscope-anki.txt', rows.join('\n'));
+    }
+  },
+  {
+    id: 'markdown',
+    title: 'Markdown (.md)',
+    icon: '📝',
+    desc: 'تصدير الأسئلة والجداول بصيغة Markdown قياسية جاهزة للفتح في Obsidian أو GitHub أو Notion.',
+    actionName: 'تحميل ملف Markdown (.md)',
+    run() {
+      const lines = [];
+      state.data.sections.forEach(s => {
+        if (s.name) lines.push(`# ${s.name}\n`);
+        s.qs.forEach((q, i) => {
+          const label = q.label || `Q${i + 1}`;
+          const marks = q.marks ? ` [${q.marks} marks]` : '';
+          lines.push(`### ${label}: ${q.stem}${marks}`);
+          if (q.opts && q.opts.length > 0) {
+            q.opts.forEach((o, oi) => {
+              lines.push(`- **${LET[oi]})** ${o}${q.ans === oi ? ' ✓' : ''}`);
+            });
+          }
+          if (q.parts && q.parts.length > 0) {
+            q.parts.forEach(p => {
+              const pm = p.marks ? ` [${p.marks} marks]` : '';
+              lines.push(`- **(${p.label})** ${p.text}${pm}`);
+              if (p.answer) lines.push(`  > *Model Answer:* ${typeof p.answer === 'object' ? JSON.stringify(p.answer) : p.answer}`);
+            });
+          } else if (q.answer) {
+            lines.push(`> **Model Answer:** ${typeof q.answer === 'object' ? JSON.stringify(q.answer) : q.answer}`);
+          }
+          lines.push('');
+        });
+      });
+      downloadFile('medscope-exam.md', lines.join('\n'));
     }
   },
   {
@@ -91,8 +147,8 @@ export const EXPORT_HANDLERS = [
       const rows = [];
       state.data.sections.forEach(s => {
         s.qs.forEach(q => {
-          const term = cleanLine(q.stem) + ' ' + q.opts.map((o, i) => `(${LET[i]}) ${cleanLine(o)}`).join(' ');
-          const def = q.ans == null ? '?' : `(${LET[q.ans]}) ${cleanLine(q.opts[q.ans])}`;
+          const term = cleanLine(q.stem) + ' ' + (q.opts || []).map((o, i) => `(${LET[i]}) ${cleanLine(o)}`).join(' ');
+          const def = q.ans == null ? (q.answer ? cleanLine(q.answer) : '?') : `(${LET[q.ans]}) ${cleanLine(q.opts[q.ans])}`;
           rows.push(`${term}\t${def}`);
         });
       });
@@ -113,8 +169,12 @@ export const EXPORT_HANDLERS = [
         rows.push(`$CATEGORY: ${s.name || 'Medscope'}\n`);
         s.qs.forEach(q => {
           n++;
-          const optsText = q.opts.map((o, i) => `${q.ans === i ? '=' : '~'}${escapeGift(o)}`).join('\n');
-          rows.push(`::Q${n}::${escapeGift(q.stem)} {\n${optsText}\n}\n`);
+          if (q.opts && q.opts.length > 0) {
+            const optsText = q.opts.map((o, i) => `${q.ans === i ? '=' : '~'}${escapeGift(o)}`).join('\n');
+            rows.push(`::Q${n}::${escapeGift(q.stem)} {\n${optsText}\n}\n`);
+          } else {
+            rows.push(`::Q${n}::${escapeGift(q.stem)} {}\n`);
+          }
         });
       });
       downloadFile('medscope-gift.txt', rows.join('\n'));
@@ -122,20 +182,30 @@ export const EXPORT_HANDLERS = [
   },
   {
     id: 'json',
-    title: 'JSON Data',
+    title: 'JSON Data (Schema v2)',
     icon: '📦',
-    desc: 'تصدير البيانات بصيغة JSON مهيكلة ونظيفة، مفيدة للربط البرمجي أو الحفظ في Supabase.',
+    desc: 'تصدير البيانات بصيغة JSON مهيكلة ونظيفة Schema v2، تشمل الأسئلة المقالية والأجزاء والدرجات.',
     actionName: 'تحميل JSON',
     run() {
-      const output = state.data.sections.map(s => ({
-        section: s.name,
-        questions: s.qs.map(q => ({
-          question: q.stem,
-          options: q.opts,
-          answer: q.ans == null ? null : (LET[q.ans] || null),
-          explanation: q.expl || ''
+      const output = {
+        schemaVersion: 2,
+        generator: 'Medscope Question Sheet Builder',
+        exportedAt: new Date().toISOString(),
+        sections: state.data.sections.map(s => ({
+          section: s.name,
+          questions: s.qs.map(q => ({
+            id: q.id,
+            type: q.type || 'mcq',
+            label: q.label,
+            marks: q.marks || 0,
+            stem: q.stem,
+            parts: q.parts || [],
+            options: q.opts || [],
+            answer: q.ans !== null && q.ans !== undefined ? (LET[q.ans] || q.ans) : q.answer,
+            explanation: q.expl || ''
+          }))
         }))
-      }));
+      };
       downloadFile('medscope-questions.json', JSON.stringify(output, null, 2), 'application/json');
     }
   },

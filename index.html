@@ -108,6 +108,23 @@
               </div>
             </div>
 
+            <!-- Question Type Mode Selector (Auto / All MCQ / All Essay) -->
+            <div class="question-type-mode-bar" id="questionTypeModeBar" style="display:flex; align-items:center; justify-content:center; gap:12px; margin: 12px 0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:10px 16px; font-size:13px; flex-wrap:wrap;">
+              <span style="color:#ccff00; font-weight:700;">نوع الأسئلة:</span>
+              <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer;">
+                <input type="radio" name="qTypeMode" value="auto" checked id="qTypeModeAuto">
+                <span>تلقائي (افتراضي)</span>
+              </label>
+              <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer;">
+                <input type="radio" name="qTypeMode" value="mcq" id="qTypeModeMCQ">
+                <span>كله اختيار من متعدد</span>
+              </label>
+              <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer;">
+                <input type="radio" name="qTypeMode" value="essay" id="qTypeModeEssay">
+                <span>كله مقالي</span>
+              </label>
+            </div>
+
             <!-- File Cards List with Progress Bars -->
             <div class="file-cards-list" id="fileCardsList"></div>
 
@@ -301,8 +318,13 @@
             </button>
           </div>
 
-          <!-- Layout Mode Switcher Bar -->
-          <div class="studio-top-bar">
+          <!-- Layout Mode & Paper View Switcher Bar -->
+          <div class="studio-top-bar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div class="paper-view-toggle" id="paperViewToggle" style="display:flex; gap:6px;">
+              <button type="button" class="studio-toggle-btn active" id="btnPreviewQs" data-view="qs">📄 ورقة الأسئلة</button>
+              <button type="button" class="studio-toggle-btn" id="btnPreviewAs" data-view="as">🔴 ورقة الإجابات</button>
+              <button type="button" class="studio-toggle-btn" id="btnPreviewSpaces" data-view="spaces">📝 ورقة الأسئلة بمساحة الإجابة</button>
+            </div>
             <div class="studio-view-toggle">
               <button type="button" class="studio-toggle-btn active" id="btnStudioSideBySide" title="عرض الاستوديو: لوحة التحكم بجانب المعاينة المباشرة لتسهيل التعديل بدون صعود ونزول">
                 <span>🖥️ شاشة استوديو (جنباً إلى جنب)</span>

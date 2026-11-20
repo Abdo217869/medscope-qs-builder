@@ -97,7 +97,7 @@ describe('End-to-End DOM Integration Test', () => {
     setView('exp');
     const btnExp = document.querySelector('button[data-v="exp"]');
     expect(btnExp.getAttribute('aria-pressed')).toBe('true');
-    expect(viewContainer.querySelectorAll('.xcard').length).toBe(7); // 7 export formats
+    expect(viewContainer.querySelectorAll('.xcard').length).toBe(8); // 8 export formats (including Markdown)
   });
 
   it('supports editing and reverse-syncing to textarea in editor mode', () => {

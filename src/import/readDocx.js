@@ -170,10 +170,10 @@ export function readDocx(buffer, options = {}) {
         // extract all text inside cell
         const tMatches = [...tc[1].matchAll(/<w:t(?:\s+[^>]*)?>([^<]*)<\/w:t>/g)];
         const cellStr = tMatches.map(m => decodeXml(m[1])).join('').trim();
-        if (cellStr) cellTexts.push(cellStr);
+        cellTexts.push(cellStr);
       }
-      if (cellTexts.length) {
-        lines.push(cellTexts.join('  '));
+      if (cellTexts.some(c => c.length > 0)) {
+        lines.push('| ' + cellTexts.join(' | ') + ' |');
       }
       continue;
     }
@@ -205,19 +205,28 @@ export function readDocx(buffer, options = {}) {
           const currentCount = counters.has(key) ? counters.get(key) + 1 : def.start;
           counters.set(key, currentCount);
 
-          // Build prefix from lvlText e.g. "%1." or "%2)"
-          let prefix = def.lvlText;
-          for (let lvlIdx = 0; lvlIdx <= ilvl; lvlIdx++) {
-            const lvlDef = abstractLevels.get(`${absId}:${lvlIdx}`) || def;
-            const lvlVal = counters.get(`${numId}:${lvlIdx}`) || lvlDef.start;
-            const formatted = formatNumber(lvlVal, lvlDef.numFmt);
-            prefix = prefix.replace(new RegExp(`%${lvlIdx + 1}`, 'g'), formatted);
-          }
-          if (prefix) {
-            listPrefix = `${prefix} `;
+          if (def.numFmt === 'bullet') {
+            listPrefix = '• ';
+          } else {
+            // Build prefix from lvlText e.g. "%1." or "%2)"
+            let prefix = def.lvlText;
+            for (let lvlIdx = 0; lvlIdx <= ilvl; lvlIdx++) {
+              const lvlDef = abstractLevels.get(`${absId}:${lvlIdx}`) || def;
+              const lvlVal = counters.get(`${numId}:${lvlIdx}`) || lvlDef.start;
+              const formatted = formatNumber(lvlVal, lvlDef.numFmt);
+              prefix = prefix.replace(new RegExp(`%${lvlIdx + 1}`, 'g'), formatted);
+            }
+            if (prefix) {
+              listPrefix = `${prefix} `;
+            }
           }
         }
       }
+    }
+
+    // If not already prefixed by numPr, check for ListBullet paragraph style
+    if (!listPrefix && /<w:pStyle\s+[^>]*w:val="ListBullet/i.test(content)) {
+      listPrefix = '• ';
     }
 
     // Extract text runs: <w:r>...</w:r>

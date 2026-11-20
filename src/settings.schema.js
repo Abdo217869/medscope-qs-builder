@@ -702,6 +702,104 @@ export const SETTINGS_SCHEMA = [
     ]
   },
   {
+    group: 'essay',
+    title: 'الأسئلة المقالية والتحريرية',
+    icon: '📝',
+    fields: [
+      {
+        key: 'essayAnswerSpace',
+        label: 'مساحة الإجابة لورقة الطالب',
+        type: 'select',
+        default: 'auto',
+        options: [
+          { val: 'auto', text: 'تلقائي حسب عدد الدرجات' },
+          { val: 'lines', text: 'أسطر مسطرة للكتابة (Lines)' },
+          { val: 'box', text: 'مربع فارغ محدد (Box)' },
+          { val: 'grid', text: 'ورق مربعات (Grid)' },
+          { val: 'none', text: 'بدون مساحة (كتابة في كراسة منفصلة)' }
+        ]
+      },
+      {
+        key: 'essayLinesPerMark',
+        label: 'عدد الأسطر لكل درجة (Auto)',
+        type: 'range',
+        default: 2,
+        min: 1,
+        max: 5,
+        step: 1,
+        unit: 'أسطر'
+      },
+      {
+        key: 'essayLineStyle',
+        label: 'شكل أسطر الإجابة',
+        type: 'select',
+        default: 'solid',
+        options: [
+          { val: 'solid', text: 'خط رمادي متصل (Solid)' },
+          { val: 'dotted', text: 'خط منقط (Dotted)' },
+          { val: 'dashed', text: 'خط متقطع (Dashed)' }
+        ]
+      },
+      {
+        key: 'essayMarksDisplay',
+        label: 'طريقة عرض الدرجات',
+        type: 'select',
+        default: 'bracket',
+        options: [
+          { val: 'bracket', text: '[5 marks] أقواس مربعة' },
+          { val: 'parenthesis', text: '(5 marks) أقواس دائرية' },
+          { val: 'arabic', text: '(5 درجات) بالعربية' },
+          { val: 'tag', text: 'شارة مميزة ملونة (Tag)' },
+          { val: 'none', text: 'إخفاء الدرجات' }
+        ]
+      },
+      {
+        key: 'essayAnswersLayout',
+        label: 'موضع الإجابة النموذجية في ورقة الإجابة',
+        type: 'select',
+        default: 'inline',
+        options: [
+          { val: 'inline', text: 'مدمجة تحت كل سؤال مباشرة (Inline)' },
+          { val: 'keyEnd', text: 'ملحق منفصل في نهاية الورقة (Answer Key)' }
+        ]
+      },
+      {
+        key: 'essayCaseBox',
+        label: 'إبراز سيناريو الحالات السريرية في كارت ملون',
+        type: 'check',
+        default: true
+      },
+      {
+        key: 'essayHighlightTerms',
+        label: 'إبراز المصطلحات الطبية الهامة في الإجابة النموذجية',
+        type: 'check',
+        default: true
+      },
+      {
+        key: 'essayMarkingScheme',
+        label: 'إظهار بنود توزيع الدرجات (Marking Scheme Checklist)',
+        type: 'check',
+        default: true
+      },
+      {
+        key: 'essayBlankWidth',
+        label: 'عرض فراغات الأسئلة (Fill-in-the-blank)',
+        type: 'range',
+        default: 70,
+        min: 30,
+        max: 150,
+        step: 5,
+        unit: 'px'
+      },
+      {
+        key: 'essayShowContinued',
+        label: 'إظهار شارة (تابع السؤال) عند انقسام السؤال بين الصفحات',
+        type: 'check',
+        default: true
+      }
+    ]
+  },
+  {
     group: 'watermark',
     title: 'العلامة المائية ولوجو ميدسكوب',
     icon: '🦅',

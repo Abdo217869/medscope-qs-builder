@@ -1,6 +1,7 @@
 // main.js - Application Coordinator & 3-Step Flow Engine
 
 import { parse, richLines, LET } from './src/parser.js';
+import { parseDocument } from './src/essay/parseEssay.js';
 import { state, store, SAMPLE_TEXT, syncLogoFromIDB } from './src/state.js';
 import { renderPagesHTML, fitZoom } from './src/paper.js';
 import { renderStats } from './src/stats.js';
@@ -249,7 +250,8 @@ export function reparse() {
   const keyVal = keyInput.value;
 
   try {
-    state.data = parse(rawVal, keyVal);
+    const qTypeMode = state.questionTypeMode || 'auto';
+    state.data = parseDocument(rawVal, keyVal, { questionTypeMode: qTypeMode });
     store.set('mq.raw', rawVal);
     store.set('mq.key', keyVal);
     store.set('mq.savedAt', new Date().toISOString());
@@ -314,8 +316,14 @@ export function renderView() {
 
   const currentView = state.view;
 
-  if (currentView === 'qs' || currentView === 'as') {
-    viewContainer.innerHTML = renderPagesHTML(currentView === 'as');
+  if (currentView === 'qs' || currentView === 'as' || currentView === 'spaces') {
+    const isAnswers = (currentView === 'as');
+    const originalSpace = state.settings.essayAnswerSpace;
+    if (currentView === 'spaces' && state.settings.essayAnswerSpace === 'none') {
+      state.settings.essayAnswerSpace = 'auto';
+    }
+    viewContainer.innerHTML = renderPagesHTML(isAnswers);
+    state.settings.essayAnswerSpace = originalSpace;
     fitZoom();
   } else if (currentView === 'edit') {
     viewContainer.innerHTML = renderEditorHTML();
@@ -846,6 +854,26 @@ export function init() {
 
   const savedStudioMode = store.get('mq.studioMode') || 'split';
   setStudioMode(savedStudioMode);
+
+  // Question Type Mode Radio Buttons (Auto / All MCQ / All Essay)
+  $$('input[name="qTypeMode"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      state.questionTypeMode = radio.value;
+      reparse();
+      showToast(`تم تغيير وضع الأسئلة إلى: ${radio.value === 'auto' ? 'تلقائي' : (radio.value === 'mcq' ? 'كله اختيار من متعدد' : 'كله مقالي')}`);
+    });
+  });
+
+  // Paper View 3-Way Toggle (Questions / Answers / Spaces)
+  $$('#paperViewToggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#paperViewToggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const viewMode = btn.dataset.view;
+      state.view = viewMode;
+      renderView();
+    });
+  });
 
   // Print Buttons
   $('#btnPrintQ')?.addEventListener('click', () => printMode('qs'));

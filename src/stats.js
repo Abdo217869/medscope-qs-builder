@@ -5,10 +5,12 @@ import { state } from './state.js';
 
 export function computeStats() {
   const all = state.data.sections.flatMap(s => s.qs);
-  const noAns = all.filter(q => q.ans == null).length;
+  const mcqQs = all.filter(q => !q.type || q.type === 'mcq');
+  const essayQs = all.filter(q => q.type && q.type !== 'mcq');
+  const noAns = mcqQs.filter(q => q.ans == null).length;
   const dist = [0, 0, 0, 0, 0, 0];
 
-  all.forEach(q => {
+  mcqQs.forEach(q => {
     if (q.ans != null && q.ans < 6) dist[q.ans]++;
   });
 
@@ -23,11 +25,18 @@ export function computeStats() {
 
   const maxCount = Math.max(1, ...dist);
   const activeDist = dist.filter((d, i) => i < 4 || d > 0);
-  const isSkewed = all.length >= 8 && Math.max(...dist) > all.length * 0.5;
+  const isSkewed = mcqQs.length >= 8 && Math.max(...dist) > mcqQs.length * 0.5;
+
+  const totalMarks = state.data.totalMarks || all.reduce((sum, q) => sum + (q.marks || 0), 0);
+  const partsCount = all.reduce((sum, q) => sum + (q.parts ? q.parts.length : 0), 0);
 
   return {
     totalQs: all.length,
     totalSections: state.data.sections.length,
+    mcqCount: mcqQs.length,
+    essayCount: essayQs.length,
+    totalMarks,
+    partsCount,
     noAns,
     dups,
     dist,
@@ -47,6 +56,10 @@ export function renderStats() {
   const statsHost = document.getElementById('stats');
   if (statsHost) {
     let h = `<span class="chip ok">${st.totalQs} سؤال</span><span class="chip">${st.totalSections} مادة</span>`;
+    if (st.essayCount > 0) {
+      h += `<span class="chip info">${st.essayCount} مقالي</span>`;
+      if (st.totalMarks > 0) h += `<span class="chip gold">${st.totalMarks} درجة</span>`;
+    }
     if (st.noAns) {
       h += `<span class="chip warn">${st.noAns} بدون إجابة</span>`;
     } else if (st.totalQs > 0) {

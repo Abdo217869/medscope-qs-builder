@@ -871,3 +871,259 @@
 .sec-cover-logo img {
   border-radius: 8px;
 }
+
+/* ==========================================================================
+   Prompt 5: Essay & Written Question Styles (WYSIWYG & Print-Ready)
+   ========================================================================== */
+.q.q-essay {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.essay-header-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.essay-stem {
+  flex: 1;
+  min-width: 200px;
+}
+
+.essay-marks {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--accent, #d4a343);
+  margin-inline-start: auto;
+  white-space: nowrap;
+}
+
+.essay-marks-tag {
+  background: var(--qc-tint, rgba(18, 32, 54, 0.08));
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid var(--accent, #d4a343);
+}
+
+.essay-blank-line {
+  display: inline-block;
+  border-bottom: 1.5px solid currentColor;
+  margin: 0 4px;
+  vertical-align: baseline;
+}
+
+.case-scenario-card {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.025);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 6px 0 8px 0;
+  box-sizing: border-box;
+}
+
+.case-badge {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent, #d4a343);
+  margin-bottom: 4px;
+}
+
+.case-text {
+  font-size: 0.95em;
+  line-height: 1.45;
+}
+
+.tf-options-row {
+  display: flex;
+  gap: 20px;
+  margin: 6px 0;
+  font-size: 0.95em;
+}
+
+.tf-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tf-box {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid rgba(0, 0, 0, 0.45);
+  border-radius: 3px;
+}
+
+.essay-subparts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.essay-subpart {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.subpart-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+}
+
+.subpart-bullet {
+  font-weight: 700;
+  min-width: 22px;
+  color: var(--qc, #122036);
+  flex-shrink: 0;
+}
+
+.subpart-text {
+  flex: 1;
+}
+
+.essay-answer-space {
+  margin-top: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.essay-space-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 6px 0;
+}
+
+.answer-line {
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.line-style-dotted .answer-line {
+  border-bottom-style: dotted;
+}
+
+.line-style-dashed .answer-line {
+  border-bottom-style: dashed;
+}
+
+.essay-space-box {
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 8px;
+  position: relative;
+}
+
+.essay-space-box .box-label {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 9px;
+  color: rgba(0, 0, 0, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.essay-space-grid {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-size: 5mm 5mm;
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+}
+
+.essay-model-ans-box {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid var(--ac, #c00000);
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.essay-model-ans-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 11.5px;
+  color: var(--ac, #c00000);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.part-model-answer {
+  margin-top: 4px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border-left: 2.5px solid var(--ac, #c00000);
+  border-radius: 3px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.part-ans-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac, #c00000);
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+.key-term {
+  font-weight: 800;
+  color: var(--ac, #c00000);
+}
+
+.split-continued-badge {
+  font-size: 10.5px;
+  font-style: italic;
+  color: #64748b;
+  margin-bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Clean structured tables inside exam sheets */
+.essay-table,
+.paper-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0;
+  font-size: 0.9em;
+}
+
+.essay-table th,
+.essay-table td,
+.paper-table th,
+.paper-table td {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.essay-table th,
+.paper-table th {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 700;
+}
+
