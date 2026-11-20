@@ -520,7 +520,7 @@ export function buildSettingsUI(onUpdate) {
         matchesTab = true;
       } else if (currentSettingsTab === 'presets' && g === 'presets') {
         matchesTab = true;
-      } else if (currentSettingsTab === 'palette' && g === 'palette') {
+      } else if (currentSettingsTab === 'palette' && (g === 'colors' || g === 'presets' || g === 'palette')) {
         matchesTab = true;
       } else if (currentSettingsTab === 'cover' && g === 'cover') {
         matchesTab = true;
