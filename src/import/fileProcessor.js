@@ -2,7 +2,6 @@
 
 import { readTxtBuffer } from './readTxt.js';
 import { readDocx } from './readDocx.js';
-import { readPdf } from './readPdf.js';
 import { recognizeImage } from './ocr.js';
 import { mergeFiles } from './merge.js';
 
@@ -46,6 +45,7 @@ export async function processFile(file, onProgress = null) {
   }
 
   if (ext === '.pdf') {
+    const { readPdf } = await import('./readPdf.js');
     const result = await readPdf(buffer, (pageNum, totalPages) => {
       if (onProgress) {
         onProgress({

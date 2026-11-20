@@ -1,125 +1,214 @@
-/* tokens.css - Design Tokens for Medscope Question Sheet Builder */
+/* tokens.css - Obsidian & Lime Design System for Medscope Question Sheet Builder
+   Futuristic Glassmorphic Tech-Industrial Design System
+   Dark-first: #000000 viewport, #0c0c0c shell, #ccff00 neon lime, #10b981 emerald
+*/
 
 :root {
-  /* Medscope Light Theme Tokens */
-  --bg: #f3f5fa;
-  --bg-gradient: radial-gradient(circle at 10% 15%, rgba(230, 235, 248, 0.8) 0%, #f3f5fa 100%);
-  --panel: #ffffff;
-  --panel-elevated: #ffffff;
-  --panel2: #edf0f8;
-  --panel3: #e2e6f4;
-  --line: #d2d7e9;
-  --line-strong: #bac1dd;
-  --fg: #0d1326;
-  --fg-strong: #050811;
-  --muted: #545e82;
-  --faint: #8993ba;
+  /* =========================================================
+     Color Palette (Default: Dark Obsidian & Lime)
+     ========================================================= */
+  --viewport-bg: #000000;
+  --shell-bg: #0c0c0c;
+  --surface-base: #0a0a0a;
+  --surface-elevated: #111111;
+  --surface-card: #0e0e0e;
 
-  /* Medscope Brand Gold & Accents */
-  --gold: #b38515;
-  --gold-hover: #9c7210;
-  --gold-glow: rgba(179, 133, 21, 0.25);
-  --goldbg: #fff8e6;
-  --gold-border: rgba(179, 133, 21, 0.35);
+  /* Accents */
+  --accent-lime: #ccff00;
+  --accent-lime-hover: #ddff33;
+  --accent-lime-dim: #99cc00;
+  --accent-lime-text: #ccff00;
+  --accent-lime-glow: rgba(204, 255, 0, 0.3);
+  --accent-lime-border: rgba(204, 255, 0, 0.4);
+  --accent-emerald: #10b981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.3);
 
-  --good: #138352;
-  --good-bg: #eaf7f0;
-  --bad: #cb2d3e;
-  --bad-bg: #fdeeee;
+  /* Status Colors */
+  --good: #10b981;
+  --good-bg: rgba(16, 185, 129, 0.12);
+  --good-border: rgba(16, 185, 129, 0.3);
+  --bad: #ff5252;
+  --bad-bg: rgba(255, 82, 82, 0.12);
+  --bad-border: rgba(255, 82, 82, 0.3);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245, 158, 11, 0.12);
 
-  --ink: #0d1326;
-  --stage: #e3e6f2;
+  /* Typography Colors (Dark Mode) */
+  --text-primary: #ebebeb;
+  --text-secondary: rgba(255, 255, 255, 0.60);
+  --text-muted: rgba(255, 255, 255, 0.30); /* Decorative ONLY, never for readable text */
+  --text-inverse: #000000;
 
-  /* Typography */
-  --ui: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
-  --lat: 'Inter', 'Cairo', system-ui, -apple-system, sans-serif;
+  /* Glassmorphism Specification */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.05);
+  --glass-bg-solid: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(204, 255, 0, 0.40);
+  --glass-blur: 16px;
+
+  /* Contrast Section */
+  --contrast-bg: #e5e5e5;
+  --contrast-text: #0a0a0a;
+  --contrast-text-secondary: rgba(0, 0, 0, 0.65);
+  --contrast-border: rgba(0, 0, 0, 0.10);
+  --contrast-glass: rgba(255, 255, 255, 0.65);
+
+  /* Radii Specification */
+  --radius-shell: 2.5rem;   /* 40px */
+  --radius-card: 2.5rem;    /* 40px */
+  --radius-sm-card: 1.5rem; /* 24px */
+  --radius-pill: 9999px;
+  --radius-btn: 9999px;
+  --radius-input: 9999px;
+
+  /* Motion & Transitions */
+  --transition-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Typography Stacks */
+  --font-heading: 'Space Grotesk', 'Cairo', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', 'Cairo', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-arabic: 'Cairo', system-ui, sans-serif;
   --font-paper: 'Carlito', 'Calibri', sans-serif;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(13, 19, 38, 0.06), 0 1px 2px rgba(13, 19, 38, 0.04);
-  --shadow-md: 0 4px 12px rgba(13, 19, 38, 0.08), 0 2px 4px rgba(13, 19, 38, 0.04);
-  --shadow-lg: 0 12px 32px rgba(13, 19, 38, 0.12), 0 4px 8px rgba(13, 19, 38, 0.06);
-  --shadow-paper: 0 8px 30px rgba(10, 15, 30, 0.22);
-  --gold-btn-shadow: 0 2px 8px rgba(179, 133, 21, 0.3);
+  /* Backwards-Compatibility Aliases */
+  --bg: var(--viewport-bg);
+  --shell: var(--shell-bg);
+  --panel: var(--surface-card);
+  --panel-elevated: var(--surface-elevated);
+  --panel2: #141414;
+  --panel3: #1a1a1a;
+  --line: var(--glass-border);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --fg: var(--text-primary);
+  --fg-strong: #ffffff;
+  --muted: var(--text-secondary);
+  --faint: var(--text-muted);
+  --gold: var(--accent-lime);
+  --gold-hover: var(--accent-lime-hover);
+  --gold-glow: var(--accent-lime-glow);
+  --goldbg: rgba(204, 255, 0, 0.10);
+  --gold-border: var(--accent-lime-border);
+  --ink: var(--text-primary);
+  --stage: #0a0a0a;
 
-  /* Starfield opacity */
-  --starfield-opacity: 0;
+  /* Shadows */
+  --shadow-shell: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --shadow-neon: 0 0 30px rgba(204, 255, 0, 0.30);
+  --shadow-neon-hover: 0 0 45px rgba(204, 255, 0, 0.50);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-paper: 0 16px 48px rgba(0, 0, 0, 0.7);
+
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #060915;
-    --bg-gradient: radial-gradient(circle at 50% 0%, #0d1430 0%, #060915 70%);
-    --panel: #0d1226;
-    --panel-elevated: #121935;
-    --panel2: #161e3c;
-    --panel3: #1e2850;
-    --line: #242e56;
-    --line-strong: #334077;
-    --fg: #ebf0fc;
-    --fg-strong: #ffffff;
-    --muted: #95a1c7;
-    --faint: #636f98;
+/* =========================================================
+   Light Theme Override (Spec Section 2.7)
+   #e5e5e5 background, black text, white glass at higher opacity,
+   darker lime #7a9900 for text accents, #ccff00 for filled buttons.
+   ========================================================= */
+:root[data-theme="light"] {
+  --viewport-bg: #e5e5e5;
+  --shell-bg: #f5f5f5;
+  --surface-base: #f0f0f0;
+  --surface-elevated: #ffffff;
+  --surface-card: #ffffff;
 
-    --gold: #ebb94a;
-    --gold-hover: #f5c762;
-    --gold-glow: rgba(235, 185, 74, 0.35);
-    --goldbg: #29200c;
-    --gold-border: rgba(235, 185, 74, 0.35);
+  /* Accents */
+  --accent-lime: #ccff00;
+  --accent-lime-hover: #bde600;
+  --accent-lime-dim: #7a9900;
+  --accent-lime-text: #7a9900; /* Darker lime for legible text on light */
+  --accent-lime-glow: rgba(122, 153, 0, 0.25);
+  --accent-lime-border: rgba(122, 153, 0, 0.40);
+  --accent-emerald: #059669;
+  --accent-emerald-glow: rgba(5, 150, 105, 0.25);
 
-    --good: #3cd070;
-    --good-bg: rgba(60, 208, 112, 0.14);
-    --bad: #ff6865;
-    --bad-bg: rgba(255, 104, 101, 0.14);
+  /* Status Colors */
+  --good: #059669;
+  --good-bg: rgba(5, 150, 105, 0.10);
+  --good-border: rgba(5, 150, 105, 0.3);
+  --bad: #dc2626;
+  --bad-bg: rgba(220, 38, 38, 0.10);
+  --bad-border: rgba(220, 38, 38, 0.3);
+  --amber: #d97706;
+  --amber-bg: rgba(217, 119, 6, 0.10);
 
-    --ink: #ebf0fc;
-    --stage: #090c1c;
+  /* Typography Colors (Light Mode) */
+  --text-primary: #0a0a0a;
+  --text-secondary: rgba(0, 0, 0, 0.65);
+  --text-muted: rgba(0, 0, 0, 0.35);
+  --text-inverse: #ffffff;
 
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.6);
-    --shadow-paper: 0 12px 42px rgba(0, 0, 0, 0.65);
-    --gold-btn-shadow: 0 0 14px rgba(235, 185, 74, 0.4);
+  /* Glassmorphism in Light */
+  --glass-bg: rgba(255, 255, 255, 0.70);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-bg-solid: #ffffff;
+  --glass-border: rgba(0, 0, 0, 0.10);
+  --glass-border-hover: rgba(122, 153, 0, 0.45);
 
-    --starfield-opacity: 0.6;
-    color-scheme: dark;
+  /* Contrast Section */
+  --contrast-bg: #ffffff;
+  --contrast-text: #0a0a0a;
+  --contrast-text-secondary: rgba(0, 0, 0, 0.65);
+  --contrast-border: rgba(0, 0, 0, 0.10);
+  --contrast-glass: rgba(240, 240, 240, 0.85);
+
+  /* Backwards-Compatibility Aliases */
+  --bg: var(--viewport-bg);
+  --shell: var(--shell-bg);
+  --panel: var(--surface-card);
+  --panel-elevated: var(--surface-elevated);
+  --panel2: #e8e8e8;
+  --panel3: #dedede;
+  --line: var(--glass-border);
+  --line-strong: rgba(0, 0, 0, 0.20);
+  --fg: var(--text-primary);
+  --fg-strong: #000000;
+  --muted: var(--text-secondary);
+  --faint: var(--text-muted);
+  --gold: var(--accent-lime-text);
+  --gold-hover: #688200;
+  --gold-glow: var(--accent-lime-glow);
+  --goldbg: rgba(122, 153, 0, 0.12);
+  --gold-border: var(--accent-lime-border);
+  --ink: var(--text-primary);
+  --stage: #e0e0e0;
+
+  /* Shadows */
+  --shadow-shell: 0 20px 45px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  --shadow-neon: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-neon-hover: 0 6px 26px rgba(0, 0, 0, 0.20);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-paper: 0 12px 36px rgba(0, 0, 0, 0.20);
+
+  color-scheme: light;
+}
+
+/* =========================================================
+   Reduced Motion & Reduced Transparency Fallbacks
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-:root[data-theme="dark"] {
-  --bg: #060915;
-  --bg-gradient: radial-gradient(circle at 50% 0%, #0d1430 0%, #060915 70%);
-  --panel: #0d1226;
-  --panel-elevated: #121935;
-  --panel2: #161e3c;
-  --panel3: #1e2850;
-  --line: #242e56;
-  --line-strong: #334077;
-  --fg: #ebf0fc;
-  --fg-strong: #ffffff;
-  --muted: #95a1c7;
-  --faint: #636f98;
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-bg: var(--glass-bg-solid) !important;
+    --glass-blur: 0px !important;
+  }
+}
 
-  --gold: #ebb94a;
-  --gold-hover: #f5c762;
-  --gold-glow: rgba(235, 185, 74, 0.35);
-  --goldbg: #29200c;
-  --gold-border: rgba(235, 185, 74, 0.35);
-
-  --good: #3cd070;
-  --good-bg: rgba(60, 208, 112, 0.14);
-  --bad: #ff6865;
-  --bad-bg: rgba(255, 104, 101, 0.14);
-
-  --ink: #ebf0fc;
-  --stage: #090c1c;
-
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.6);
-  --shadow-paper: 0 12px 42px rgba(0, 0, 0, 0.65);
-  --gold-btn-shadow: 0 0 14px rgba(235, 185, 74, 0.4);
-
-  --starfield-opacity: 0.6;
-  color-scheme: dark;
+@media (max-width: 640px) {
+  :root {
+    --glass-blur: 8px;
+  }
 }

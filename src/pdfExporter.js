@@ -1,11 +1,18 @@
 // src/pdfExporter.js - Fast, 100% Client-Side Direct PDF Download Engine
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import { state, getViewData } from './state.js';
 import { renderPagesHTML } from './paper.js';
 import { showToast } from './export.js';
 
 let progressModal = null;
+
+async function loadPdfLibs() {
+  const [{ jsPDF }, html2canvasMod] = await Promise.all([
+    import('jspdf'),
+    import('html2canvas')
+  ]);
+  const html2canvas = html2canvasMod.default || html2canvasMod;
+  return { jsPDF, html2canvas };
+}
 
 function ensureProgressModal() {
   if (progressModal) return progressModal;
@@ -53,7 +60,7 @@ function hideProgress() {
  * Renders an array of HTML pages in an off-screen container at exact 1x A4 dimensions (no CSS zoom),
  * captures them with html2canvas, and returns an array of canvas images.
  */
-async function capturePagesToCanvases(isAns, onPageProgress, startIndex = 0, totalPagesOverall = 1) {
+async function capturePagesToCanvases(isAns, onPageProgress, startIndex = 0, totalPagesOverall = 1, html2canvas) {
   const htmlContent = renderPagesHTML(isAns);
 
   // Create isolated off-screen sandbox to avoid CSS zoom or sidebar layout effects
@@ -110,8 +117,11 @@ export async function downloadDirectPDF(mode = 'qs') {
   if (mode === 'both') filename = `${baseTitle}-complete-exam-and-answers.pdf`;
 
   ensureProgressModal();
+  updateProgress(0, 1, 'جارِ تحميل محرك الـ PDF...');
 
   try {
+    const { jsPDF, html2canvas } = await loadPdfLibs();
+
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -120,9 +130,8 @@ export async function downloadDirectPDF(mode = 'qs') {
     });
 
     if (mode === 'qs') {
-      // Estimate page count
       updateProgress(0, 1, 'جارِ تجهيز ورقة الأسئلة...');
-      const canvases = await capturePagesToCanvases(false, updateProgress, 0, 1);
+      const canvases = await capturePagesToCanvases(false, updateProgress, 0, 1, html2canvas);
       canvases.forEach((canvas, idx) => {
         if (idx > 0) doc.addPage('a4', 'portrait');
         const imgData = canvas.toDataURL('image/jpeg', 0.94);
@@ -130,7 +139,7 @@ export async function downloadDirectPDF(mode = 'qs') {
       });
     } else if (mode === 'as') {
       updateProgress(0, 1, 'جارِ تجهيز ورقة الإجابات...');
-      const canvases = await capturePagesToCanvases(true, updateProgress, 0, 1);
+      const canvases = await capturePagesToCanvases(true, updateProgress, 0, 1, html2canvas);
       canvases.forEach((canvas, idx) => {
         if (idx > 0) doc.addPage('a4', 'portrait');
         const imgData = canvas.toDataURL('image/jpeg', 0.94);
@@ -140,11 +149,10 @@ export async function downloadDirectPDF(mode = 'qs') {
       updateProgress(0, 2, 'جارِ تجهيز ورقة الأسئلة والإجابات...');
       const qCanvases = await capturePagesToCanvases(false, (curr, tot, msg) => {
         updateProgress(curr, tot + 2, 'تجهيز ورقة الأسئلة...');
-      }, 0, 2);
-
+      }, 0, 2, html2canvas);
       const aCanvases = await capturePagesToCanvases(true, (curr, tot, msg) => {
-        updateProgress(qCanvases.length + curr, qCanvases.length + tot, 'تجهيز نموذج الإجابات...');
-      }, qCanvases.length, qCanvases.length + 2);
+        updateProgress(qCanvases.length + curr, qCanvases.length + tot, 'تجهيز ورقة الإجابات...');
+      }, qCanvases.length, qCanvases.length + 2, html2canvas);
 
       const allCanvases = [...qCanvases, ...aCanvases];
       allCanvases.forEach((canvas, idx) => {
@@ -156,11 +164,14 @@ export async function downloadDirectPDF(mode = 'qs') {
 
     doc.save(filename);
     hideProgress();
-    showToast(`تم تحميل ملف "${filename}" بنجاح 📥`);
+    showToast('تم تحميل ملف الـ PDF بنجاح ✓');
   } catch (err) {
-    console.error('Direct PDF export error:', err);
+    console.error('Direct PDF download error:', err);
     hideProgress();
-    showToast('حدث خطأ أثناء تحميل الملف، جاري فتح الطباعة البديلة...');
-    window.print();
+    showToast('حدث خطأ أثناء إنشاء ملف الـ PDF، جاري التحويل للطباعة العادية...');
+    // Fallback to native print dialog
+    setTimeout(() => {
+      window.print();
+    }, 400);
   }
 }

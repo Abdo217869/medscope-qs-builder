@@ -14,8 +14,11 @@
     min-height: auto !important;
   }
 
-  /* Completely hide all UI elements, sidebars, navigation, modals, and toolbars */
+  /* Completely hide all UI elements, backgrounds, sidebars, navigation, modals, and toolbars */
   body::before,
+  .bg-grid-layer,
+  .bg-noise-layer,
+  .glow-sphere,
   .top-header,
   .stepper-nav,
   .recovery-banner,
@@ -26,6 +29,7 @@
   .print-guide-card,
   details.accordion,
   .report-card,
+  .bento-grid,
   .problems-box,
   .panel,
   .toolbar,
@@ -34,6 +38,7 @@
   .undo-toast,
   .modal-backdrop,
   .sidebar-footer,
+  .obsidian-footer,
   .empty-paper-placeholder,
   .empty-editor-placeholder,
   .empty-export-placeholder,
@@ -61,21 +66,30 @@
     display: none !important;
   }
 
-  .app-container {
+  .floating-shell {
     display: block !important;
     margin: 0 !important;
     padding: 0 !important;
-    width: 100% !important;
+    max-width: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
   }
 
   .step-container,
   #step3,
+  .contrast-section,
+  .contrast-inner,
   .step3-studio-layout,
   .studio-main {
     display: block !important;
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
   }
 
   .preview-card,
@@ -98,36 +112,36 @@
   }
 
   .pages-wrap {
-    zoom: 1 !important;
     display: block !important;
-    gap: 0 !important;
     transform: none !important;
+    gap: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  .page {
+  /* Paper Pages - High precision A4 isolation */
+  .page.paper {
     box-shadow: none !important;
-    break-after: page !important;
-    page-break-after: always !important;
-    margin: 0 !important;
     border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    position: relative !important;
+    display: block !important;
     width: 210mm !important;
     height: 297mm !important;
-    min-height: 297mm !important;
-    max-height: 297mm !important;
     overflow: hidden !important;
-    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   /* Prevent trailing blank page */
-  .page:last-child {
-    break-after: auto !important;
+  .page.paper:last-child {
     page-break-after: auto !important;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+    break-after: auto !important;
   }
 }

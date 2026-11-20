@@ -56,10 +56,13 @@ export function paginate(items, settings, paperVarsStyle) {
   document.body.append(ms);
 
   const flow = items.filter(x => !x.full);
-  flow.forEach(x => {
-    ms.innerHTML = x.html;
-    x.h = ms.getBoundingClientRect().height;
-  });
+  if (flow.length > 0) {
+    ms.innerHTML = flow.map((x, i) => `<div class="measure-slot" style="overflow:hidden;" data-idx="${i}">${x.html}</div>`).join('');
+    const children = ms.children;
+    for (let i = 0; i < flow.length; i++) {
+      flow[i].h = children[i].getBoundingClientRect().height;
+    }
+  }
   ms.remove();
 
   const pages = [];

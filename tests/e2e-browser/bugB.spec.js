@@ -44,7 +44,7 @@ test.describe('Bug B Regression Tests: Logo Upload, Downscaling, IndexedDB Persi
     await fileInput.setInputFiles(largePngPath);
 
     // Wait for processing & UI update
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1000);
 
     // Assert thumbnail updated to data URL
     const updatedThumb = page.locator('#logoThumbImg');
