@@ -1,5 +1,5 @@
 // public/sw.js - Service Worker for 100% offline capability
-const CACHE_NAME = 'medscope-obsidian-v3';
+const CACHE_NAME = 'medscope-obsidian-v5';
 
 const STATIC_ASSETS = [
   "./",
@@ -118,7 +118,7 @@ self.addEventListener('fetch', (event) => {
   // Network-First for HTML navigation so users always see the latest deployed app immediately
   if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
-      fetch(request).then((networkResponse) => {
+      fetch(request, { cache: 'no-cache' }).then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
