@@ -1,5 +1,5 @@
 // public/sw.js - Fast App Shell Precache + Idle Background Caching
-const CACHE_NAME = 'medscope-v8-obsidian-studio';
+const CACHE_NAME = 'medscope-v9-obsidian-studio-final';
 
 // 1. Critical App Shell: Tiny instant install (< 100 KB)
 const STATIC_SHELL = [
@@ -19,6 +19,7 @@ const BACKGROUND_ASSETS = [
   "./tesseract/tesseract-core.wasm.js",
   "./tesseract/tesseract-core.wasm",
   "./tesseract/tesseract-core-simd.wasm",
+  "./tesseract/tesseract-core-lstm.wasm",
   "./tesseract/eng.traineddata.gz",
   "./fonts/cairo-700-normal-arabic-9.woff2",
   "./fonts/jetbrains-mono-400-normal-latin-5.woff2",
@@ -147,6 +148,13 @@ self.addEventListener('fetch', (event) => {
       return fetch(request).then((networkResponse) => {
         if (!networkResponse || networkResponse.status !== 200) {
           return networkResponse;
+        }
+        // Protect Tesseract WASM/data assets from receiving HTML 404 pages
+        const isTesseractAsset = request.url.includes('/tesseract/');
+        const contentType = networkResponse.headers.get('content-type') || '';
+        if (isTesseractAsset && contentType.includes('text/html')) {
+          console.warn('Blocked HTML response for Tesseract asset:', request.url);
+          return new Response('Tesseract asset not found', { status: 404, statusText: 'Not Found' });
         }
         const responseToCache = networkResponse.clone();
         caches.open(CACHE_NAME).then((cache) => {
