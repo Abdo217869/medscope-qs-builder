@@ -498,6 +498,50 @@
     </div>
   </div>
 
+  <!-- OCR Review & Edit Modal (Prompt 8 Section 5) -->
+  <div class="modal-backdrop" id="ocrReviewModal" hidden>
+    <div class="modal-box glass-card ocr-review-modal-box">
+      <button class="modal-close-x" id="btnCloseOcrReviewX" aria-label="إغلاق" title="إغلاق (Esc)">✕</button>
+      <div class="ocr-review-header">
+        <span class="ocr-review-badge">🔍 مراجعة النص المستخرج</span>
+        <h3 style="margin: 6px 0 0 0;">مراجعة وتعديل النص المستخرج من الصورة</h3>
+      </div>
+      <div class="ocr-review-grid">
+        <div class="ocr-review-img-pane">
+          <div class="ocr-preview-img-wrap">
+            <img id="ocrReviewImg" alt="Source image preview" style="max-width:100%; height:auto; display:block; border-radius:12px;">
+          </div>
+          <div class="ocr-review-img-tools" style="margin-top:10px; display:flex; gap:8px;">
+            <button type="button" class="btn sm gold" id="btnOcrRerunEnhanced">✨ إعادة القراءة بالوضع المحسّن</button>
+          </div>
+        </div>
+        <div class="ocr-review-text-pane">
+          <label for="ocrExtractedText" style="display:block; font-weight:700; font-size:13px; margin-bottom:6px;">النص المقروء (يمكنك تعديل أي أخطاء هنا قبل المتابعة):</label>
+          <textarea id="ocrExtractedText" class="raw" style="min-height:300px; font-family:monospace; font-size:13px; direction:ltr; text-align:left;" spellcheck="false"></textarea>
+          <div class="ocr-confidence-badge" id="ocrConfidenceBadge"></div>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:16px;">
+        <button type="button" class="btn glass-btn" id="btnCancelOcrReview">إلغاء</button>
+        <button type="button" class="neon-pulse-btn" id="btnApplyOcrReview">✓ اعتماد النص والمتابعة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OCR Debug Panel Modal (?debug=1) (Prompt 8 Section 6) -->
+  <div class="modal-backdrop" id="ocrDebugModal" hidden>
+    <div class="modal-box glass-card" style="max-width: 680px;">
+      <button class="modal-close-x" id="btnCloseDebugX">✕</button>
+      <h3>🛠️ لوحة فحص محرك OCR والشبكة (Debug Panel)</h3>
+      <div id="ocrDebugContent" style="direction:ltr; text-align:left; font-family:monospace; font-size:12px; background:#000000; padding:14px; border-radius:12px; max-height:320px; overflow-y:auto; color:#ccff00; margin:16px 0; white-space:pre-wrap;"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn glass-btn" id="btnCopyDebugInfo">📋 نسخ بيانات الفحص</button>
+        <button type="button" class="btn sm danger" id="btnClearOcrCache">🗑️ تفريغ كاش OCR وتحديث</button>
+        <button type="button" class="btn sm" id="btnCloseDebug">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Mobile Sticky Bottom Thumb Action Bar (Prompt 6 Section 4) -->
   <div class="mobile-bottom-bar" id="mobileBottomBar">
     <button type="button" class="mobile-bottom-btn" id="mobileMainActionBtn">

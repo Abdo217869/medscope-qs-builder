@@ -70,13 +70,27 @@ export async function processFile(file, onProgress = null) {
     });
     result = { name: file.name, text: pdfRes.text, ext, metadata: pdfRes.metadata };
   } else if (ext === '.png' || ext === '.jpg' || ext === '.jpeg') {
-    if (onProgress) onProgress({ status: 'ocr', message: 'جاري تشغيل قارئ الصور (OCR)... قد يستغرق لحظات' });
-    const ocrText = await recognizeImage(file, (pct) => {
+    if (onProgress) onProgress({ status: 'ocr', message: 'جاري تشغيل قارئ الصور (OCR)... قد يستغرق لحظات', progress: 10 });
+    const ocrRes = await recognizeImage(file, (p) => {
       if (onProgress) {
-        onProgress({ status: 'ocr', message: `جاري قراءة النصوص من الصورة (${pct}%)...`, progress: pct });
+        onProgress({
+          status: 'ocr',
+          message: p.message || `جاري قراءة النصوص (${p.progress || 0}%)...`,
+          progress: p.progress || 0
+        });
       }
     });
-    result = { name: file.name, text: ocrText, ext, metadata: { ocr: true } };
+    result = {
+      name: file.name,
+      text: ocrRes.text,
+      ext,
+      metadata: {
+        ocr: true,
+        confidence: ocrRes.confidence,
+        isDark: ocrRes.isDark,
+        rawText: ocrRes.rawText
+      }
+    };
   } else {
     throw new Error('نوع الملف غير معروف.');
   }

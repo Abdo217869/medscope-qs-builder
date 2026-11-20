@@ -1006,8 +1006,10 @@ export const SETTINGS_SCHEMA = [
         unit: 'px'
       },
       { key: 'coverQrLabel', label: 'نص توضيحي تحت الـ QR (اختياري)', type: 'text', default: 'Scan to join us' },
-      { key: 'coverTotalQs', label: 'إظهار إجمالي عدد الأسئلة على الغلاف (بالإنجليزي: Total: 60 MCQs)', type: 'check', default: false },
-      { key: 'secPages', label: 'إدراج صفحة فاصلة لكل مادة', type: 'check', default: true },
+      { key: 'coverTotalQs', label: 'إظهار إجمالي عدد الأسئلة على الغلاف (Total: X Questions/MCQs)', type: 'check', default: false },
+      { key: 'coverTotalQsLabel', label: 'تسمية نوع الأسئلة على الغلاف (افتراضي: Questions أو MCQs تلقائيًا)', type: 'text', default: '' },
+      { key: 'secPages', label: 'إدراج صفحة فاصلة لكل مادة / قسم', type: 'check', default: true },
+      { key: 'secPageTitleOverride', label: 'تعديل اسم المادة الأولى (مثلاً: Part 1 بدل القسم الأول)', type: 'text', default: '' },
       {
         key: 'secPageLayout',
         label: 'تنسيق صفحة فاصل المادة',

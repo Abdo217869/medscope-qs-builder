@@ -262,6 +262,40 @@ export function qHTML(q, n, isAns, S = state.settings) {
   return `<div class="q ${sepClass}"><div class="qt">${numDisplay}<span class="q-stem">${esc(q.stem)}</span></div><div class="opts ${optLayoutClass}">${optsHTML}${explHTML}</div></div>`;
 }
 
+export function formatTotalQuestions(count, S = {}, secs = []) {
+  if (S.coverTotalQsLabel && S.coverTotalQsLabel.trim()) {
+    const custom = S.coverTotalQsLabel.trim();
+    if (custom.toLowerCase().startsWith('total') || /^\d+/.test(custom) || /^(إجمالي|عدد)/.test(custom)) {
+      return custom;
+    }
+    let label = custom;
+    if (count === 1) {
+      if (/^mcqs$/i.test(label)) label = 'MCQ';
+      else if (/^questions$/i.test(label)) label = 'Question';
+    }
+    return `Total: ${count} ${label}`;
+  }
+
+  const title = ((S.title || '') + ' ' + (S.subtitle || '')).trim();
+  const isArabic = /[\u0600-\u06FF]/.test(title) || (secs[0]?.qs[0]?.stem && /[\u0600-\u06FF]/.test(secs[0].qs[0].stem));
+
+  if (isArabic) {
+    if (count === 1) return 'سؤال واحد';
+    if (count === 2) return 'سؤالان';
+    if (count >= 3 && count <= 10) return `${count} أسئلة`;
+    return `${count} سؤالاً`;
+  }
+
+  const isPractical = /practical|عملي/i.test(title);
+  const isEssayOrWritten = /written|essay|case|مقالي/i.test(title) || (secs.length > 0 && secs.every(s => s.qs.every(q => q.type === 'essay')));
+
+  if (isPractical || isEssayOrWritten) {
+    return count === 1 ? `Total: 1 Question` : `Total: ${count} Questions`;
+  }
+
+  return count === 1 ? `Total: 1 MCQ` : `Total: ${count} MCQs`;
+}
+
 export function buildItems(secs, isAns, S = state.settings) {
   const items = [];
   const soft = isSoft(S);
@@ -290,7 +324,8 @@ export function buildItems(secs, isAns, S = state.settings) {
     const subtitleAnswers = isAns ? ' — Answers' : '';
 
     const totalQsCount = secs.reduce((sum, s) => sum + s.qs.length, 0);
-    const totalQsHTML = S.coverTotalQs ? `<p class="cover-total-qs">Total: ${totalQsCount} MCQs</p>` : '';
+    const totalQsText = formatTotalQuestions(totalQsCount, S, secs);
+    const totalQsHTML = S.coverTotalQs ? `<p class="cover-total-qs">${esc(totalQsText)}</p>` : '';
     const dateHTML = S.coverDate ? `<p class="cover-date">${esc(S.coverDate)}</p>` : '';
     const examInfoHTML = S.coverExamInfo ? `<p class="cover-exam-info">${esc(S.coverExamInfo)}</p>` : '';
 
@@ -343,12 +378,32 @@ export function buildItems(secs, isAns, S = state.settings) {
         if (logoSrc === '/medscope-watermark-default.png') logoSrc = './medscope-watermark-default.png';
         secLogoHTML = `<div class="sec-cover-logo"><img src="${esc(logoSrc)}" style="width:${secLogoSize}px;height:auto;display:block;margin:0 auto 16px;" alt="Logo"></div>`;
       }
-      const secSub = (S.secPageSub === 'none') ? '' : `<div class="qs">${esc(S.secPageSub || 'Qs')}</div>`;
+      // Auto-detect and replace "القسم الأول" or "قسم X" if content is English
+      let displayName = s.name;
+      const isArabicSec = s.qs.some(q => /[\u0600-\u06FF]/.test(q.stem || '')) || /[\u0600-\u06FF]/.test(S.title || '');
+      if (!isArabicSec) {
+        if (displayName === 'القسم الأول') {
+          displayName = S.secPageTitleOverride || 'Part 1';
+        } else if (/^قسم\s*(\d+)/i.test(displayName)) {
+          const numMatch = displayName.match(/^قسم\s*(\d+)/);
+          displayName = numMatch ? `Part ${numMatch[1]}` : 'Part';
+        }
+      }
+      if (S.secPageTitleOverride && (secs.length === 1 || displayName === 'القسم الأول' || displayName === 'Part 1')) {
+        displayName = S.secPageTitleOverride;
+      }
+
+      let secSub = '';
+      if (S.secPageSub && S.secPageSub !== 'none') {
+        secSub = `<div class="qs">${esc(S.secPageSub)}</div>`;
+      } else if (S.secPageSub === undefined || S.secPageSub === null) {
+        secSub = `<div class="qs">Qs</div>`;
+      }
 
       items.push({
         full: true,
         isSecCover: true,
-        html: `<div class="section-cover-page sec-layout-${secLayout}">${secLogoHTML}<h1>${esc(s.name)}${qCountText}</h1>${secSub}${ornaments}</div>`
+        html: `<div class="section-cover-page sec-layout-${secLayout}">${secLogoHTML}<h1>${esc(displayName)}${qCountText}</h1>${secSub}${ornaments}</div>`
       });
     } else if (s.name) {
       items.push({

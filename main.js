@@ -469,6 +469,9 @@ export function showUndoToast(msg, onUndo) {
   }, 10000);
 }
 
+const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let currentReviewFile = null;
+
 /**
  * Renders the File Cards list in Step 1 (Part A1)
  */
@@ -492,15 +495,16 @@ function renderFileCards() {
     } else if (file.status === 'done') {
       statusBadge = `<span class="file-status done">جاهز ✓</span>`;
     } else if (file.status === 'failed') {
-      statusBadge = `<span class="file-status failed" title="${file.errorMessage || ''}">فشل ✕</span>`;
+      statusBadge = `<span class="file-status failed" title="${escapeHtml(file.errorMessage || '')}">فشل ✕</span>`;
     }
 
     const progressPercent = file.progress || (file.status === 'done' ? 100 : 0);
+    const isImage = (file.extension === 'jpg' || file.extension === 'jpeg' || file.extension === 'png' || file.extension === 'webp');
 
     return `
-      <div class="file-card" data-idx="${idx}">
+      <div class="file-card ${file.status === 'failed' ? 'card-failed' : ''}" data-idx="${idx}">
         <div class="file-card-drag">⋮⋮</div>
-        <div class="file-card-icon">📄</div>
+        <div class="file-card-icon">${isImage ? '🖼️' : (file.extension === 'pdf' ? '📕' : '📄')}</div>
         <div class="file-card-info">
           <div class="file-card-name" title="${file.name}">${file.name}</div>
           <div class="file-card-meta">
@@ -514,6 +518,26 @@ function renderFileCards() {
               <div class="file-progress-fill" style="width: ${progressPercent}%"></div>
             </div>
           ` : ''}
+          ${file.status === 'failed' ? `
+            <div class="file-card-error-box">
+              <div class="error-msg-text">⚠️ مقدرناش نقرأ الملف ده: ${escapeHtml(file.errorMessage || 'حدث خطأ غير متوقع أثناء معالجة المحرك')}</div>
+              <div class="error-actions-row">
+                <button type="button" class="btn-card-action retry" data-action="retry" data-idx="${idx}">↺ إعادة المحاولة</button>
+                <button type="button" class="btn-card-action paste" data-action="paste-manual" data-idx="${idx}">✍️ الصق النص يدويًا</button>
+                <button type="button" class="btn-card-action details" data-action="toggle-details" data-idx="${idx}">تفاصيل الخطأ ▾</button>
+              </div>
+              <div class="error-details-box" id="errorDetails_${idx}" style="display:none">
+                <pre class="error-tech-code">${escapeHtml(file.errorMessage || 'No technical log available')}</pre>
+                <button type="button" class="btn-copy-tech-err" data-action="copy-error" data-idx="${idx}">📋 انسخ التفاصيل</button>
+              </div>
+            </div>
+          ` : ''}
+          ${(file.status === 'done' && isImage && file._extractedText) ? `
+            <div class="ocr-review-hint-row">
+              <button type="button" class="btn-card-action review-ocr" data-action="review-ocr" data-idx="${idx}">🔍 راجع وعدّل النص المقروء من الصورة</button>
+              <small class="ocr-phone-hint">💡 لو الصورة داكنة (Dark mode)، محرك القراءة عكّس ألوانها تلقائيًا للوصول لأعلى دقة.</small>
+            </div>
+          ` : ''}
         </div>
         <div class="file-card-actions">
           <button class="btn-file-move" data-action="up" data-idx="${idx}" ${isFirst ? 'disabled' : ''} title="تحريك لأعلى">▲</button>
@@ -525,7 +549,7 @@ function renderFileCards() {
   }).join('');
 
   // Attach button events
-  $$('.btn-file-move, .btn-file-remove', list).forEach(btn => {
+  $$('.btn-file-move, .btn-file-remove, .btn-card-action, .btn-copy-tech-err', list).forEach(btn => {
     btn.onclick = async (e) => {
       e.stopPropagation();
       const action = btn.dataset.action;
@@ -551,9 +575,72 @@ function renderFileCards() {
         } else {
           await reprocessAllFiles();
         }
+      } else if (action === 'retry') {
+        await reprocessSingleFile(idx);
+      } else if (action === 'paste-manual') {
+        const acc = $('#pasteAccordion');
+        if (acc) {
+          acc.open = true;
+          acc.scrollIntoView({ behavior: 'smooth' });
+          $('#raw')?.focus();
+        }
+      } else if (action === 'toggle-details') {
+        const detailsBox = document.getElementById(`errorDetails_${idx}`);
+        if (detailsBox) {
+          detailsBox.style.display = (detailsBox.style.display === 'none') ? 'block' : 'none';
+        }
+      } else if (action === 'copy-error') {
+        const errText = currentFiles[idx]?.errorMessage || '';
+        navigator.clipboard?.writeText(errText);
+        showToast('تم نسخ تفاصيل الخطأ بنجاح 📋');
+      } else if (action === 'review-ocr') {
+        openOcrReviewModal(currentFiles[idx]);
       }
     };
   });
+}
+
+async function reprocessSingleFile(idx) {
+  const fileObj = currentFiles[idx];
+  if (!fileObj || !fileObj._rawFile) return;
+
+  fileObj.status = 'reading';
+  fileObj.progress = 10;
+  fileObj.statusMessage = 'إعادة المحاولة...';
+  renderFileCards();
+
+  try {
+    await reprocessAllFiles();
+  } catch (err) {
+    fileObj.status = 'failed';
+    fileObj.errorMessage = err.message || 'فشلت القراءة مجددًا';
+    renderFileCards();
+  }
+}
+
+function openOcrReviewModal(fileObj) {
+  currentReviewFile = fileObj;
+  const modal = $('#ocrReviewModal');
+  const imgEl = $('#ocrReviewImg');
+  const textEl = $('#ocrExtractedText');
+  const badgeEl = $('#ocrConfidenceBadge');
+
+  if (!modal || !fileObj) return;
+
+  if (imgEl && fileObj._rawFile) {
+    imgEl.src = URL.createObjectURL(fileObj._rawFile);
+  }
+
+  if (textEl) {
+    textEl.value = fileObj._extractedText || $('#raw')?.value || '';
+  }
+
+  if (badgeEl && fileObj._metadata?.confidence !== undefined) {
+    badgeEl.textContent = `دقة القراءة التقديرية: ${Math.round(fileObj._metadata.confidence)}%`;
+  }
+
+  modal.hidden = false;
+  modal.style.display = 'flex';
 }
 
 /**
@@ -569,11 +656,29 @@ async function reprocessAllFiles() {
     lastMergeMessage = result.mergeMessage || '';
     const rawEl = $('#raw');
     if (rawEl) rawEl.value = result.mergedText;
+
+    result.files.forEach(extFile => {
+      const match = currentFiles.find(cf => cf.name === extFile.name);
+      if (match) {
+        match.status = 'done';
+        match.statusMessage = 'تم بنجاح ✓';
+        match._extractedText = extFile.text;
+        match._metadata = extFile.metadata;
+      }
+    });
+
     reparse();
     renderFileCards();
   } catch (err) {
     console.error('Reprocess error:', err);
-    showToast('حدث خطأ أثناء إعادة ترتيب الملفات');
+    currentFiles.forEach(cf => {
+      if (cf.status === 'reading') {
+        cf.status = 'failed';
+        cf.errorMessage = err.message || 'حدث خطأ أثناء القراءة';
+      }
+    });
+    renderFileCards();
+    showToast('حدث خطأ أثناء قراءة الملفات');
   }
 }
 
@@ -613,15 +718,29 @@ async function handleFilesUpload(filesList) {
 
   try {
     const rawFiles = currentFiles.map(cf => cf._rawFile).filter(Boolean);
-    const result = await processMultipleFiles(rawFiles, (progress) => {
-      const match = currentFiles.find(cf => cf.name === progress.fileName);
+    const result = await processMultipleFiles(rawFiles, (fileName, progress) => {
+      const match = currentFiles.find(cf => cf.name === fileName);
       if (match) {
-        match.progress = progress.progress;
-        match.status = progress.status;
-        match.statusMessage = progress.message;
+        match.progress = progress.progress || 0;
+        match.status = (progress.status === 'done') ? 'done' : (progress.status === 'failed' ? 'failed' : 'reading');
+        match.statusMessage = progress.message || '';
+        if (progress.status === 'failed') {
+          match.errorMessage = progress.message || 'فشلت القراءة';
+        }
         renderFileCards();
       }
-      updateSystemStatusTag(`READING ${progress.fileIndex + 1}/${progress.totalFiles}`, 'warn');
+      updateSystemStatusTag(`READING`, 'warn');
+    });
+
+    // Store extracted text onto file objects for OCR review
+    result.files.forEach(extFile => {
+      const match = currentFiles.find(cf => cf.name === extFile.name);
+      if (match) {
+        match.status = 'done';
+        match.statusMessage = 'تم بنجاح ✓';
+        match._extractedText = extFile.text;
+        match._metadata = extFile.metadata;
+      }
     });
 
     lastMergeMessage = result.mergeMessage || '';
@@ -641,6 +760,13 @@ async function handleFilesUpload(filesList) {
     setStep(2);
   } catch (err) {
     console.error('File import error:', err);
+    currentFiles.forEach(cf => {
+      if (cf.status === 'reading') {
+        cf.status = 'failed';
+        cf.errorMessage = err.message || 'حدث خطأ أثناء قراءة الملف';
+      }
+    });
+    renderFileCards();
     showToast(err.message || 'حدث خطأ أثناء قراءة الملفات');
     updateSystemStatusTag('ERROR', 'warn');
   }
@@ -1029,6 +1155,114 @@ export function init() {
     }
   });
 
+  // OCR Review Modal Events (Prompt 8 Section 5)
+  const ocrModal = $('#ocrReviewModal');
+  const closeOcrReview = () => {
+    if (ocrModal) {
+      ocrModal.hidden = true;
+      ocrModal.style.display = 'none';
+    }
+  };
+
+  $('#btnCloseOcrReviewX')?.addEventListener('click', closeOcrReview);
+  $('#btnCancelOcrReview')?.addEventListener('click', closeOcrReview);
+
+  $('#btnApplyOcrReview')?.addEventListener('click', () => {
+    const textEl = $('#ocrExtractedText');
+    if (textEl && currentReviewFile) {
+      currentReviewFile._extractedText = textEl.value;
+      const rawEl = $('#raw');
+      if (rawEl) {
+        rawEl.value = textEl.value;
+      }
+      reparse();
+      showToast('تم اعتماد النص وتحديث الأسئلة بنجاح ✓');
+    }
+    closeOcrReview();
+  });
+
+  $('#btnOcrRerunEnhanced')?.addEventListener('click', async () => {
+    if (!currentReviewFile || !currentReviewFile._rawFile) return;
+    showToast('جاري إعادة القراءة بالوضع المحسّن...');
+    try {
+      const { recognizeImage } = await import('./src/import/ocr.js');
+      const res = await recognizeImage(currentReviewFile._rawFile, null, { mode: 'dark' });
+      currentReviewFile._extractedText = res.text;
+      const textEl = $('#ocrExtractedText');
+      if (textEl) textEl.value = res.text;
+      const badgeEl = $('#ocrConfidenceBadge');
+      if (badgeEl) badgeEl.textContent = `دقة القراءة المحسّنة: ${Math.round(res.confidence)}%`;
+      showToast('اكتملت القراءة المحسّنة ✓');
+    } catch (e) {
+      showToast(e.message || 'فشلت القراءة المحسّنة');
+    }
+  });
+
+  // OCR Debug Panel (?debug=1 or Ctrl+Shift+D) (Prompt 8 Section 6)
+  const debugModal = $('#ocrDebugModal');
+  const showDebugModal = async () => {
+    if (!debugModal) return;
+    const { getTesseractConfig } = await import('./src/import/ocr.js');
+    const config = getTesseractConfig();
+    const contentEl = $('#ocrDebugContent');
+    if (contentEl) {
+      const swActive = !!navigator.serviceWorker?.controller;
+      contentEl.textContent = `=== MEDSCOPE OCR & HOSTING DEBUG ===\n` +
+        `Current URL: ${window.location.href}\n` +
+        `Base Origin: ${window.location.origin}\n` +
+        `Worker Path: ${config.workerPath}\n` +
+        `Core Path:   ${config.corePath}\n` +
+        `Lang Path:   ${config.langPath}\n` +
+        `SW Active:   ${swActive}\n` +
+        `SW Cache:    medscope-v8-obsidian-studio\n` +
+        `Loaded Files: ${currentFiles.length}\n` +
+        JSON.stringify(currentFiles.map(f => ({ name: f.name, status: f.status, msg: f.statusMessage, err: f.errorMessage })), null, 2);
+    }
+    debugModal.hidden = false;
+    debugModal.style.display = 'flex';
+  };
+
+  const closeDebugModal = () => {
+    if (debugModal) {
+      debugModal.hidden = true;
+      debugModal.style.display = 'none';
+    }
+  };
+
+  $('#btnCloseDebugX')?.addEventListener('click', closeDebugModal);
+  $('#btnCloseDebug')?.addEventListener('click', closeDebugModal);
+
+  $('#btnCopyDebugInfo')?.addEventListener('click', () => {
+    const text = $('#ocrDebugContent')?.textContent || '';
+    navigator.clipboard?.writeText(text);
+    showToast('تم نسخ بيانات الفحص بنجاح 📋');
+  });
+
+  $('#btnClearOcrCache')?.addEventListener('click', async () => {
+    if (confirm('هل تريد مسح كاش المتصفح وإعادة التحميل؟')) {
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      }
+      if (navigator.serviceWorker) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        for (const reg of regs) await reg.unregister();
+      }
+      window.location.reload();
+    }
+  });
+
+  if (window.location.search.includes('debug=1')) {
+    setTimeout(showDebugModal, 600);
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+      e.preventDefault();
+      showDebugModal();
+    }
+  });
+
   // Theme Toggle Button
   $('#btnTheme')?.addEventListener('click', () => {
     const root = document.documentElement;
@@ -1114,6 +1348,18 @@ export function init() {
   if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       reg.update();
+
+      reg.addEventListener('updatefound', () => {
+        const installingWorker = reg.installing;
+        if (installingWorker) {
+          installingWorker.addEventListener('statechange', () => {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              console.log('New Medscope update installed, reloading for fresh assets...');
+              window.location.reload();
+            }
+          });
+        }
+      });
 
       const offlineTag = $('#offlineCacheTag');
       const offlineText = $('#offlineCacheText');
